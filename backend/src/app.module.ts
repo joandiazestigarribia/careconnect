@@ -8,13 +8,11 @@ import databaseConfig from './config/database.config';
 
 @Module({
   imports: [
-    // Configuration
     ConfigModule.forRoot({
       isGlobal: true,
       load: [databaseConfig],
     }),
 
-    // Database
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -23,7 +21,6 @@ import databaseConfig from './config/database.config';
       inject: [ConfigService],
     }),
 
-    // Redis/BullMQ for queues
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -34,7 +31,6 @@ import databaseConfig from './config/database.config';
       inject: [ConfigService],
     }),
 
-    // Feature modules
     UsersModule,
     AuthModule,
   ],

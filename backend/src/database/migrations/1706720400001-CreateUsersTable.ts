@@ -22,7 +22,6 @@ export class CreateUsersTable1706720400001 implements MigrationInterface {
       );
     `);
 
-    // Create index on email for faster lookups
     await queryRunner.query(`
       CREATE INDEX idx_users_email ON users(email);
     `);

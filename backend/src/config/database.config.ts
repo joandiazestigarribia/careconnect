@@ -9,15 +9,8 @@ export default registerAs('database', () => ({
   logging: process.env.NODE_ENV === 'development',
   migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
   migrationsRun: true,
-  // PostGIS configuration
-  extra: {
-    // Enable PostGIS extension on connection
-    // Note: This requires the extension to be created manually first:
-    // CREATE EXTENSION IF NOT EXISTS postgis;
-  },
 }));
 
-// For CLI migrations
 export const connectionSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/careconnect_db',

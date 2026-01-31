@@ -9,15 +9,12 @@ async function runSeeds() {
 
   console.log('🌱 Running seeds...');
 
-  // Create test users
   const userRepository = dataSource.getRepository(User);
 
-  // Check if users already exist
   const existingCount = await userRepository.count();
   if (existingCount > 0) {
     console.log(`⚠️  ${existingCount} users already exist. Skipping user seeds.`);
   } else {
-    // Create test families
     const families = [
       {
         email: 'familia1@test.com',
@@ -51,7 +48,6 @@ async function runSeeds() {
       },
     ];
 
-    // Create test caregivers
     const caregivers = [
       {
         email: 'cuidador1@test.com',

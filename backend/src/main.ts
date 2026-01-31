@@ -8,7 +8,6 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Global pipes
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -17,19 +16,15 @@ async function bootstrap() {
     }),
   );
 
-  // Global interceptors
   app.useGlobalInterceptors(new ResponseInterceptor());
 
-  // Global filters
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  // CORS
   app.enableCors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     credentials: true,
   });
 
-  // Swagger documentation
   const config = new DocumentBuilder()
     .setTitle('CareConnect API')
     .setDescription('Caregiver marketplace API documentation')
