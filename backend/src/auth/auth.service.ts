@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
@@ -17,25 +17,39 @@ export interface AuthResponse {
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<AuthResponse> {
-    const user = await this.usersService.create(registerDto);
-    const token = this.generateToken(user);
+    this.logger.log({ email: registerDto.email }, 'User registration attempt');
+    
+    try {
+      const user = await this.usersService.create(registerDto);
+      const token = this.generateToken(user);
 
-    return {
-      access_token: token,
-      user: this.sanitizeUser(user),
-    };
+      this.logger.log({ userId: user.id, email: user.email }, 'User registered successfully');
+
+      return {
+        access_token: token,
+        user: this.sanitizeUser(user),
+      };
+    } catch (error) {
+      this.logger.error({ email: registerDto.email, error: error.message }, 'User registration failed');
+      throw error;
+    }
   }
 
   async login(loginDto: LoginDto): Promise<AuthResponse> {
+    this.logger.log({ email: loginDto.email }, 'User login attempt');
+    
     const user = await this.usersService.findByEmail(loginDto.email);
     
     if (!user) {
+      this.logger.warn({ email: loginDto.email }, 'Login failed: user not found');
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -45,10 +59,13 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
+      this.logger.warn({ userId: user.id, email: user.email }, 'Login failed: invalid password');
       throw new UnauthorizedException('Invalid credentials');
     }
 
     const token = this.generateToken(user);
+
+    this.logger.log({ userId: user.id, email: user.email }, 'User logged in successfully');
 
     return {
       access_token: token,
@@ -57,6 +74,8 @@ export class AuthService {
   }
 
   async getMe(userId: string): Promise<Partial<User>> {
+    this.logger.debug({ userId }, 'Fetching current user profile');
+    
     const user = await this.usersService.findOne(userId);
     return this.sanitizeUser(user);
   }

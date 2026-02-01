@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
-  const { register, error, clearError, isLoading } = useAuth();
+  const { register, error, clearError, isLoading, isAuthenticated } = useAuth();
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
   
   const [formData, setFormData] = useState({
     email: '',

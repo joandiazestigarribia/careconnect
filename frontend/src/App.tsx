@@ -1,19 +1,29 @@
 import { Routes, Route } from 'react-router-dom';
-
+import { AuthProvider } from './contexts/AuthContext';
 import MainLayout from './components/layout/MainLayout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import LoginForm from './components/auth/LoginForm';
 import RegisterForm from './components/auth/RegisterForm';
+
 import Home from './pages/Home';
+import CompleteProfile from './pages/CompleteProfile';
 
 function App() {
   return (
-    <Routes>
-        {/* Public routes */}
+    <AuthProvider>
+      <Routes>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         
-        {/* Protected routes */}
+        <Route
+          path="/complete-profile"
+          element={
+            <ProtectedRoute>
+              <CompleteProfile />
+            </ProtectedRoute>
+          }
+        />
+        
         <Route
           path="/"
           element={
@@ -25,7 +35,6 @@ function App() {
           }
         />
         
-        {/* 404 */}
         <Route
           path="*"
           element={
@@ -38,6 +47,7 @@ function App() {
           }
         />
       </Routes>
+    </AuthProvider>
   );
 }
 
