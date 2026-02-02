@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { familyProfileApi } from '../../services/profileApi';
 import Toast from '../common/Toast';
+import { Users, MapPin, Heart, Globe, Plus, Minus, X, AlertCircle, Loader2, Check, Baby } from 'lucide-react';
 
 const FamilyProfileForm: React.FC = () => {
   const navigate = useNavigate();
@@ -92,113 +93,184 @@ const FamilyProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Completar Perfil de Familia</h1>
-
+    <div className="max-w-2xl mx-auto px-4 sm:px-6">
       {showSuccess && (
         <Toast message="Perfil guardado correctamente" type="success" />
       )}
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
+        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-xl mb-6">
+          <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+          <p className="text-sm text-red-700">{error}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="bg-surface rounded-2xl shadow-sm border border-border p-6 sm:p-8 space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Nombre de la Familia</label>
+          <label className="text-sm font-medium text-text-primary mb-2 flex items-center gap-2">
+            <Users className="w-4 h-4 text-primary" />
+            Nombre de la Familia
+          </label>
           <input
             type="text"
             name="family_name"
             required
             value={formData.family_name}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+            placeholder="Ej: Familia García"
+            className="w-full px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Dirección</label>
+          <label className="text-sm font-medium text-text-primary mb-2 flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-primary" />
+            Dirección
+          </label>
           <input
             type="text"
             name="address"
             required
             value={formData.address}
             onChange={handleChange}
-            placeholder="Calle, número, ciudad"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+            placeholder="Calle, número, ciudad, provincia"
+            className="w-full px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
           />
+          <p className="mt-1.5 text-xs text-text-muted">
+            Esta dirección se usará para buscar cuidadores cercanos
+          </p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Cantidad de Niños</label>
-          <div className="flex items-center gap-4 mt-1">
-            <button type="button" onClick={removeChild} className="px-3 py-1 bg-gray-200 rounded">-</button>
-            <span>{formData.children_count}</span>
-            <button type="button" onClick={addChild} className="px-3 py-1 bg-gray-200 rounded">+</button>
+          <label className="text-sm font-medium text-text-primary mb-3 flex items-center gap-2">
+            <Baby className="w-4 h-4 text-primary" />
+            Cantidad de Niños
+          </label>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={removeChild}
+              disabled={formData.children_count <= 1}
+              className="w-12 h-12 flex items-center justify-center bg-bg-main border border-border text-primary rounded-xl hover:bg-border disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              <Minus className="w-5 h-5" />
+            </button>
+            <span className="text-2xl font-bold text-text-primary w-12 text-center">
+              {formData.children_count}
+            </span>
+            <button
+              type="button"
+              onClick={addChild}
+              className="w-12 h-12 flex items-center justify-center bg-bg-main border border-border text-primary rounded-xl hover:bg-border transition-all"
+            >
+              <Plus className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
         {formData.children_count > 0 && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">Edades de los Niños</label>
-            <div className="grid grid-cols-3 gap-2 mt-1">
+            <label className="block text-sm font-medium text-text-primary mb-3">
+              Edades de los Niños
+            </label>
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {Array.from({ length: formData.children_count }).map((_, index) => (
-                <input
-                  key={index}
-                  type="number"
-                  min="0"
-                  max="18"
-                  placeholder={`Niño ${index + 1}`}
-                  value={formData.children_ages[index] || ''}
-                  onChange={(e) => handleChildrenAgesChange(index, e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
-                />
+                <div key={index} className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-text-muted font-medium">
+                    #{index + 1}
+                  </span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="18"
+                    placeholder="Edad"
+                    value={formData.children_ages[index] || ''}
+                    onChange={(e) => handleChildrenAgesChange(index, e.target.value)}
+                    className="w-full pl-8 pr-3 py-3 bg-bg-main border border-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  />
+                </div>
               ))}
             </div>
           </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Necesidades Especiales</label>
-          <div className="flex gap-2 mt-1">
+          <label className="text-sm font-medium text-text-primary mb-2 flex items-center gap-2">
+            <Heart className="w-4 h-4 text-primary" />
+            Necesidades Especiales
+          </label>
+          <div className="flex gap-2">
             <input
               type="text"
               value={newNeed}
               onChange={(e) => setNewNeed(e.target.value)}
               placeholder="Ej: Alergias, medicación, etc."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+              className="flex-1 px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addNeed())}
             />
-            <button type="button" onClick={addNeed} className="px-4 py-2 bg-blue-600 text-white rounded-md">Agregar</button>
+            <button
+              type="button"
+              onClick={addNeed}
+              className="px-4 py-3 bg-bg-main border border-border text-primary rounded-xl hover:bg-primary hover:text-surface hover:border-primary transition-all"
+            >
+              <Plus className="w-5 h-5" />
+            </button>
           </div>
-          <div className="flex flex-wrap gap-2 mt-2">
+          <div className="flex flex-wrap gap-2 mt-3">
             {formData.special_needs.map((need, index) => (
-              <span key={index} className="bg-gray-100 px-3 py-1 rounded-full text-sm flex items-center gap-2">
+              <span
+                key={index}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 text-accent-dark rounded-full text-sm font-medium"
+              >
                 {need}
-                <button type="button" onClick={() => removeNeed(index)} className="text-red-500">×</button>
+                <button
+                  type="button"
+                  onClick={() => removeNeed(index)}
+                  className="hover:bg-accent/20 rounded-full p-0.5 transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
               </span>
             ))}
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Idiomas Preferidos</label>
-          <div className="flex gap-2 mt-1">
+          <label className="text-sm font-medium text-text-primary mb-2 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-primary" />
+            Idiomas Preferidos
+          </label>
+          <div className="flex gap-2">
             <input
               type="text"
               value={newLanguage}
               onChange={(e) => setNewLanguage(e.target.value)}
               placeholder="Ej: Español, Inglés"
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+              className="flex-1 px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLanguage())}
             />
-            <button type="button" onClick={addLanguage} className="px-4 py-2 bg-blue-600 text-white rounded-md">Agregar</button>
+            <button
+              type="button"
+              onClick={addLanguage}
+              className="px-4 py-3 bg-bg-main border border-border text-primary rounded-xl hover:bg-primary hover:text-surface hover:border-primary transition-all"
+            >
+              <Plus className="w-5 h-5" />
+            </button>
           </div>
-          <div className="flex flex-wrap gap-2 mt-2">
+          <div className="flex flex-wrap gap-2 mt-3">
             {formData.languages_preferred.map((lang, index) => (
-              <span key={index} className="bg-gray-100 px-3 py-1 rounded-full text-sm flex items-center gap-2">
+              <span
+                key={index}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium"
+              >
                 {lang}
-                <button type="button" onClick={() => removeLanguage(index)} className="text-red-500">×</button>
+                <button
+                  type="button"
+                  onClick={() => removeLanguage(index)}
+                  className="hover:bg-primary/20 rounded-full p-0.5 transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
               </span>
             ))}
           </div>
@@ -207,9 +279,19 @@ const FamilyProfileForm: React.FC = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-primary text-surface font-medium rounded-xl hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
         >
-          {isLoading ? 'Guardando...' : 'Guardar Perfil'}
+          {isLoading ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Guardando...
+            </>
+          ) : (
+            <>
+              <Check className="w-5 h-5" />
+              Guardar Perfil
+            </>
+          )}
         </button>
       </form>
     </div>

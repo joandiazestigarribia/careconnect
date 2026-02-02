@@ -6,6 +6,7 @@ import api from '../services/api';
 import SearchFilters from '../components/search/SearchFilters';
 import CaregiverCard from '../components/search/CaregiverCard';
 import SearchMap from '../components/search/SearchMap';
+import { Heart, Search, MapPin, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -102,13 +103,24 @@ const Home = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
-          {user.role === 'FAMILY' ? 'Encuentra tu Cuidador Ideal' : 'Tus Servicios'}
-        </h1>
-        <p className="mt-2 text-gray-600">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-12 h-12 bg-linear-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+            {user.role === 'FAMILY' ? (
+              <Heart className="w-6 h-6 text-surface" />
+            ) : (
+              <Sparkles className="w-6 h-6 text-surface" />
+            )}
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
+              {user.role === 'FAMILY' ? 'Encuentra tu Cuidador Ideal' : 'Tus Servicios'}
+            </h1>
+          </div>
+        </div>
+        <p className="text-text-secondary text-lg max-w-2xl">
           {user.role === 'FAMILY'
-            ? 'Busca cuidadores cercanos a tu ubicación'
-            : 'Gestiona tu disponibilidad y servicios'}
+            ? 'Busca cuidadores cercanos a tu ubicación y encuentra el match perfecto para tu familia.'
+            : 'Gestiona tu disponibilidad, servicios y conecta con familias que necesitan tu ayuda.'}
         </p>
       </div>
 
@@ -120,20 +132,39 @@ const Home = () => {
 
           <div className="lg:col-span-2 space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                {error}
+              <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-xl">
+                <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <p className="text-sm text-red-700">{error}</p>
               </div>
             )}
 
             {hasSearched && !isLoading && (
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">
-                  {results.length} cuidadores encontrados
-                </h2>
+              <div className="flex items-center justify-between bg-surface p-4 rounded-xl border border-border">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <Search className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-text-primary">
+                      {results.length} cuidadores encontrados
+                    </h2>
+                    <p className="text-sm text-text-secondary">
+                      Dentro de un radio de {searchRadius} km
+                    </p>
+                  </div>
+                </div>
+                {results.length > 0 && (
+                  <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-success/15 rounded-full">
+                    <MapPin className="w-4 h-4 text-success-dark" />
+                    <span className="text-sm font-medium text-success-dark">
+                      {searchCenter.lat.toFixed(4)}, {searchCenter.lng.toFixed(4)}
+                    </span>
+                  </div>
+                )}
               </div>
             )}
 
-            <div className="h-[475px] mb-6">
+            <div className="h-[400px] rounded-2xl overflow-hidden shadow-sm border border-border">
               <SearchMap
                 results={results}
                 centerLat={searchCenter.lat}
@@ -142,16 +173,59 @@ const Home = () => {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {results.map((result) => (
-                <CaregiverCard key={result.caregiver.user_id} result={result} />
-              ))}
-            </div>
+            {results.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {results.map((result, index) => (
+                  <div 
+                    key={result.caregiver.user_id}
+                    className="animate-slide-up"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <CaregiverCard result={result} />
+                  </div>
+                ))}
+              </div>
+            )}
 
             {hasSearched && results.length === 0 && !isLoading && (
-              <div className="text-center py-12 text-gray-500">
-                <p className="text-lg">No se encontraron cuidadores en tu área</p>
-                <p className="text-sm mt-2">Intenta ampliar el radio de búsqueda</p>
+              <div className="text-center py-16 bg-surface rounded-2xl border border-border">
+                <div className="w-20 h-20 bg-bg-main rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-10 h-10 text-text-muted" />
+                </div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                  No se encontraron cuidadores
+                </h3>
+                <p className="text-text-secondary max-w-sm mx-auto">
+                  Intenta ampliar el radio de búsqueda o ajustar los filtros para encontrar más opciones.
+                </p>
+              </div>
+            )}
+
+            {!hasSearched && !isLoading && (
+              <div className="text-center py-16 bg-surface rounded-2xl border border-border">
+                <div className="w-20 h-20 bg-linear-to-br from-primary/10 to-primary/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="w-10 h-10 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                  ¿Listo para encontrar tu cuidador?
+                </h3>
+                <p className="text-text-secondary max-w-sm mx-auto">
+                  Configura tu ubicación y preferencias en el panel de búsqueda para comenzar.
+                </p>
+              </div>
+            )}
+
+            {isLoading && (
+              <div className="text-center py-16 bg-surface rounded-2xl border border-border">
+                <div className="w-20 h-20 bg-bg-main rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                </div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                  Buscando cuidadores...
+                </h3>
+                <p className="text-text-secondary">
+                  Estamos analizando las mejores opciones para ti.
+                </p>
               </div>
             )}
           </div>
@@ -159,11 +233,52 @@ const Home = () => {
       )}
 
       {user.role === 'CAREGIVER' && (
-        <div className="bg-white p-8 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Panel de Cuidador</h2>
-          <p className="text-gray-600">
-            Próximamente: gestión de disponibilidad, calendario y solicitudes.
-          </p>
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-surface rounded-2xl shadow-sm border border-border p-8">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-14 h-14 bg-linear-to-br from-success to-success-light rounded-xl flex items-center justify-center">
+                <Sparkles className="w-7 h-7 text-surface" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-text-primary">Panel de Cuidador</h2>
+                <p className="text-text-secondary">Gestiona tu perfil y disponibilidad</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-primary transition-colors">
+                  <Heart className="w-5 h-5 text-primary group-hover:text-surface transition-colors" />
+                </div>
+                <h3 className="font-medium text-text-primary mb-1">Mi Perfil</h3>
+                <p className="text-sm text-text-secondary">Actualiza tu información y habilidades</p>
+              </div>
+              
+              <div className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group">
+                <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-accent transition-colors">
+                  <MapPin className="w-5 h-5 text-accent group-hover:text-surface transition-colors" />
+                </div>
+                <h3 className="font-medium text-text-primary mb-1">Disponibilidad</h3>
+                <p className="text-sm text-text-secondary">Configura tu horario y zona de trabajo</p>
+              </div>
+              
+              <div className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group">
+                <div className="w-10 h-10 bg-success/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-success transition-colors">
+                  <Search className="w-5 h-5 text-success-dark group-hover:text-surface transition-colors" />
+                </div>
+                <h3 className="font-medium text-text-primary mb-1">Solicitudes</h3>
+                <p className="text-sm text-text-secondary">Revisa las solicitudes de familias</p>
+              </div>
+            </div>
+            
+            <div className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
+              <p className="text-sm text-primary flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                <span className="font-medium">Próximamente:</span>
+                Calendario integrado, sistema de mensajería y gestión de pagos.
+              </p>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { CheckCircle, XCircle, Info, X } from 'lucide-react';
 
 interface ToastProps {
   message: string;
@@ -19,35 +20,32 @@ const Toast: React.FC<ToastProps> = ({ message, type, duration = 3000 }) => {
 
   if (!isVisible) return null;
 
-  const bgColors = {
-    success: 'bg-green-500',
-    error: 'bg-red-500',
-    info: 'bg-blue-500',
-  };
-
-  const icons = {
-    success: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-      </svg>
-    ),
-    error: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    ),
-    info: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
+  const styles = {
+    success: {
+      bg: 'bg-[#7ED9C1]',
+      icon: <CheckCircle className="w-5 h-5 text-surface" />,
+    },
+    error: {
+      bg: 'bg-red-500',
+      icon: <XCircle className="w-5 h-5 text-surface" />,
+    },
+    info: {
+      bg: 'bg-primary',
+      icon: <Info className="w-5 h-5 text-surface" />,
+    },
   };
 
   return (
     <div className="fixed top-4 right-4 z-50 animate-fade-in">
-      <div className={`${bgColors[type]} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3`}>
-        {icons[type]}
-        <span className="font-medium">{message}</span>
+      <div className={`${styles[type].bg} text-surface px-5 py-3 rounded-xl shadow-lg shadow-black/10 flex items-center gap-3 min-w-[300px]`}>
+        {styles[type].icon}
+        <span className="font-medium flex-1">{message}</span>
+        <button
+          onClick={() => setIsVisible(false)}
+          className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
