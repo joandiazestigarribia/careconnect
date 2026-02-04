@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { searchApi, type SearchResult } from '../services/searchApi';
@@ -17,9 +17,14 @@ const Home = () => {
   const [searchCenter, setSearchCenter] = useState({ lat: -27.4511, lng: -58.9865 });
   const [searchRadius, setSearchRadius] = useState(5);
   const [hasSearched, setHasSearched] = useState(false);
+  
+  useEffect(() => {
+    if (!user?.profile_completed) {
+      navigate('/complete-profile');
+    }
+  }, [user?.profile_completed, navigate]);
 
-  if (!user?.profile_completed) {
-    navigate('/complete-profile');
+  if (!user) {
     return null;
   }
 

@@ -13,6 +13,7 @@ dist-ssr
 *.local
 .env
 fullstack-guide.md
+testing.md
 
 # Editor directories and files
 .vscode/*
