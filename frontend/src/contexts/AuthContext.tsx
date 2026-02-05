@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { authApi, type User, type LoginCredentials, type RegisterData } from '../services/api';
+import { authApi, setLoggingIn, type User, type LoginCredentials, type RegisterData } from '../services/api';
 
 interface AuthContextType {
   user: User | null;
@@ -44,6 +44,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setError(null);
       setIsLoading(true);
+      setLoggingIn(true);
       
       const response = await authApi.login(credentials);
       
@@ -52,10 +53,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       setUser(response.user);
     } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Login failed');
+      setError(err.response?.data?.error?.message || 'Credenciales incorrectas');
       throw err;
     } finally {
       setIsLoading(false);
+      setLoggingIn(false);
     }
   };
 

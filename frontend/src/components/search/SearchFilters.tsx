@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { MapPin, DollarSign, Globe, Search, Plus, X, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import { MapPin, DollarSign, Globe, Search, X, ChevronDown } from 'lucide-react';
 
 interface Props {
   onSearch: (filters: {
@@ -19,12 +19,16 @@ const COMMON_ADDRESSES = [
   { label: 'Yrigoyen 1300, Resistencia, Chaco', value: 'Yrigoyen 1300, Resistencia, Chaco, Argentina' },
 ];
 
-const SearchFilters: React.FC<Props> = ({ onSearch, isLoading }) => {
+const AVAILABLE_LANGUAGES = [
+  { value: 'Español', label: 'Español' },
+  { value: 'Inglés', label: 'Inglés' },
+];
+
+const SearchFilters = ({ onSearch, isLoading }: Props) => {
   const [address, setAddress] = useState(COMMON_ADDRESSES[0].value);
   const [radius, setRadius] = useState(5);
   const [maxRate, setMaxRate] = useState<number | ''>('');
   const [languages, setLanguages] = useState<string[]>(['Español']);
-  const [newLanguage, setNewLanguage] = useState('');
   const [useCustomAddress, setUseCustomAddress] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -38,15 +42,14 @@ const SearchFilters: React.FC<Props> = ({ onSearch, isLoading }) => {
     });
   };
 
-  const addLanguage = () => {
-    if (newLanguage.trim() && !languages.includes(newLanguage.trim())) {
-      setLanguages([...languages, newLanguage.trim()]);
-      setNewLanguage('');
-    }
-  };
-
-  const removeLanguage = (lang: string) => {
-    setLanguages(languages.filter((l) => l !== lang));
+  const toggleLanguage = (langValue: string) => {
+    setLanguages(prev => {
+      if (prev.includes(langValue)) {
+        if (prev.length === 1) return prev;
+        return prev.filter(l => l !== langValue);
+      }
+      return [...prev, langValue];
+    });
   };
 
   return (
@@ -153,44 +156,32 @@ const SearchFilters: React.FC<Props> = ({ onSearch, isLoading }) => {
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-text-primary mb-2">
+            <label className="flex items-center gap-2 text-sm font-medium text-text-primary mb-3">
               <Globe className="w-4 h-4 text-primary" />
               Idiomas preferidos
             </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newLanguage}
-                onChange={(e) => setNewLanguage(e.target.value)}
-                placeholder="Agregar idioma"
-                className="flex-1 px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLanguage())}
-              />
-              <button
-                type="button"
-                onClick={addLanguage}
-                className="px-4 py-3 bg-bg-main border border-border text-primary rounded-xl hover:bg-primary hover:text-surface hover:border-primary transition-all"
-              >
-                <Plus className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-3">
-              {languages.map((lang) => (
-                <span
-                  key={lang}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium"
+            <div className="flex flex-wrap gap-2">
+              {AVAILABLE_LANGUAGES.map((lang) => (
+                <button
+                  key={lang.value}
+                  type="button"
+                  onClick={() => toggleLanguage(lang.value)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                    languages.includes(lang.value)
+                      ? 'bg-primary text-surface'
+                      : 'bg-bg-main text-text-secondary border border-border hover:border-primary'
+                  }`}
                 >
-                  {lang}
-                  <button
-                    type="button"
-                    onClick={() => removeLanguage(lang)}
-                    className="hover:bg-primary/20 rounded-full p-0.5 transition-colors"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </span>
+                  {languages.includes(lang.value) && (
+                    <span className="mr-1.5">✓</span>
+                  )}
+                  {lang.label}
+                </button>
               ))}
             </div>
+            <p className="mt-2 text-xs text-text-muted">
+              Selecciona los idiomas que prefieres para el cuidador
+            </p>
           </div>
 
           <button

@@ -20,13 +20,19 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+let isLoggingIn = false;
+
+export const setLoggingIn = (value: boolean) => {
+  isLoggingIn = value;
+};
+
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && !isLoggingIn) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      window.location.replace('/login');
     }
     return Promise.reject(error);
   }

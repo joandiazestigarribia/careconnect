@@ -5,7 +5,12 @@ import { familyProfileApi } from '../../services/profileApi';
 import Toast from '../common/Toast';
 import { Users, MapPin, Heart, Globe, Plus, Minus, X, AlertCircle, Loader2, Check, Baby } from 'lucide-react';
 
-const FamilyProfileForm: React.FC = () => {
+const AVAILABLE_LANGUAGES = [
+  { value: 'Español', label: 'Español' },
+  { value: 'Inglés', label: 'Inglés' },
+];
+
+const FamilyProfileForm = () => {
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +24,6 @@ const FamilyProfileForm: React.FC = () => {
     languages_preferred: [] as string[],
   });
   const [newNeed, setNewNeed] = useState('');
-  const [newLanguage, setNewLanguage] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -62,19 +66,30 @@ const FamilyProfileForm: React.FC = () => {
     setFormData(prev => ({ ...prev, special_needs: prev.special_needs.filter((_, i) => i !== index) }));
   };
 
-  const addLanguage = () => {
-    if (newLanguage.trim()) {
-      setFormData(prev => ({ ...prev, languages_preferred: [...prev.languages_preferred, newLanguage.trim()] }));
-      setNewLanguage('');
-    }
-  };
-
-  const removeLanguage = (index: number) => {
-    setFormData(prev => ({ ...prev, languages_preferred: prev.languages_preferred.filter((_, i) => i !== index) }));
+  const toggleLanguage = (langValue: string) => {
+    setFormData(prev => {
+      if (prev.languages_preferred.includes(langValue)) {
+        if (prev.languages_preferred.length === 1) return prev;
+        return { 
+          ...prev, 
+          languages_preferred: prev.languages_preferred.filter(l => l !== langValue) 
+        };
+      }
+      return { 
+        ...prev, 
+        languages_preferred: [...prev.languages_preferred, langValue] 
+      };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (formData.languages_preferred.length === 0) {
+      setError('Debes seleccionar al menos un idioma preferido');
+      return;
+    }
+    
     setIsLoading(true);
     setError(null);
 
@@ -155,7 +170,7 @@ const FamilyProfileForm: React.FC = () => {
             >
               <Minus className="w-5 h-5" />
             </button>
-            <span className="text-medium text-text-primary w-12 text-center">
+            <span className="text-2xl font-bold text-text-primary w-12 text-center">
               {formData.children_count}
             </span>
             <button
@@ -236,49 +251,39 @@ const FamilyProfileForm: React.FC = () => {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-text-primary mb-2 flex items-center gap-2">
+          <label className="text-sm font-medium text-text-primary mb-3 flex items-center gap-2">
             <Globe className="w-4 h-4 text-primary" />
-            Idiomas Preferidos
+            Idiomas Preferidos <span className="text-text-muted font-normal">(Selecciona al menos uno)</span>
           </label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={newLanguage}
-              onChange={(e) => setNewLanguage(e.target.value)}
-              placeholder="Ej: Español, Inglés"
-              className="flex-1 px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLanguage())}
-            />
-            <button
-              type="button"
-              onClick={addLanguage}
-              className="px-4 py-3 bg-bg-main border border-border text-primary rounded-xl hover:bg-primary hover:text-surface hover:border-primary transition-all"
-            >
-              <Plus className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-3">
-            {formData.languages_preferred.map((lang, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium"
+          <div className="flex flex-wrap gap-2">
+            {AVAILABLE_LANGUAGES.map((lang) => (
+              <button
+                key={lang.value}
+                type="button"
+                onClick={() => toggleLanguage(lang.value)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  formData.languages_preferred.includes(lang.value)
+                    ? 'bg-primary text-surface'
+                    : 'bg-bg-main text-text-secondary border border-border hover:border-primary'
+                }`}
               >
-                {lang}
-                <button
-                  type="button"
-                  onClick={() => removeLanguage(index)}
-                  className="hover:bg-primary/20 rounded-full p-0.5 transition-colors"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </span>
+                {formData.languages_preferred.includes(lang.value) && (
+                  <span className="mr-1.5">✓</span>
+                )}
+                {lang.label}
+              </button>
             ))}
           </div>
+          {formData.languages_preferred.length === 0 && (
+            <p className="mt-2 text-sm text-red-600">
+              Debes seleccionar al menos un idioma
+            </p>
+          )}
         </div>
 
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || formData.languages_preferred.length === 0}
           className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-primary text-surface font-medium rounded-xl hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
         >
           {isLoading ? (
