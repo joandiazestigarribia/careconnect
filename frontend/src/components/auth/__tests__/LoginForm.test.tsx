@@ -48,7 +48,7 @@ describe('LoginForm', () => {
   it('renders login form correctly', () => {
     renderLoginForm();
 
-    expect(screen.getByText('Bienvenido de vuelta')).toBeTruthy();
+    expect(screen.getByText('¡Bienvenido!')).toBeTruthy();
     expect(screen.getByLabelText('Correo electrónico')).toBeTruthy();
     expect(screen.getByLabelText('Contraseña')).toBeTruthy();
     expect(screen.getByRole('button', { name: /iniciar sesión/i })).toBeTruthy();
@@ -61,10 +61,10 @@ describe('LoginForm', () => {
     const passwordInput = screen.getByLabelText('Contraseña') as HTMLInputElement;
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123!' } });
 
     expect(emailInput.value).toBe('test@example.com');
-    expect(passwordInput.value).toBe('password123');
+    expect(passwordInput.value).toBe('Password123!');
   });
 
   it('calls login function on form submit', async () => {
@@ -76,13 +76,13 @@ describe('LoginForm', () => {
     const submitButton = screen.getByRole('button', { name: /iniciar sesión/i });
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123!' } });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalledWith({
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Password123!',
       });
     });
   });

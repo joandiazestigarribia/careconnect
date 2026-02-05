@@ -46,7 +46,7 @@ async function runSeeds() {
   await userRepo.query('DELETE FROM users');
 
   const bcrypt = require('bcrypt');
-  const password = await bcrypt.hash('password123', 10);
+  const password = await bcrypt.hash('Password123!', 10);
 
   for (let i = 0; i < RESISTENCIA_COORDS.families.length; i++) {
     const familyData = RESISTENCIA_COORDS.families[i];
@@ -118,8 +118,8 @@ async function runSeeds() {
   console.log('✨ Seeds completed!');
   console.log('');
   console.log('📍 Test accounts:');
-  console.log('   Families: familia1@test.com / password123');
-  console.log('   Caregivers: cuidador1@test.com / password123');
+  console.log('   Families: familia1@test.com / Password123!');
+  console.log('   Caregivers: cuidador1@test.com / Password123!');
 
   await app.close();
 }

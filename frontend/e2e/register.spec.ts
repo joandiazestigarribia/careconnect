@@ -17,7 +17,7 @@ test.describe('Registration Flow', () => {
 
   test('should show error when passwords do not match', async ({ page }) => {
     await page.getByLabel('Correo electrónico').fill('test@example.com');
-    await page.getByLabel('Contraseña').fill('password123');
+    await page.getByLabel('Contraseña').fill('Password123!');
     await page.getByLabel('Confirmar').fill('different123');
     
     await page.getByRole('button', { name: /crear cuenta/i }).click();
@@ -48,18 +48,19 @@ test.describe('Registration Flow', () => {
     await page.getByRole('link', { name: /iniciar sesión/i }).click();
     
     await expect(page).toHaveURL(/.*login/);
-    await expect(page.getByText('Bienvenido de vuelta')).toBeVisible();
+    await expect(page.getByText('¡Bienvenido!')).toBeVisible();
   });
 
-  test('should complete registration with valid data', async ({ page }) => {
+  test('should complete registration and redirect to complete profile', async ({ page }) => {
     const uniqueEmail = `test${Date.now()}@example.com`;
     
     await page.getByLabel('Correo electrónico').fill(uniqueEmail);
-    await page.getByLabel('Contraseña').fill('password123');
-    await page.getByLabel('Confirmar').fill('password123');
+    await page.getByLabel('Contraseña').fill('Password123!');
+    await page.getByLabel('Confirmar').fill('Password123!');
     
     await page.getByRole('button', { name: /crear cuenta/i }).click();
     
-    await expect(page).toHaveURL('/', { timeout: 5000 });
+    await expect(page).toHaveURL('/complete-profile', { timeout: 5000 });
+    await expect(page.getByText('Completa tu Perfil')).toBeVisible();
   });
 });

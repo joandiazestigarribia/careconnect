@@ -1,14 +1,19 @@
 import { IsString, IsNumber, IsArray, IsOptional, Min, Max } from 'class-validator';
+import { Transform } from 'class-transformer';
+import * as xss from 'xss';
 
 export class CreateCaregiverProfileDto {
   @IsString()
+  @Transform(({ value }) => xss.filterXSS(value))
   first_name: string;
 
   @IsString()
+  @Transform(({ value }) => xss.filterXSS(value))
   last_name: string;
 
   @IsString()
   @IsOptional()
+  @Transform(({ value }) => xss.filterXSS(value))
   bio?: string;
 
   @IsNumber()

@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
+import { sanitizeSensitiveData } from '../common/interceptors/sensitive-data-sanitizer';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
@@ -38,18 +39,18 @@ export class AuthService {
         user: this.sanitizeUser(user),
       };
     } catch (error) {
-      this.logger.error({ email: registerDto.email, error: error.message }, 'User registration failed');
+      this.logger.error(sanitizeSensitiveData({ email: registerDto.email, error: error.message }), 'User registration failed');
       throw error;
     }
   }
 
   async login(loginDto: LoginDto): Promise<AuthResponse> {
-    this.logger.log({ email: loginDto.email }, 'User login attempt');
+    this.logger.log(sanitizeSensitiveData({ email: loginDto.email }), 'User login attempt');
     
     const user = await this.usersService.findByEmail(loginDto.email);
     
     if (!user) {
-      this.logger.warn({ email: loginDto.email }, 'Login failed: user not found');
+      this.logger.warn(sanitizeSensitiveData({ email: loginDto.email }), 'Login failed: user not found');
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -59,7 +60,7 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      this.logger.warn({ userId: user.id, email: user.email }, 'Login failed: invalid password');
+      this.logger.warn(sanitizeSensitiveData({ userId: user.id, email: user.email }), 'Login failed: invalid password');
       throw new UnauthorizedException('Invalid credentials');
     }
 

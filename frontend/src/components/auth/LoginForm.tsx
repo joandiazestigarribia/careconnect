@@ -42,7 +42,7 @@ const LoginForm: React.FC = () => {
             <Heart className="w-8 h-8 text-surface" />
           </div>
           <h1 className="text-2xl font-bold text-text-primary mb-2">
-            Bienvenido de vuelta
+            ¡Bienvenido!
           </h1>
           <p className="text-text-secondary">
             Inicia sesión para continuar con CareConnect
@@ -132,8 +132,8 @@ const LoginForm: React.FC = () => {
         <div className="mt-6 text-center">
           <p className="text-xs text-text-secondary mb-2">Cuentas de prueba:</p>
           <div className="inline-flex flex-col gap-1 text-xs text-text-muted bg-surface px-4 py-3 rounded-xl border border-border">
-            <span>familia1@test.com / password123</span>
-            <span>cuidador1@test.com / password123</span>
+            <span>familia1@test.com / Password123!</span>
+            <span>cuidador1@test.com / Password123!</span>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_DB: careconnect_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -44,13 +44,14 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/careconnect_db
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/careconnect_db
       - REDIS_URL=redis://redis:6379
-      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=7d
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
     volumes:
       - ./backend:/app
-      - /app/node_modules
+      - backend_node_modules:/app/node_modules
     depends_on:
       postgres:
         condition: service_healthy
@@ -78,3 +79,4 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  backend_node_modules:

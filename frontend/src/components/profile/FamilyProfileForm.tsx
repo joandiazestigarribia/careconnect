@@ -155,7 +155,7 @@ const FamilyProfileForm: React.FC = () => {
             >
               <Minus className="w-5 h-5" />
             </button>
-            <span className="text-2xl font-bold text-text-primary w-12 text-center">
+            <span className="text-medium text-text-primary w-12 text-center">
               {formData.children_count}
             </span>
             <button

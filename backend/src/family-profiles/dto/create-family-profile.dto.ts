@@ -1,10 +1,14 @@
 import { IsString, IsNumber, IsArray, IsOptional, Min, Max } from 'class-validator';
+import { Transform } from 'class-transformer';
+import * as xss from 'xss';
 
 export class CreateFamilyProfileDto {
   @IsString()
+  @Transform(({ value }) => xss.filterXSS(value))
   family_name: string;
 
   @IsString()
+  @Transform(({ value }) => xss.filterXSS(value))
   address: string;
 
   @IsNumber()
@@ -32,10 +36,12 @@ export class CreateFamilyProfileDto {
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
+  @Transform(({ value }) => value?.map((item: string) => xss.filterXSS(item)))
   special_needs?: string[];
 
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
+  @Transform(({ value }) => value?.map((item: string) => xss.filterXSS(item)))
   languages_preferred?: string[];
 }

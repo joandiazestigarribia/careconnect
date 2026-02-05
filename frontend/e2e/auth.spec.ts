@@ -6,7 +6,7 @@ test.describe('Authentication Flow', () => {
   });
 
   test('should display login page', async ({ page }) => {
-    await expect(page.getByText('Bienvenido de vuelta')).toBeVisible();
+    await expect(page.getByText('¡Bienvenido!')).toBeVisible();
     await expect(page.getByLabel('Correo electrónico')).toBeVisible();
     await expect(page.getByLabel('Contraseña')).toBeVisible();
     await expect(page.getByRole('button', { name: /iniciar sesión/i })).toBeVisible();
@@ -29,7 +29,7 @@ test.describe('Authentication Flow', () => {
 
   test('should login with test credentials', async ({ page }) => {
     await page.getByLabel('Correo electrónico').fill('familia1@test.com');
-    await page.getByLabel('Contraseña').fill('password123');
+    await page.getByLabel('Contraseña').fill('Password123!');
     
     await page.getByRole('button', { name: /iniciar sesión/i }).click();
     

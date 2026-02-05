@@ -1,0 +1,69 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]
+      - generic [ref=e10]: CareConnect
+  - generic [ref=e12]:
+    - img [ref=e15]
+    - heading "Completa tu Perfil" [level=1] [ref=e18]
+    - paragraph [ref=e19]: Cuéntanos sobre tu familia para encontrar el cuidador perfecto
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e22]: "1"
+        - generic [ref=e23]: Registro
+      - generic [ref=e25]:
+        - generic [ref=e26]: "2"
+        - generic [ref=e27]: Perfil
+      - generic [ref=e29]:
+        - generic [ref=e30]: "3"
+        - generic [ref=e31]: Listo
+  - generic [ref=e34]:
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - img [ref=e37]
+        - text: Nombre de la Familia
+      - 'textbox "Ej: Familia García" [ref=e42]'
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - img [ref=e45]
+        - text: Dirección
+      - textbox "Calle, número, ciudad, provincia" [ref=e48]
+      - paragraph [ref=e49]: Esta dirección se usará para buscar cuidadores cercanos
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - img [ref=e52]
+        - text: Cantidad de Niños
+      - generic [ref=e55]:
+        - button [disabled] [ref=e56]:
+          - img [ref=e57]
+        - generic [ref=e58]: "1"
+        - button [ref=e59]:
+          - img [ref=e60]
+    - generic [ref=e61]:
+      - generic [ref=e62]: Edades de los Niños
+      - generic [ref=e64]:
+        - generic [ref=e65]: "#1"
+        - spinbutton [ref=e66]
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - img [ref=e69]
+        - text: Necesidades Especiales
+      - generic [ref=e71]:
+        - 'textbox "Ej: Alergias, medicación, etc." [ref=e72]'
+        - button [ref=e73]:
+          - img [ref=e74]
+    - generic [ref=e75]:
+      - generic [ref=e76]:
+        - img [ref=e77]
+        - text: Idiomas Preferidos
+      - generic [ref=e80]:
+        - 'textbox "Ej: Español, Inglés" [ref=e81]'
+        - button [ref=e82]:
+          - img [ref=e83]
+    - button "Guardar Perfil" [ref=e84]:
+      - img [ref=e85]
+      - text: Guardar Perfil
+```

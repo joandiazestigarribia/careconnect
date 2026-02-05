@@ -76,6 +76,11 @@ import databaseConfig from './config/database.config';
         ttl: 60000, 
         limit: 5,
       },
+      {
+        name: 'search',
+        ttl: 60000,
+        limit: 30,
+      },
     ]),
     UsersModule,
     AuthModule,

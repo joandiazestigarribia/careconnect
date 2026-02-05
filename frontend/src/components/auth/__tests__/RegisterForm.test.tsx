@@ -62,7 +62,7 @@ describe('RegisterForm', () => {
     const confirmPasswordInput = screen.getByLabelText('Confirmar');
     const submitButton = screen.getByRole('button', { name: /crear cuenta/i });
 
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123!' } });
     fireEvent.change(confirmPasswordInput, { target: { value: 'different123' } });
     fireEvent.click(submitButton);
 
@@ -93,14 +93,14 @@ describe('RegisterForm', () => {
     const submitButton = screen.getByRole('button', { name: /crear cuenta/i });
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password123!' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'Password123!' } });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(mockRegister).toHaveBeenCalledWith({
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Password123!',
         role: 'FAMILY',
         phone: '',
       });

@@ -6,7 +6,7 @@ test.describe('Navigation and Layout', () => {
     
     await expect(page).toHaveURL(/.*login/);
     
-    await expect(page.getByText('Bienvenido de vuelta')).toBeVisible();
+    await expect(page.getByText('¡Bienvenido!')).toBeVisible();
   });
 
   test('should have correct page title', async ({ page }) => {
