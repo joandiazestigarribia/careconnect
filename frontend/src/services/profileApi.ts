@@ -41,6 +41,7 @@ export interface CreateCaregiverProfileDto {
   first_name: string;
   last_name: string;
   bio?: string;
+  address: string;
   latitude?: number;
   longitude?: number;
   hourly_rate: number;

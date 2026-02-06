@@ -32,6 +32,7 @@ describe('CaregiverProfilesService', () => {
     first_name: 'John',
     last_name: 'Doe',
     bio: 'Experienced caregiver',
+    address: 'Av. Corrientes 1234, Buenos Aires',
     location: null,
     hourly_rate: 25.5,
     languages_spoken: ['Spanish', 'English'],
@@ -60,6 +61,7 @@ describe('CaregiverProfilesService', () => {
 
   const mockGeocodingService = {
     createPoint: jest.fn().mockReturnValue({ type: 'Point', coordinates: [-58.38, -34.60] }),
+    geocode: jest.fn().mockResolvedValue({ latitude: -34.60, longitude: -58.38, display_name: 'Test Address' }),
   };
 
   beforeEach(async () => {
@@ -150,6 +152,7 @@ describe('CaregiverProfilesService', () => {
       first_name: 'Jane',
       last_name: 'Smith',
       bio: 'New caregiver bio',
+      address: 'Av. Santa Fe 5678, Buenos Aires',
       hourly_rate: 30.0,
       languages_spoken: ['Spanish'],
       min_children_age: 0,

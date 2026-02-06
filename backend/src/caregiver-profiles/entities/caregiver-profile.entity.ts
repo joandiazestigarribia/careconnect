@@ -33,6 +33,9 @@ export class CaregiverProfile {
   @Column('text', { nullable: true })
   bio: string;
 
+  @Column({ nullable: true })
+  address: string;
+
   @Index({ spatial: true })
   @Column({
     type: 'geography',

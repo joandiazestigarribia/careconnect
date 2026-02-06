@@ -16,6 +16,10 @@ export class CreateCaregiverProfileDto {
   @Transform(({ value }) => xss.filterXSS(value))
   bio?: string;
 
+  @IsString()
+  @Transform(({ value }) => xss.filterXSS(value))
+  address: string;
+
   @IsNumber()
   @Min(-90)
   @Max(90)

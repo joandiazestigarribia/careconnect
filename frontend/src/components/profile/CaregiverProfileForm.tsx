@@ -19,6 +19,7 @@ const CaregiverProfileForm = () => {
     first_name: '',
     last_name: '',
     bio: '',
+    address: '',
     hourly_rate: 0,
     min_children_age: 0,
     max_children_age: 18,
@@ -207,8 +208,30 @@ const CaregiverProfileForm = () => {
         </div>
 
         <div>
+          <h2 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
+            <MapPin className="w-5 h-5 text-primary" />
+            Ubicación y Disponibilidad
+          </h2>
+          
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-text-primary mb-2">
+              Dirección
+            </label>
+            <input
+              type="text"
+              name="address"
+              required
+              value={formData.address}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              placeholder="Ej: Av. Corrientes 1234, CABA, Buenos Aires"
+            />
+            <p className="mt-1.5 text-xs text-text-secondary">
+              Esta dirección se usará para mostrar tu perfil en búsquedas por geolocalización
+            </p>
+          </div>
+
           <label className="block text-sm font-medium text-text-primary mb-2 flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-primary" />
             Radio de Disponibilidad (km)
           </label>
           <div className="bg-bg-main rounded-xl p-4">
