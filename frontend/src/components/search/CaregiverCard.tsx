@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { type SearchResult } from '../../services/searchApi';
 import { MapPin, DollarSign, Award, Users, Languages, Sparkles } from 'lucide-react';
 
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const CaregiverCard: FC<Props> = ({ result }) => {
+  const navigate = useNavigate();
   const { caregiver, score, distance_km } = result;
 
   const getScoreColor = (score: number) => {
@@ -57,7 +59,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
             <DollarSign className="w-4 h-4 text-primary" />
             <div>
               <p className="text-xs text-text-muted">Tarifa</p>
-              <p className="text-sm font-semibold text-text-primary">${caregiver.hourly_rate}/h</p>
+              <p className="text-sm font-semibold text-text-primary">${Math.round(caregiver.hourly_rate)}/h</p>
             </div>
           </div>
           <div className="flex items-center gap-2 p-2.5 bg-bg-main rounded-xl">
@@ -119,7 +121,10 @@ const CaregiverCard: FC<Props> = ({ result }) => {
       </div>
 
       <div className="px-5 pb-5">
-        <button className="w-full py-3 bg-primary text-surface font-medium rounded-xl hover:bg-primary-dark transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 group/btn">
+        <button 
+          onClick={() => navigate(`/caregiver/${caregiver.user_id}`)}
+          className="w-full py-3 bg-primary text-surface font-medium rounded-xl hover:bg-primary-dark transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 group/btn"
+        >
           <span>Ver Perfil Completo</span>
           <svg 
             className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5" 

@@ -6,7 +6,8 @@ import api from '../services/api';
 import SearchFilters from '../components/search/SearchFilters';
 import CaregiverCard from '../components/search/CaregiverCard';
 import SearchMap from '../components/search/SearchMap';
-import { Heart, Search, MapPin, AlertCircle, Loader2, Sparkles } from 'lucide-react';
+import { Heart, Search, MapPin, AlertCircle, Loader2, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import AvailabilityCalendar from '../components/caregiver/AvailabilityCalendar';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Home = () => {
   const [searchCenter, setSearchCenter] = useState({ lat: -27.4511, lng: -58.9865 });
   const [searchRadius, setSearchRadius] = useState(5);
   const [hasSearched, setHasSearched] = useState(false);
+  const [showAvailability, setShowAvailability] = useState(false);
   
   useEffect(() => {
     if (!user?.profile_completed) {
@@ -251,7 +253,10 @@ const Home = () => {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group">
+              <div 
+                onClick={() => navigate('/profile')}
+                className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group"
+              >
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-primary transition-colors">
                   <Heart className="w-5 h-5 text-primary group-hover:text-surface transition-colors" />
                 </div>
@@ -259,12 +264,22 @@ const Home = () => {
                 <p className="text-sm text-text-secondary">Actualiza tu información y habilidades</p>
               </div>
               
-              <div className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group">
-                <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-accent transition-colors">
-                  <MapPin className="w-5 h-5 text-accent group-hover:text-surface transition-colors" />
+              <div 
+                onClick={() => setShowAvailability(!showAvailability)}
+                className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-accent transition-colors">
+                    <MapPin className="w-5 h-5 text-accent group-hover:text-surface transition-colors" />
+                  </div>
+                  {showAvailability ? (
+                    <ChevronUp className="w-5 h-5 text-text-muted" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-text-muted" />
+                  )}
                 </div>
                 <h3 className="font-medium text-text-primary mb-1">Disponibilidad</h3>
-                <p className="text-sm text-text-secondary">Configura tu horario y zona de trabajo</p>
+                <p className="text-sm text-text-secondary">Configura tu horario semanal</p>
               </div>
               
               <div className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group">
@@ -275,12 +290,22 @@ const Home = () => {
                 <p className="text-sm text-text-secondary">Revisa las solicitudes de familias</p>
               </div>
             </div>
+
+            {/* Availability Calendar */}
+            {showAvailability && (
+              <div className="mt-6 bg-surface rounded-2xl border border-border p-6">
+                <h3 className="text-lg font-semibold text-text-primary mb-4">
+                  Mi Disponibilidad Semanal
+                </h3>
+                <AvailabilityCalendar />
+              </div>
+            )}
             
             <div className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
               <p className="text-sm text-primary flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 <span className="font-medium">Próximamente:</span>
-                Calendario integrado, sistema de mensajería y gestión de pagos.
+                Sistema de mensajería y gestión de pagos.
               </p>
             </div>
           </div>

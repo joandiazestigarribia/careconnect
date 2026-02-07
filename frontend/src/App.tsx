@@ -7,6 +7,8 @@ import RegisterForm from './components/auth/RegisterForm';
 
 import Home from './pages/Home';
 import CompleteProfile from './pages/CompleteProfile';
+import Profile from './pages/Profile';
+import CaregiverDetail from './pages/CaregiverDetail';
 
 function App() {
   return (
@@ -30,6 +32,28 @@ function App() {
             <ProtectedRoute>
               <MainLayout>
                 <Home />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Profile />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/caregiver/:id"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <CaregiverDetail />
               </MainLayout>
             </ProtectedRoute>
           }

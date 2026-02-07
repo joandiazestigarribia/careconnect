@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { FamilyProfilesModule } from './family-profiles/family-profiles.module';
 import { CaregiverProfilesModule } from './caregiver-profiles/caregiver-profiles.module';
+import { AvailabilityModule } from './availability/availability.module';
 import { GeocodingModule } from './geocoding/geocoding.module';
 import { SearchModule } from './search/search.module';
 import { HealthModule } from './health/health.module';
@@ -86,6 +87,7 @@ import databaseConfig from './config/database.config';
     AuthModule,
     FamilyProfilesModule,
     CaregiverProfilesModule,
+    AvailabilityModule,
     GeocodingModule,
     SearchModule,
     HealthModule,

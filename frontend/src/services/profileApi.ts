@@ -16,6 +16,7 @@ export interface CaregiverProfile {
   first_name: string;
   last_name: string;
   bio: string;
+  address: string;
   location: string | null;
   hourly_rate: number;
   languages_spoken: string[];
