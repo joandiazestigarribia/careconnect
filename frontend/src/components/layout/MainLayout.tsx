@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Heart, User, LogOut, Menu, X } from 'lucide-react';
+import { useMessages } from '../../contexts/MessagesContext';
+import { Heart, User, LogOut, Menu, X, MessageSquare } from 'lucide-react';
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { unreadCount } = useMessages();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -36,6 +38,20 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               {isAuthenticated ? (
                 <>
                   <div className="flex items-center gap-4 mr-4">
+                    {/* Messages Button */}
+                    <Link
+                      to="/messages"
+                      className="relative p-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
+                      title="Mensajes"
+                    >
+                      <MessageSquare className="w-5 h-5" />
+                      {unreadCount > 0 && (
+                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+                          {unreadCount > 9 ? '9+' : unreadCount}
+                        </span>
+                      )}
+                    </Link>
+                    
                     <div className="badge badge-primary px-3 py-1.5">
                       <User className="w-4 h-4 mr-2" />
                       <span className="text-sm font-medium text-text-primary">
@@ -94,12 +110,20 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                       <User className="w-5 h-5 text-primary" />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-sm font-medium text-text-primary">{user?.email}</p>
                       <p className="text-xs text-text-secondary">
                         {user?.role === 'FAMILY' ? 'Cuenta de Familia' : 'Cuenta de Cuidador'}
                       </p>
                     </div>
+                    {unreadCount > 0 && (
+                      <Link to="/messages" className="relative p-2 text-primary hover:bg-primary/10 rounded-lg">
+                        <MessageSquare className="w-5 h-5" />
+                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                          {unreadCount > 9 ? '9+' : unreadCount}
+                        </span>
+                      </Link>
+                    )}
                   </div>
                   <button
                     onClick={handleLogout}

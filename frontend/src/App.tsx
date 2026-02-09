@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { SocketProvider } from './contexts/SocketContext';
+import { MessagesProvider } from './contexts/MessagesContext';
 import MainLayout from './components/layout/MainLayout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import LoginForm from './components/auth/LoginForm';
@@ -9,11 +11,14 @@ import Home from './pages/Home';
 import CompleteProfile from './pages/CompleteProfile';
 import Profile from './pages/Profile';
 import CaregiverDetail from './pages/CaregiverDetail';
+import Messages from './pages/Messages';
 
 function App() {
   return (
     <AuthProvider>
-      <Routes>
+      <SocketProvider>
+        <MessagesProvider>
+          <Routes>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         
@@ -60,6 +65,17 @@ function App() {
         />
         
         <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Messages />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
           path="*"
           element={
             <div className="min-h-screen flex items-center justify-center">
@@ -71,6 +87,8 @@ function App() {
           }
         />
       </Routes>
+        </MessagesProvider>
+      </SocketProvider>
     </AuthProvider>
   );
 }

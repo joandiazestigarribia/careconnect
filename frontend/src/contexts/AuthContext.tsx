@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
 import { authApi, setLoggingIn, type User, type LoginCredentials, type RegisterData } from '../services/api';
 
 interface AuthContextType {
@@ -20,7 +20,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const authInitializedRef = useRef(false);
+  
   useEffect(() => {
+    if (authInitializedRef.current) return;
+    authInitializedRef.current = true;
+    
     const initAuth = async () => {
       const token = localStorage.getItem('access_token');
       

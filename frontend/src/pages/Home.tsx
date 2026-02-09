@@ -6,8 +6,11 @@ import api from '../services/api';
 import SearchFilters from '../components/search/SearchFilters';
 import CaregiverCard from '../components/search/CaregiverCard';
 import SearchMap from '../components/search/SearchMap';
-import { Heart, Search, MapPin, AlertCircle, Loader2, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Heart, Search, MapPin, AlertCircle, Loader2, Sparkles, ChevronDown, ChevronUp, MessageSquare } from 'lucide-react';
 import AvailabilityCalendar from '../components/caregiver/AvailabilityCalendar';
+import ConversationList from '../components/messages/ConversationList';
+import Chat from '../components/messages/Chat';
+import type { Conversation } from '../services/messagesApi';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -19,6 +22,8 @@ const Home = () => {
   const [searchRadius, setSearchRadius] = useState(5);
   const [hasSearched, setHasSearched] = useState(false);
   const [showAvailability, setShowAvailability] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
+  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   
   useEffect(() => {
     if (!user?.profile_completed) {
@@ -282,12 +287,25 @@ const Home = () => {
                 <p className="text-sm text-text-secondary">Configura tu horario semanal</p>
               </div>
               
-              <div className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group">
-                <div className="w-10 h-10 bg-success/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-success transition-colors">
-                  <Search className="w-5 h-5 text-success-dark group-hover:text-surface transition-colors" />
+              <div 
+                onClick={() => {
+                  setShowMessages(!showMessages);
+                  setSelectedConversation(null);
+                }}
+                className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="w-10 h-10 bg-success/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-success transition-colors">
+                    <MessageSquare className="w-5 h-5 text-success-dark group-hover:text-surface transition-colors" />
+                  </div>
+                  {showMessages ? (
+                    <ChevronUp className="w-5 h-5 text-text-muted" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-text-muted" />
+                  )}
                 </div>
-                <h3 className="font-medium text-text-primary mb-1">Solicitudes</h3>
-                <p className="text-sm text-text-secondary">Revisa las solicitudes de familias</p>
+                <h3 className="font-medium text-text-primary mb-1">Mensajes</h3>
+                <p className="text-sm text-text-secondary">Chatea con familias</p>
               </div>
             </div>
 
@@ -300,12 +318,32 @@ const Home = () => {
                 <AvailabilityCalendar />
               </div>
             )}
+
+            {/* Messages */}
+            {showMessages && (
+              <div className="mt-6 bg-surface rounded-2xl border border-border p-6">
+                <h3 className="text-lg font-semibold text-text-primary mb-4">
+                  Mis Mensajes
+                </h3>
+                {selectedConversation ? (
+                  <Chat
+                    conversationId={selectedConversation.id}
+                    onBack={() => setSelectedConversation(null)}
+                  />
+                ) : (
+                  <ConversationList
+                    onSelectConversation={(conv: Conversation) => setSelectedConversation(conv)}
+                    selectedId={undefined}
+                  />
+                )}
+              </div>
+            )}
             
             <div className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
               <p className="text-sm text-primary flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 <span className="font-medium">Próximamente:</span>
-                Sistema de mensajería y gestión de pagos.
+                Gestión de pagos.
               </p>
             </div>
           </div>

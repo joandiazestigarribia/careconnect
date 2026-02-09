@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { caregiverProfileApi, type CaregiverProfile } from '../services/profileApi';
 import { availabilityApi, DAYS_OF_WEEK, type Availability, type DayOfWeek } from '../services/availabilityApi';
-import { MapPin, DollarSign, Award, Users, Languages, Sparkles, ArrowLeft, Clock, Calendar } from 'lucide-react';
+import { MapPin, DollarSign, Award, Users, Languages, Sparkles, ArrowLeft, Clock, Calendar, MessageSquare } from 'lucide-react';
+import Chat from '../components/messages/Chat';
 
 const CaregiverDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +12,8 @@ const CaregiverDetail = () => {
   const [availability, setAvailability] = useState<Availability[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showChat, setShowChat] = useState(false);
+  const [conversationId, setConversationId] = useState<string | undefined>();
 
   useEffect(() => {
     if (id) {
@@ -265,11 +268,35 @@ const CaregiverDetail = () => {
         </div>
       </div>
 
-      {/* Contact Button */}
+      {/* Chat Section */}
       <div className="mt-8">
-        <button className="w-full py-4 bg-primary text-surface font-semibold rounded-xl hover:bg-primary-dark transition-all shadow-lg hover:shadow-xl">
-          Contactar a {profile.first_name}
-        </button>
+        {showChat ? (
+          <div className="bg-surface rounded-2xl border border-border p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-text-primary">Chat con {profile.first_name}</h3>
+              <button
+                onClick={() => setShowChat(false)}
+                className="text-sm text-text-secondary hover:text-text-primary"
+              >
+                Ocultar chat
+              </button>
+            </div>
+            <Chat
+              caregiverId={id}
+              caregiverName={profile.first_name}
+              conversationId={conversationId}
+              onConversationCreated={(id) => setConversationId(id)}
+            />
+          </div>
+        ) : (
+          <button 
+            onClick={() => setShowChat(true)}
+            className="w-full py-4 bg-primary text-surface font-semibold rounded-xl hover:bg-primary-dark transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+          >
+            <MessageSquare className="w-5 h-5" />
+            Contactar a {profile.first_name}
+          </button>
+        )}
       </div>
     </div>
   );
