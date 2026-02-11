@@ -4,12 +4,10 @@ export class CreateMessagesTables1706720400006 implements MigrationInterface {
   name = 'CreateMessagesTables1706720400006';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    // Create message status enum
     await queryRunner.query(`
       CREATE TYPE message_status_enum AS ENUM ('sent', 'delivered', 'read');
     `);
 
-    // Create conversations table
     await queryRunner.query(`
       CREATE TABLE conversations (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -24,7 +22,6 @@ export class CreateMessagesTables1706720400006 implements MigrationInterface {
       );
     `);
 
-    // Create messages table
     await queryRunner.query(`
       CREATE TABLE messages (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -37,7 +34,6 @@ export class CreateMessagesTables1706720400006 implements MigrationInterface {
       );
     `);
 
-    // Create indexes
     await queryRunner.query(`
       CREATE INDEX idx_conversations_family ON conversations(family_id);
     `);
@@ -54,7 +50,6 @@ export class CreateMessagesTables1706720400006 implements MigrationInterface {
       CREATE INDEX idx_messages_sender ON messages(sender_id);
     `);
 
-    // Add foreign key for last_message_id (after messages table exists)
     await queryRunner.query(`
       ALTER TABLE conversations 
       ADD CONSTRAINT fk_conversations_last_message 

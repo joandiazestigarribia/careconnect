@@ -2,18 +2,22 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useMessages } from '../../contexts/MessagesContext';
+import { useSocketContext } from '../../contexts/SocketContext';
 import { Heart, User, LogOut, Menu, X, MessageSquare } from 'lucide-react';
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, logout, isAuthenticated } = useAuth();
   const { unreadCount } = useMessages();
+  const { disconnectSocket } = useSocketContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const handleLogout = () => {
+    disconnectSocket();
     logout();
     navigate('/login');
+    window.location.reload();
   };
 
   const isActive = (path: string) => location.pathname === path;

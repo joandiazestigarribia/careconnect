@@ -11,6 +11,7 @@ interface SocketContextType {
   leaveConversation: (conversationId: string) => void;
   sendMessage: (conversationId: string, content: string) => void;
   setTyping: (conversationId: string, isTyping: boolean) => void;
+  disconnectSocket: () => void;
 }
 
 const SocketContext = createContext<SocketContextType | null>(null);
@@ -74,6 +75,14 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     socketRef.current?.emit('typing', { conversationId, isTyping });
   }, []);
 
+  const disconnectSocket = useCallback(() => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+      socketRef.current = null;
+      setIsConnected(false);
+    }
+  }, []);
+
   return (
     <SocketContext.Provider
       value={{
@@ -83,6 +92,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         leaveConversation,
         sendMessage,
         setTyping,
+        disconnectSocket,
       }}
     >
       {children}

@@ -27,11 +27,13 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const initializedRef = useRef(false);
   const loadingConversationsRef = useRef(false);
   const loadingUnreadRef = useRef(false);
+  const processedMessageIds = useRef<Set<string>>(new Set());
   useEffect(() => {
     if (!isAuthenticated || !user?.id) {
       initializedRef.current = false;
       setUnreadCount(0);
       setConversations([]);
+      processedMessageIds.current.clear();
       return;
     }
     
@@ -55,6 +57,11 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [isConnected, user?.id]);
 
   useSocketEvent('new_message', (message: Message) => {
+    if (processedMessageIds.current.has(message.id)) {
+      return;
+    }
+    processedMessageIds.current.add(message.id);
+    
     if (message.sender_id !== user?.id) {
       setUnreadCount((prev) => prev + 1);
       
@@ -81,15 +88,6 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       });
     }
   }, [user?.id, user?.role]);
-
-  useSocketEvent('notification', (data) => {
-    if (data.type === 'new_message') {
-      if (data.forUserId && data.forUserId !== user?.id) {
-        return;
-      }
-      setUnreadCount((prev) => prev + 1);
-    }
-  }, [user?.id]);
 
   const loadConversations = useCallback(async () => {
     if (loadingConversationsRef.current) return;

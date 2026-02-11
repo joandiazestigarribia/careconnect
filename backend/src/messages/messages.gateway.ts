@@ -98,11 +98,6 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
         .emit('new_message', message);
 
       this.server.to(`user:${otherUserId}`).emit('new_message', message);
-      this.server.to(`user:${otherUserId}`).emit('notification', {
-        type: 'new_message',
-        conversationId: payload.conversationId,
-        message,
-      });
 
       client.emit('message_sent', message);
     } catch (error) {

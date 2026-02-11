@@ -1,3 +1,4 @@
+import { useAuth } from '../../hooks/useAuth';
 import { useMessages } from '../../contexts/MessagesContext';
 import { MessageSquare, Loader2 } from 'lucide-react';
 
@@ -7,11 +8,33 @@ interface Props {
 }
 
 const ConversationList = ({ onSelectConversation, selectedId }: Props) => {
+  const { user } = useAuth();
   const { conversations, isLoadingConversations, markConversationAsRead } = useMessages();
 
   const getUnreadCount = (conv: any) => {
-    const isFamily = conv.family_id === conv.last_message?.sender_id;
-    return isFamily ? conv.unread_family_count : conv.unread_caregiver_count;
+    if (!user) return 0;
+    return user.role === 'FAMILY'
+      ? conv.unread_family_count
+      : conv.unread_caregiver_count;
+  };
+
+  const getOtherPersonName = (conv: any) => {
+    if (!user) return 'Conversación';
+
+    if (user.role === 'FAMILY') {
+      return conv.caregiver?.caregiver_profile?.first_name + ' ' + conv.caregiver?.caregiver_profile?.last_name ||
+        conv.caregiver?.email ||
+        'Cuidador';
+    } else {
+      return conv.family?.family_profile?.family_name ||
+        conv.family?.email ||
+        'Familia';
+    }
+  };
+
+  const getAvatarInitial = (conv: any) => {
+    const name = getOtherPersonName(conv);
+    return name[0]?.toUpperCase() || '?';
   };
 
   const formatTime = (dateString: string) => {
@@ -68,23 +91,21 @@ const ConversationList = ({ onSelectConversation, selectedId }: Props) => {
               }
               onSelectConversation(conv);
             }}
-            className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left ${
-              isSelected
-                ? 'bg-primary/10 border border-primary/20'
-                : 'bg-surface border border-border hover:border-primary/30'
-            }`}
+            className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left ${isSelected
+              ? 'bg-primary/10 border border-primary/20'
+              : 'bg-surface border border-border hover:border-primary/30'
+              }`}
           >
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
               <span className="text-primary font-semibold">
-                {conv.family?.email?.[0]?.toUpperCase() || 
-                 conv.caregiver?.email?.[0]?.toUpperCase() || '?'}
+                {getAvatarInitial(conv)}
               </span>
             </div>
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
                 <h4 className="font-medium text-text-primary truncate">
-                  Conversación
+                  {getOtherPersonName(conv)}
                 </h4>
                 {conv.last_message && (
                   <span className="text-xs text-text-muted">
@@ -100,8 +121,8 @@ const ConversationList = ({ onSelectConversation, selectedId }: Props) => {
                     : 'Sin mensajes'}
                 </p>
                 {unread > 0 && (
-                  <span className="px-2 py-0.5 bg-primary text-surface text-xs font-medium rounded-full">
-                    {unread}
+                  <span className="shrink-0 w-5 h-5 bg-primary text-surface text-xs font-bold rounded-full flex items-center justify-center">
+                    {unread > 9 ? '9+' : unread}
                   </span>
                 )}
               </div>

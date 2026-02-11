@@ -33,22 +33,31 @@ export class MessagesService {
   }
 
   async getMyConversations(userId: string, userRole: 'FAMILY' | 'CAREGIVER'): Promise<Conversation[]> {
-    const where = userRole === 'FAMILY' 
-      ? { family_id: userId }
-      : { caregiver_id: userId };
+    const idField = userRole === 'FAMILY' ? 'family_id' : 'caregiver_id';
 
-    return this.conversationRepository.find({
-      where,
-      relations: ['family', 'caregiver', 'last_message'],
-      order: { updated_at: 'DESC' },
-    });
+    const conversations = await this.conversationRepository
+      .createQueryBuilder('conversation')
+      .leftJoinAndSelect('conversation.family', 'family')
+      .leftJoinAndSelect('conversation.caregiver', 'caregiver')
+      .leftJoinAndSelect('conversation.last_message', 'last_message')
+      .leftJoinAndSelect('family.family_profile', 'family_profile')
+      .leftJoinAndSelect('caregiver.caregiver_profile', 'caregiver_profile')
+      .where(`conversation.${idField} = :userId`, { userId })
+      .orderBy('conversation.updated_at', 'DESC')
+      .getMany();
+
+    return conversations;
   }
 
   async getConversation(userId: string, conversationId: string): Promise<Conversation> {
-    const conversation = await this.conversationRepository.findOne({
-      where: { id: conversationId },
-      relations: ['family', 'caregiver'],
-    });
+    const conversation = await this.conversationRepository
+      .createQueryBuilder('conversation')
+      .leftJoinAndSelect('conversation.family', 'family')
+      .leftJoinAndSelect('conversation.caregiver', 'caregiver')
+      .leftJoinAndSelect('family.family_profile', 'family_profile')
+      .leftJoinAndSelect('caregiver.caregiver_profile', 'caregiver_profile')
+      .where('conversation.id = :conversationId', { conversationId })
+      .getOne();
 
     if (!conversation) {
       throw new NotFoundException('Conversation not found');

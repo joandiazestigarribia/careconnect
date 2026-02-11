@@ -17,7 +17,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
   const { user } = useAuth();
   const { isConnected, joinConversation, leaveConversation, sendMessage, setTyping } = useSocketContext();
   const { markConversationAsRead } = useMessages();
-  
+
   const [conversation, setConversation] = useState<any>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -33,7 +33,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
 
   useEffect(() => {
     markedAsReadRef.current.clear();
-    
+
     const init = async () => {
       if (conversationId) {
         currentConvIdRef.current = conversationId;
@@ -42,7 +42,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
         await createConversation(caregiverId);
       }
     };
-    
+
     init();
   }, [conversationId, caregiverId]);
 
@@ -53,7 +53,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
     currentConvIdRef.current = conversation.id;
 
     loadMessages(conversation.id);
-    
+
     if (!markedAsReadRef.current.has(conversation.id)) {
       markedAsReadRef.current.add(conversation.id);
       markConversationAsRead(conversation.id);
@@ -75,7 +75,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
           }
           return true;
         });
-        
+
         if (filtered.some((m) => m.id === message.id)) return filtered;
         return [...filtered, message];
       });
@@ -108,7 +108,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
   const loadConversation = async (id: string) => {
     if (loadingConvRef.current) return;
     loadingConvRef.current = true;
-    
+
     try {
       const conv = await messagesApi.getConversation(id);
       setConversation(conv);
@@ -123,7 +123,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
   const loadMessages = async (convId: string) => {
     if (loadingMessagesRef.current) return;
     loadingMessagesRef.current = true;
-    
+
     try {
       const msgs = await messagesApi.getMessages(convId, 100);
       setMessages([...msgs].reverse());
@@ -152,7 +152,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
       read_at: null,
       created_at: new Date().toISOString(),
     };
-    
+
     setMessages((prev) => [...prev, optimisticMessage]);
 
     sendMessage(conversation.id, content);
@@ -194,7 +194,30 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
 
   const getOtherParticipantName = () => {
     if (caregiverName) return caregiverName;
-    return 'Usuario';
+
+    if (!user || !conversation) {
+      return 'Conversación';
+    }
+
+    if (user.role === 'FAMILY') {
+      const first =
+        conversation.caregiver?.caregiver_profile?.first_name ?? '';
+      const last =
+        conversation.caregiver?.caregiver_profile?.last_name ?? '';
+      const fullName = `${first} ${last}`.trim();
+
+      return (
+        fullName ||
+        conversation.caregiver?.email ||
+        'Cuidador'
+      );
+    } else {
+      return (
+        conversation.family?.family_profile?.family_name ||
+        conversation.family?.email ||
+        'Familia'
+      );
+    }
   };
 
   const isMyMessage = (message: Message) => message.sender_id === user?.id;
@@ -227,17 +250,6 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
         <div className="flex-1">
           <h3 className="font-semibold text-text-primary">{getOtherParticipantName()}</h3>
           <div className="flex items-center gap-2">
-            {isConnected ? (
-              <span className="flex items-center gap-1 text-xs text-success">
-                <Wifi className="w-3 h-3" />
-                En línea
-              </span>
-            ) : (
-              <span className="flex items-center gap-1 text-xs text-text-muted">
-                <WifiOff className="w-3 h-3" />
-                Desconectado
-              </span>
-            )}
             {otherUserTyping && (
               <span className="text-xs text-text-muted">• escribiendo...</span>
             )}
@@ -254,9 +266,9 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
           </div>
         ) : (
           messages.map((message, index) => {
-            const showDate = index === 0 || 
+            const showDate = index === 0 ||
               formatDate(message.created_at) !== formatDate(messages[index - 1].created_at);
-            
+
             return (
               <div key={message.id}>
                 {showDate && (
@@ -267,15 +279,13 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
                   </div>
                 )}
                 <div className={`flex ${isMyMessage(message) ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[70%] px-4 py-2 rounded-2xl ${
-                    isMyMessage(message)
+                  <div className={`max-w-[70%] px-4 py-2 rounded-2xl ${isMyMessage(message)
                       ? 'bg-primary text-surface rounded-br-md'
                       : 'bg-bg-main text-text-primary rounded-bl-md'
-                  }`}>
-                    <p className="text-sm">{message.content}</p>
-                    <div className={`flex items-center gap-1 mt-1 text-xs ${
-                      isMyMessage(message) ? 'text-primary-100' : 'text-text-muted'
                     }`}>
+                    <p className="text-sm">{message.content}</p>
+                    <div className={`flex items-center gap-1 mt-1 text-xs ${isMyMessage(message) ? 'text-primary-100' : 'text-text-muted'
+                      }`}>
                       <span>{formatTime(message.created_at)}</span>
                       {isMyMessage(message) && !message.id.startsWith('temp-') && (
                         <span>{message.status === 'read' ? '✓✓' : '✓'}</span>
