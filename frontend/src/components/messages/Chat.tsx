@@ -83,7 +83,6 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
   }, []);
 
   useSocketEvent('typing', (data) => {
-    console.log('[Chat] Received typing:', data);
     if (data.userId !== user?.id) {
       setOtherUserTyping(data.isTyping);
     }

@@ -9,25 +9,20 @@ class RequestCache {
 
     const pending = this.pendingRequests.get(key);
     if (pending) {
-      console.log(`[RequestCache] Reusing pending request: ${key}`);
       return pending as Promise<T>;
     }
 
     if (now - lastCompleted < this.minInterval) {
-      console.log(`[RequestCache] Request throttled: ${key}`);
       throw new Error('Request throttled');
     }
 
-    console.log(`[RequestCache] Starting new request: ${key}`);
     const requestPromise = requestFn()
       .then((result) => {
-        console.log(`[RequestCache] Request completed: ${key}`);
         this.completedRequests.set(key, Date.now());
         this.pendingRequests.delete(key);
         return result;
       })
       .catch((error) => {
-        console.log(`[RequestCache] Request failed: ${key}`, error);
         this.pendingRequests.delete(key);
         throw error;
       });

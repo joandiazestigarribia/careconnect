@@ -28,7 +28,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <Link to="/" className="flex items-center gap-2 group">
+              <Link to={isAuthenticated ? "/dashboard" : "/"} className="flex items-center gap-2 group">
                 <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center group-hover:bg-primary-dark transition-colors">
                   <Heart className="w-5 h-5 text-surface" />
                 </div>

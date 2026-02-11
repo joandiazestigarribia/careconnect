@@ -28,7 +28,7 @@ const RegisterForm = () => {
   
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [isAuthenticated, navigate]);
   
@@ -121,7 +121,7 @@ const RegisterForm = () => {
     try {
       const { confirmPassword, ...registerData } = formData;
       await register(registerData);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
     }
   };

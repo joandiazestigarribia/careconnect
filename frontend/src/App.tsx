@@ -7,6 +7,7 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import LoginForm from './components/auth/LoginForm';
 import RegisterForm from './components/auth/RegisterForm';
 
+import LandingPage from './pages/LandingPage';
 import Home from './pages/Home';
 import CompleteProfile from './pages/CompleteProfile';
 import Profile from './pages/Profile';
@@ -19,9 +20,12 @@ function App() {
       <SocketProvider>
         <MessagesProvider>
           <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         
+        {/* Protected routes */}
         <Route
           path="/complete-profile"
           element={
@@ -32,7 +36,7 @@ function App() {
         />
         
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <MainLayout>

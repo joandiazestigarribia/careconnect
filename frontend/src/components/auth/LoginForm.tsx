@@ -14,7 +14,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/', { replace: true });
+      navigate('/dashboard', { replace: true });
     }
   }, [isAuthenticated]);
   
@@ -96,7 +96,7 @@ const LoginForm = () => {
     
     try {
       await login(formData);
-      navigate('/', { replace: true });
+      navigate('/dashboard', { replace: true });
     } catch (err: any) {
     }
   };
