@@ -114,13 +114,14 @@ const Home = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Header mejorado con iconos en gradientes */}
       <div className="mb-8">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 bg-linear-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+        <div className="flex items-center gap-4 mb-3">
+          <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-xl shadow-primary/20">
             {user.role === 'FAMILY' ? (
-              <Heart className="w-6 h-6 text-surface" />
+              <Heart className="w-7 h-7 text-white" />
             ) : (
-              <Sparkles className="w-6 h-6 text-surface" />
+              <Sparkles className="w-7 h-7 text-white" />
             )}
           </div>
           <div>
@@ -144,20 +145,20 @@ const Home = () => {
 
           <div className="lg:col-span-2 space-y-6">
             {error && (
-              <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-xl">
+              <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-2xl shadow-sm">
                 <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                 <p className="text-sm text-red-700">{error}</p>
               </div>
             )}
 
             {hasSearched && !isLoading && (
-              <div className="flex items-center justify-between bg-surface p-4 rounded-xl border border-border">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <Search className="w-5 h-5 text-primary" />
+              <div className="flex items-center justify-between bg-gradient-to-r from-surface to-bg-main p-5 rounded-2xl border border-border shadow-lg shadow-primary/5">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                    <Search className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-text-primary">
+                    <h2 className="text-lg font-bold text-text-primary">
                       {results.length} cuidadores encontrados
                     </h2>
                     <p className="text-sm text-text-secondary">
@@ -166,7 +167,7 @@ const Home = () => {
                   </div>
                 </div>
                 {results.length > 0 && (
-                  <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-success/15 rounded-full">
+                  <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-success/15 rounded-full shadow-sm">
                     <MapPin className="w-4 h-4 text-success-dark" />
                     <span className="text-sm font-medium text-success-dark">
                       {searchCenter.lat.toFixed(4)}, {searchCenter.lng.toFixed(4)}
@@ -176,7 +177,7 @@ const Home = () => {
               </div>
             )}
 
-            <div className="h-[400px] rounded-2xl overflow-hidden shadow-sm border border-border">
+            <div className="h-[400px] rounded-3xl overflow-hidden shadow-xl shadow-primary/10 border border-border">
               <SearchMap
                 results={results}
                 centerLat={searchCenter.lat}
@@ -200,11 +201,11 @@ const Home = () => {
             )}
 
             {hasSearched && results.length === 0 && !isLoading && (
-              <div className="text-center py-16 bg-surface rounded-2xl border border-border">
-                <div className="w-20 h-20 bg-bg-main rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-10 h-10 text-text-muted" />
+              <div className="text-center py-16 bg-gradient-to-br from-surface to-bg-main rounded-3xl border border-border shadow-lg">
+                <div className="w-24 h-24 bg-gradient-to-br from-text-muted/20 to-text-muted/5 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                  <Search className="w-12 h-12 text-text-muted" />
                 </div>
-                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                <h3 className="text-xl font-bold text-text-primary mb-2">
                   No se encontraron cuidadores
                 </h3>
                 <p className="text-text-secondary max-w-sm mx-auto">
@@ -214,11 +215,11 @@ const Home = () => {
             )}
 
             {!hasSearched && !isLoading && (
-              <div className="text-center py-16 bg-surface rounded-2xl border border-border">
-                <div className="w-20 h-20 bg-linear-to-br from-primary/10 to-primary/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MapPin className="w-10 h-10 text-primary" />
+              <div className="text-center py-16 bg-gradient-to-br from-primary/5 to-accent/5 rounded-3xl border border-primary/10 shadow-lg shadow-primary/5">
+                <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/20">
+                  <MapPin className="w-12 h-12 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                <h3 className="text-xl font-bold text-text-primary mb-2">
                   ¿Listo para encontrar tu cuidador?
                 </h3>
                 <p className="text-text-secondary max-w-sm mx-auto">
@@ -228,11 +229,11 @@ const Home = () => {
             )}
 
             {isLoading && (
-              <div className="text-center py-16 bg-surface rounded-2xl border border-border">
-                <div className="w-20 h-20 bg-bg-main rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Loader2 className="w-10 h-10 text-primary animate-spin" />
+              <div className="text-center py-16 bg-gradient-to-br from-surface to-bg-main rounded-3xl border border-border shadow-lg">
+                <div className="w-24 h-24 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <Loader2 className="w-12 h-12 text-primary animate-spin" />
                 </div>
-                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                <h3 className="text-xl font-bold text-text-primary mb-2">
                   Buscando cuidadores...
                 </h3>
                 <p className="text-text-secondary">
@@ -246,36 +247,36 @@ const Home = () => {
 
       {user.role === 'CAREGIVER' && (
         <div className="max-w-4xl mx-auto">
-          <div className="bg-surface rounded-2xl shadow-sm border border-border p-8">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-14 h-14 bg-linear-to-br from-success to-success-light rounded-xl flex items-center justify-center">
-                <Sparkles className="w-7 h-7 text-surface" />
+          <div className="bg-gradient-to-br from-surface to-bg-main rounded-3xl shadow-xl shadow-primary/10 border border-border p-8">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-16 h-16 bg-gradient-to-br from-success to-success-light rounded-2xl flex items-center justify-center shadow-xl shadow-success/20">
+                <Sparkles className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-text-primary">Panel de Cuidador</h2>
+                <h2 className="text-2xl font-bold text-text-primary">Panel de Cuidador</h2>
                 <p className="text-text-secondary">Gestiona tu perfil y disponibilidad</p>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               <div 
                 onClick={() => navigate('/profile')}
-                className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group"
+                className="p-6 bg-surface rounded-2xl border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 cursor-pointer group"
               >
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-primary transition-colors">
-                  <Heart className="w-5 h-5 text-primary group-hover:text-surface transition-colors" />
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                  <Heart className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="font-medium text-text-primary mb-1">Mi Perfil</h3>
+                <h3 className="font-bold text-text-primary mb-1">Mi Perfil</h3>
                 <p className="text-sm text-text-secondary">Actualiza tu información y habilidades</p>
               </div>
               
               <div 
                 onClick={() => setShowAvailability(!showAvailability)}
-                className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group"
+                className="p-6 bg-surface rounded-2xl border border-border hover:border-accent/30 hover:shadow-xl hover:shadow-accent/10 transition-all duration-300 cursor-pointer group"
               >
-                <div className="flex items-start justify-between">
-                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-accent transition-colors">
-                    <MapPin className="w-5 h-5 text-accent group-hover:text-surface transition-colors" />
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent-light rounded-xl flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform">
+                    <MapPin className="w-6 h-6 text-white" />
                   </div>
                   {showAvailability ? (
                     <ChevronUp className="w-5 h-5 text-text-muted" />
@@ -283,7 +284,7 @@ const Home = () => {
                     <ChevronDown className="w-5 h-5 text-text-muted" />
                   )}
                 </div>
-                <h3 className="font-medium text-text-primary mb-1">Disponibilidad</h3>
+                <h3 className="font-bold text-text-primary mb-1">Disponibilidad</h3>
                 <p className="text-sm text-text-secondary">Configura tu horario semanal</p>
               </div>
               
@@ -292,11 +293,11 @@ const Home = () => {
                   setShowMessages(!showMessages);
                   setSelectedConversation(null);
                 }}
-                className="p-5 bg-bg-main rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer group"
+                className="p-6 bg-surface rounded-2xl border border-border hover:border-success/30 hover:shadow-xl hover:shadow-success/10 transition-all duration-300 cursor-pointer group"
               >
-                <div className="flex items-start justify-between">
-                  <div className="w-10 h-10 bg-success/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-success transition-colors">
-                    <MessageSquare className="w-5 h-5 text-success-dark group-hover:text-surface transition-colors" />
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-success to-success-light rounded-xl flex items-center justify-center shadow-lg shadow-success/20 group-hover:scale-110 transition-transform">
+                    <MessageSquare className="w-6 h-6 text-white" />
                   </div>
                   {showMessages ? (
                     <ChevronUp className="w-5 h-5 text-text-muted" />
@@ -304,15 +305,15 @@ const Home = () => {
                     <ChevronDown className="w-5 h-5 text-text-muted" />
                   )}
                 </div>
-                <h3 className="font-medium text-text-primary mb-1">Mensajes</h3>
+                <h3 className="font-bold text-text-primary mb-1">Mensajes</h3>
                 <p className="text-sm text-text-secondary">Chatea con familias</p>
               </div>
             </div>
 
             {/* Availability Calendar */}
             {showAvailability && (
-              <div className="mt-6 bg-surface rounded-2xl border border-border p-6">
-                <h3 className="text-lg font-semibold text-text-primary mb-4">
+              <div className="mt-8 bg-surface rounded-3xl border border-border p-6 shadow-lg">
+                <h3 className="text-xl font-bold text-text-primary mb-4">
                   Mi Disponibilidad Semanal
                 </h3>
                 <AvailabilityCalendar />
@@ -321,8 +322,8 @@ const Home = () => {
 
             {/* Messages */}
             {showMessages && (
-              <div className="mt-6 bg-surface rounded-2xl border border-border p-6">
-                <h3 className="text-lg font-semibold text-text-primary mb-4">
+              <div className="mt-8 bg-surface rounded-3xl border border-border p-6 shadow-lg">
+                <h3 className="text-xl font-bold text-text-primary mb-4">
                   Mis Mensajes
                 </h3>
                 {selectedConversation ? (
@@ -339,10 +340,10 @@ const Home = () => {
               </div>
             )}
             
-            <div className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
+            <div className="mt-8 p-5 bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl border border-primary/20 shadow-sm">
               <p className="text-sm text-primary flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
-                <span className="font-medium">Próximamente:</span>
+                <Sparkles className="w-5 h-5" />
+                <span className="font-bold">Próximamente:</span>
                 Gestión de pagos.
               </p>
             </div>

@@ -51,10 +51,10 @@ const LandingNavbar = () => {
               Cómo funciona
             </button>
             <button
-              onClick={() => scrollToSection('seguridad')}
+              onClick={() => scrollToSection('scoring')}
               className="text-sm font-medium text-text-secondary hover:text-primary transition-colors"
             >
-              Seguridad
+              Sistema Scoring
             </button>
             <button
               onClick={() => scrollToSection('testimonios')}

@@ -3,7 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useSocketContext, useSocketEvent } from '../../contexts/SocketContext';
 import { useMessages } from '../../contexts/MessagesContext';
 import { messagesApi, type Message } from '../../services/messagesApi';
-import { Send, ArrowLeft, Loader2, Wifi, WifiOff } from 'lucide-react';
+import { Send, ArrowLeft, Loader2 } from 'lucide-react';
 
 interface Props {
   conversationId?: string;
@@ -224,33 +224,35 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-primary-light/10 rounded-2xl flex items-center justify-center shadow-lg">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-[500px] bg-surface rounded-2xl border border-border overflow-hidden">
+    <div className="flex flex-col h-[500px] bg-surface rounded-3xl border-2 border-border overflow-hidden shadow-xl shadow-primary/5">
       {/* Header */}
-      <div className="flex items-center gap-3 p-4 border-b border-border bg-bg-main">
+      <div className="flex items-center gap-3 p-4 border-b border-border bg-gradient-to-r from-bg-main to-surface">
         {onBack && (
           <button
             onClick={onBack}
-            className="p-2 text-text-muted hover:text-text-primary hover:bg-border rounded-lg transition-all"
+            className="p-2.5 text-text-muted hover:text-primary hover:bg-primary/10 rounded-xl transition-all duration-300"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
         )}
-        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-          <span className="text-primary font-semibold">
+        <div className="w-11 h-11 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center shadow-md shadow-primary/20">
+          <span className="text-white font-bold text-lg">
             {getOtherParticipantName()[0]}
           </span>
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-text-primary">{getOtherParticipantName()}</h3>
+          <h3 className="font-bold text-text-primary">{getOtherParticipantName()}</h3>
           <div className="flex items-center gap-2">
             {otherUserTyping && (
-              <span className="text-xs text-text-muted">• escribiendo...</span>
+              <span className="text-xs text-primary font-medium">• escribiendo...</span>
             )}
           </div>
         </div>
@@ -260,8 +262,11 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-text-secondary">
-            <p>No hay mensajes aún</p>
-            <p className="text-sm">¡Envía el primer mensaje!</p>
+            <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-primary-light/10 rounded-2xl flex items-center justify-center mb-3 shadow-lg">
+              <span className="text-2xl">💬</span>
+            </div>
+            <p className="font-medium">No hay mensajes aún</p>
+            <p className="text-sm text-text-muted">¡Envía el primer mensaje!</p>
           </div>
         ) : (
           messages.map((message, index) => {
@@ -272,20 +277,20 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
               <div key={message.id}>
                 {showDate && (
                   <div className="flex justify-center my-4">
-                    <span className="text-xs text-text-muted bg-bg-main px-3 py-1 rounded-full">
+                    <span className="text-xs text-text-muted bg-bg-main px-4 py-1.5 rounded-full font-medium border border-border shadow-sm">
                       {formatDate(message.created_at)}
                     </span>
                   </div>
                 )}
                 <div className={`flex ${isMyMessage(message) ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[70%] px-4 py-2 rounded-2xl ${isMyMessage(message)
-                      ? 'bg-primary text-surface rounded-br-md'
-                      : 'bg-bg-main text-text-primary rounded-bl-md'
+                  <div className={`max-w-[70%] px-4 py-2.5 rounded-2xl shadow-sm ${isMyMessage(message)
+                      ? 'bg-gradient-to-br from-primary to-primary-light text-white rounded-br-md shadow-primary/20'
+                      : 'bg-bg-main text-text-primary rounded-bl-md border border-border'
                     }`}>
                     <p className="text-sm">{message.content}</p>
-                    <div className={`flex items-center gap-1 mt-1 text-xs ${isMyMessage(message) ? 'text-primary-100' : 'text-text-muted'
+                    <div className={`flex items-center gap-1 mt-1 text-xs ${isMyMessage(message) ? 'text-white/70' : 'text-text-muted'
                       }`}>
-                      <span>{formatTime(message.created_at)}</span>
+                      <span className="font-medium">{formatTime(message.created_at)}</span>
                       {isMyMessage(message) && !message.id.startsWith('temp-') && (
                         <span>{message.status === 'read' ? '✓✓' : '✓'}</span>
                       )}
@@ -300,7 +305,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSendMessage} className="p-4 border-t border-border bg-bg-main">
+      <form onSubmit={handleSendMessage} className="p-4 border-t border-border bg-gradient-to-r from-bg-main to-surface">
         <div className="flex gap-2">
           <input
             type="text"
@@ -310,13 +315,13 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
               handleTyping();
             }}
             placeholder="Escribe un mensaje..."
-            className="flex-1 px-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className="flex-1 px-4 py-3 bg-surface border-2 border-border rounded-2xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 shadow-sm"
             disabled={isSending || !conversation}
           />
           <button
             type="submit"
             disabled={isSending || !newMessage.trim() || !conversation}
-            className="px-4 py-3 bg-primary text-surface rounded-xl hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="px-5 py-3 bg-gradient-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md shadow-primary/20 hover:scale-105"
           >
             {isSending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
           </button>

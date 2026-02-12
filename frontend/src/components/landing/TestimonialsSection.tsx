@@ -7,7 +7,7 @@ const testimonials = [
     location: 'Resistencia, Chaco',
     content: 'El sistema de scoring es GENIAL. Encontré a Lucía que tiene un 96% de match con mi familia. ¡Mis hijos la adoran! 🥰',
     rating: 5,
-    perfil: 'MG',
+    perfil: 'https://i.pravatar.cc/150?img=5',
     highlight: 'Match del 96%',
   },
   {
@@ -16,7 +16,7 @@ const testimonials = [
     location: 'Resistencia, Chaco',
     content: 'Como cuidador, me encanta cómo funciona el trust score. A más reseñas positivas, más familias me contactan. ¡Ya tengo trabajo estable!',
     rating: 5,
-    perfil: 'LR',
+    perfil: 'https://i.pravatar.cc/150?img=12',
     highlight: 'Trust Score alto',
   },
   {
@@ -25,7 +25,7 @@ const testimonials = [
     location: 'Barranqueras, Chaco',
     content: 'Como mamá primeriza estaba muy nerviosa. Poder ver el puntaje de match y las reseñas me dio mucha confianza. ¡100% recomendado!',
     rating: 5,
-    perfil: 'AP',
+    perfil: 'https://i.pravatar.cc/150?img=35',
     highlight: 'Mamá primeriza',
   },
 ];
@@ -88,9 +88,11 @@ const TestimonialsSection = () => {
 
               {/* Author */}
               <div className="flex items-center gap-3 pt-4 border-t border-border">
-                <div className="w-14 h-14 bg-linear-to-br from-primary to-accent rounded-full flex items-center justify-center text-2xl shadow-md text-white">
-                  {testimonial.perfil}
-                </div>
+                <img 
+                  src={testimonial.perfil} 
+                  alt={testimonial.name}
+                  className="w-14 h-14 rounded-full shadow-md object-cover"
+                />
                 <div>
                   <p className="font-bold text-text-primary">
                     {testimonial.name}

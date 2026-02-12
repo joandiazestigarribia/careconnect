@@ -100,11 +100,13 @@ const HeroSection = () => {
 
                 {/* Mock profile */}
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 bg-linear-to-br from-accent to-primary rounded-full flex items-center justify-center text-2xl shadow-lg text-white">
-                    MG
-                  </div>
+                  <img 
+                    src="https://i.pravatar.cc/150?img=32" 
+                    alt="Lucrecia M." 
+                    className="w-14 h-14 rounded-full shadow-lg object-cover"
+                  />
                   <div>
-                    <h3 className="font-bold text-text-primary text-lg">María G.</h3>
+                    <h3 className="font-bold text-text-primary text-lg">Lucrecia M.</h3>
                     <div className="flex items-center gap-1">
                       <span className="text-sm text-text-secondary">Cuidadora certificada</span>
                     </div>

@@ -53,28 +53,32 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
   };
 
   return (
-    <div className="bg-surface rounded-2xl shadow-sm border border-border overflow-hidden">
+    <div className="bg-surface rounded-3xl shadow-xl shadow-primary/10 border-2 border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-300">
       <div 
-        className="flex items-center justify-between p-5 cursor-pointer hover:bg-bg-main transition-colors"
+        className="flex items-center justify-between p-5 cursor-pointer hover:bg-bg-main transition-all duration-300"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-            <Search className="w-5 h-5 text-primary" />
+          <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+            <Search className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-text-primary">Buscar Cuidadores</h2>
+            <h2 className="text-lg font-bold text-text-primary">Buscar Cuidadores</h2>
             <p className="text-sm text-text-secondary">Encuentra el cuidador ideal</p>
           </div>
         </div>
-        <ChevronDown className={`w-5 h-5 text-text-muted transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+        <div className="w-8 h-8 bg-bg-main rounded-full flex items-center justify-center">
+          <ChevronDown className={`w-5 h-5 text-text-muted transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+        </div>
       </div>
 
       {isExpanded && (
         <form onSubmit={handleSubmit} className="px-5 pb-5 space-y-5">
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-text-primary mb-2">
-              <MapPin className="w-4 h-4 text-primary" />
+            <label className="flex items-center gap-2 text-sm font-bold text-text-primary mb-2">
+              <div className="w-5 h-5 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+                <MapPin className="w-3 h-3 text-white" />
+              </div>
               Tu Ubicación
             </label>
             
@@ -83,7 +87,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
                 <select
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  className="w-full px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none cursor-pointer"
+                  className="w-full px-4 py-3 bg-bg-main border-2 border-border rounded-2xl text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 appearance-none cursor-pointer hover:border-primary/30"
                 >
                   {COMMON_ADDRESSES.map((addr) => (
                     <option key={addr.value} value={addr.value}>
@@ -98,7 +102,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full px-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                className="w-full px-4 py-3 bg-bg-main border-2 border-border rounded-2xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 hover:border-primary/30"
                 placeholder="Calle, número, ciudad, provincia, Argentina"
               />
             )}
@@ -106,18 +110,20 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
             <button
               type="button"
               onClick={() => setUseCustomAddress(!useCustomAddress)}
-              className="mt-2 text-sm text-primary hover:text-primary-dark font-medium flex items-center gap-1"
+              className="mt-2 text-sm text-primary hover:text-primary-dark font-bold flex items-center gap-1 transition-colors duration-300"
             >
               {useCustomAddress ? '← Usar dirección predefinida' : '✎ Escribir dirección personalizada'}
             </button>
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-text-primary mb-3">
-              <MapPin className="w-4 h-4 text-primary" />
+            <label className="flex items-center gap-2 text-sm font-bold text-text-primary mb-3">
+              <div className="w-5 h-5 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+                <MapPin className="w-3 h-3 text-white" />
+              </div>
               Radio de búsqueda
             </label>
-            <div className="bg-bg-main rounded-xl p-4">
+            <div className="bg-bg-main rounded-2xl p-4 border-2 border-border hover:border-primary/20 transition-all duration-300">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm text-text-secondary">Distancia máxima</span>
                 <span className="text-lg font-bold text-primary">{radius} km</span>
@@ -128,7 +134,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
                 max="20"
                 value={radius}
                 onChange={(e) => setRadius(parseInt(e.target.value))}
-                className="w-full h-2 bg-border rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-2 bg-gradient-to-r from-border to-border rounded-lg appearance-none cursor-pointer accent-primary"
               />
               <div className="flex justify-between text-xs text-text-muted mt-2">
                 <span>1 km</span>
@@ -139,25 +145,29 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-text-primary mb-2">
-              <DollarSign className="w-4 h-4 text-primary" />
+            <label className="flex items-center gap-2 text-sm font-bold text-text-primary mb-2">
+              <div className="w-5 h-5 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center">
+                <DollarSign className="w-3 h-3 text-white" />
+              </div>
               Tarifa máxima por hora
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted font-medium">$</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted font-bold">$</span>
               <input
                 type="number"
                 value={maxRate}
                 onChange={(e) => setMaxRate(e.target.value ? parseInt(e.target.value) : '')}
                 placeholder="Sin límite"
-                className="w-full pl-8 pr-4 py-3 bg-bg-main border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                className="w-full pl-8 pr-4 py-3 bg-bg-main border-2 border-border rounded-2xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 hover:border-primary/30"
               />
             </div>
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-text-primary mb-3">
-              <Globe className="w-4 h-4 text-primary" />
+            <label className="flex items-center gap-2 text-sm font-bold text-text-primary mb-3">
+              <div className="w-5 h-5 bg-gradient-to-br from-success to-primary rounded-full flex items-center justify-center">
+                <Globe className="w-3 h-3 text-white" />
+              </div>
               Idiomas preferidos
             </label>
             <div className="flex flex-wrap gap-2">
@@ -166,10 +176,10 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
                   key={lang.value}
                   type="button"
                   onClick={() => toggleLanguage(lang.value)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 ${
                     languages.includes(lang.value)
-                      ? 'bg-primary text-surface'
-                      : 'bg-bg-main text-text-secondary border border-border hover:border-primary'
+                      ? 'bg-gradient-to-r from-primary to-primary-light text-surface shadow-lg shadow-primary/20'
+                      : 'bg-bg-main text-text-secondary border-2 border-border hover:border-primary/30'
                   }`}
                 >
                   {languages.includes(lang.value) && (
@@ -187,7 +197,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-primary text-surface font-medium rounded-xl hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
+            className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-gradient-to-r from-primary to-primary-light text-surface font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg shadow-primary/20"
           >
             {isLoading ? (
               <>

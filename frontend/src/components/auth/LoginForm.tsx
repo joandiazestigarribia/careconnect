@@ -110,13 +110,13 @@ const LoginForm = () => {
   const errorMessage = loginError || authError;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg-main px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-bg-main via-bg-main to-primary/5 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4 shadow-lg shadow-primary/20">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-3xl mb-4 shadow-xl shadow-primary/30 transition-transform duration-300 hover:scale-105">
             <Heart className="w-8 h-8 text-surface" />
           </div>
-          <h1 className="text-2xl font-bold text-text-primary mb-2">
+          <h1 className="text-3xl font-bold text-text-primary mb-2">
             ¡Bienvenido!
           </h1>
           <p className="text-text-secondary">
@@ -124,10 +124,10 @@ const LoginForm = () => {
           </p>
         </div>
 
-        <div className="card p-8">
+        <div className="bg-surface rounded-3xl shadow-2xl shadow-primary/10 border border-border p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {shouldShowError && (
-              <div className="relative flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <div className="relative flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-2xl">
                 <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                 <div className="flex-1 text-sm text-red-700 pr-6">
                   <p className="font-semibold text-red-800">Error al iniciar sesión</p>
@@ -138,7 +138,7 @@ const LoginForm = () => {
                 <button
                   type="button"
                   onClick={dismissError}
-                  className="absolute top-2 right-2 p-1.5 text-red-400 hover:text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                  className="absolute top-2 right-2 p-1.5 text-red-400 hover:text-red-600 hover:bg-red-100 rounded-xl transition-all duration-300"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -146,11 +146,11 @@ const LoginForm = () => {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-2">
+              <label htmlFor="email" className="block text-sm font-semibold text-text-primary mb-2">
                 Correo electrónico
               </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+              <div className="relative group">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors duration-300" />
                 <input
                   id="email"
                   name="email"
@@ -159,7 +159,7 @@ const LoginForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   disabled={isLoading}
-                  className={`input pl-10 rounded-xl disabled:opacity-50 ${
+                  className={`input pl-10 rounded-xl disabled:opacity-50 border-border transition-all duration-300 hover:border-primary/30 focus:border-primary focus:shadow-lg focus:shadow-primary/10 ${
                     getFieldStatus('email') === 'error' 
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
                       : getFieldStatus('email') === 'success'
@@ -178,11 +178,11 @@ const LoginForm = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-text-primary mb-2">
+              <label htmlFor="password" className="block text-sm font-semibold text-text-primary mb-2">
                 Contraseña
               </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+              <div className="relative group">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors duration-300" />
                 <input
                   id="password"
                   name="password"
@@ -191,7 +191,7 @@ const LoginForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   disabled={isLoading}
-                  className={`input pl-10 rounded-xl disabled:opacity-50 ${
+                  className={`input pl-10 rounded-xl disabled:opacity-50 border-border transition-all duration-300 hover:border-primary/30 focus:border-primary focus:shadow-lg focus:shadow-primary/10 ${
                     getFieldStatus('password') === 'error' 
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
                       : getFieldStatus('password') === 'success'
@@ -212,7 +212,7 @@ const LoginForm = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="btn btn-primary w-full py-3 rounded-xl disabled:opacity-70"
+              className="btn btn-primary w-full py-3 rounded-xl disabled:opacity-70 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -230,23 +230,33 @@ const LoginForm = () => {
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-surface text-text-secondary">¿No tienes cuenta?</span>
+              <span className="px-4 bg-surface text-text-secondary font-medium">¿No tienes cuenta?</span>
             </div>
           </div>
 
           <Link
             to="/register"
-            className="btn btn-secondary w-full rounded-xl"
+            className="btn btn-secondary w-full rounded-xl border-2 border-border hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 hover:-translate-y-0.5"
           >
             Crear una cuenta
           </Link>
         </div>
 
-        <div className="mt-6 text-center">
-          <p className="text-xs text-text-secondary mb-2">Cuentas de prueba:</p>
-          <div className="inline-flex flex-col gap-1 text-xs text-text-muted bg-surface px-4 py-3 rounded-xl border border-border">
-            <span>familia1@test.com / Password123!</span>
-            <span>cuidador1@test.com / Password123!</span>
+        <div className="mt-8 text-center">
+          <p className="text-xs text-text-secondary mb-3 font-semibold uppercase tracking-wider">Cuentas de prueba</p>
+          <div className="inline-flex flex-col gap-2 text-xs bg-gradient-to-br from-surface to-bg-main px-5 py-4 rounded-2xl border border-border shadow-lg shadow-primary/5 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary to-primary-light"></div>
+              <span className="text-text-muted font-medium">familia1@test.com</span>
+              <span className="text-text-secondary">/</span>
+              <span className="text-primary font-semibold">Password123!</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-gradient-to-br from-accent to-primary"></div>
+              <span className="text-text-muted font-medium">cuidador1@test.com</span>
+              <span className="text-text-secondary">/</span>
+              <span className="text-primary font-semibold">Password123!</span>
+            </div>
           </div>
         </div>
       </div>

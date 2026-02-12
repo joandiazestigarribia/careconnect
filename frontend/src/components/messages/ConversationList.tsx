@@ -57,7 +57,9 @@ const ConversationList = ({ onSelectConversation, selectedId }: Props) => {
   if (isLoadingConversations) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-primary-light/10 rounded-2xl flex items-center justify-center shadow-lg">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        </div>
       </div>
     );
   }
@@ -65,10 +67,10 @@ const ConversationList = ({ onSelectConversation, selectedId }: Props) => {
   if (conversations.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="w-16 h-16 bg-bg-main rounded-full flex items-center justify-center mx-auto mb-4">
-          <MessageSquare className="w-8 h-8 text-text-muted" />
+        <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-primary-light/10 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/10">
+          <MessageSquare className="w-10 h-10 text-primary" />
         </div>
-        <p className="text-text-secondary">No tienes conversaciones aún</p>
+        <p className="text-text-secondary font-medium">No tienes conversaciones aún</p>
         <p className="text-sm text-text-muted mt-1">
           Contacta a un cuidador para iniciar una conversación
         </p>
@@ -91,24 +93,24 @@ const ConversationList = ({ onSelectConversation, selectedId }: Props) => {
               }
               onSelectConversation(conv);
             }}
-            className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left ${isSelected
-              ? 'bg-primary/10 border border-primary/20'
-              : 'bg-surface border border-border hover:border-primary/30'
+            className={`w-full flex items-center gap-3 p-4 rounded-2xl transition-all duration-300 text-left ${isSelected
+              ? 'bg-gradient-to-r from-primary/10 to-primary-light/10 border-2 border-primary/30 shadow-md shadow-primary/10'
+              : 'bg-surface border-2 border-border hover:border-primary/30 hover:shadow-md'
               }`}
           >
-            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
-              <span className="text-primary font-semibold">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center shrink-0 shadow-md shadow-primary/20">
+              <span className="text-white font-bold text-lg">
                 {getAvatarInitial(conv)}
               </span>
             </div>
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <h4 className="font-medium text-text-primary truncate">
+                <h4 className="font-bold text-text-primary truncate">
                   {getOtherPersonName(conv)}
                 </h4>
                 {conv.last_message && (
-                  <span className="text-xs text-text-muted">
+                  <span className="text-xs text-text-muted font-medium">
                     {formatTime(conv.last_message.created_at)}
                   </span>
                 )}
@@ -121,7 +123,7 @@ const ConversationList = ({ onSelectConversation, selectedId }: Props) => {
                     : 'Sin mensajes'}
                 </p>
                 {unread > 0 && (
-                  <span className="shrink-0 w-5 h-5 bg-primary text-surface text-xs font-bold rounded-full flex items-center justify-center">
+                  <span className="shrink-0 w-6 h-6 bg-gradient-to-br from-primary to-accent text-white text-xs font-bold rounded-full flex items-center justify-center shadow-md shadow-primary/20">
                     {unread > 9 ? '9+' : unread}
                   </span>
                 )}

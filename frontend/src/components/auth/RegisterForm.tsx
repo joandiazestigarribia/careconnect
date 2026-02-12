@@ -140,13 +140,13 @@ const RegisterForm = () => {
   const strengthPercentage = (passwordStrength.met / passwordStrength.total) * 100;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg-main px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-bg-main via-bg-main to-primary/5 px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4 shadow-lg shadow-primary/20">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-3xl mb-4 shadow-xl shadow-primary/30 transition-transform duration-300 hover:scale-105">
             <Heart className="w-8 h-8 text-surface" />
           </div>
-          <h1 className="text-2xl font-bold text-text-primary mb-2">
+          <h1 className="text-3xl font-bold text-text-primary mb-2">
             Crear una cuenta
           </h1>
           <p className="text-text-secondary">
@@ -154,34 +154,40 @@ const RegisterForm = () => {
           </p>
         </div>
 
-        <div className="card p-8">
+        <div className="bg-surface rounded-3xl shadow-2xl shadow-primary/10 border border-border p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15">
           <form className="space-y-5" onSubmit={handleSubmit}>
             {authError && (
-              <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-xl">
+              <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-2xl">
                 <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                 <div className="text-sm text-red-700">
-                  <p className="font-medium">Error en el registro</p>
+                  <p className="font-semibold">Error en el registro</p>
                   <p>{authError}</p>
                 </div>
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-text-primary mb-3">
+              <label className="block text-sm font-semibold text-text-primary mb-3">
                 ¿Qué tipo de cuenta necesitas?
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setFormData(prev => ({ ...prev, role: 'FAMILY' }))}
-                  className={`card card-interactive flex flex-col items-center gap-2 p-4 border-2 ${
+                  className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1 ${
                     formData.role === 'FAMILY'
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border'
+                      ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 shadow-lg shadow-primary/20'
+                      : 'border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 bg-bg-main'
                   }`}
                 >
-                  <Users className={`w-6 h-6 ${formData.role === 'FAMILY' ? 'text-primary' : 'text-text-muted'}`} />
-                  <span className={`text-sm font-medium ${formData.role === 'FAMILY' ? 'text-primary' : 'text-text-secondary'}`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                    formData.role === 'FAMILY' 
+                      ? 'bg-gradient-to-br from-primary to-primary-light' 
+                      : 'bg-bg-main border border-border'
+                  }`}>
+                    <Users className={`w-5 h-5 ${formData.role === 'FAMILY' ? 'text-surface' : 'text-text-muted'}`} />
+                  </div>
+                  <span className={`text-sm font-bold ${formData.role === 'FAMILY' ? 'text-primary' : 'text-text-secondary'}`}>
                     Familia
                   </span>
                   <span className="text-xs text-text-muted">Busco cuidador</span>
@@ -189,14 +195,20 @@ const RegisterForm = () => {
                 <button
                   type="button"
                   onClick={() => setFormData(prev => ({ ...prev, role: 'CAREGIVER' }))}
-                  className={`card card-interactive flex flex-col items-center gap-2 p-4 border-2 ${
+                  className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1 ${
                     formData.role === 'CAREGIVER'
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border'
+                      ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 shadow-lg shadow-primary/20'
+                      : 'border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 bg-bg-main'
                   }`}
                 >
-                  <Stethoscope className={`w-6 h-6 ${formData.role === 'CAREGIVER' ? 'text-primary' : 'text-text-muted'}`} />
-                  <span className={`text-sm font-medium ${formData.role === 'CAREGIVER' ? 'text-primary' : 'text-text-secondary'}`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                    formData.role === 'CAREGIVER' 
+                      ? 'bg-gradient-to-br from-primary to-primary-light' 
+                      : 'bg-bg-main border border-border'
+                  }`}>
+                    <Stethoscope className={`w-5 h-5 ${formData.role === 'CAREGIVER' ? 'text-surface' : 'text-text-muted'}`} />
+                  </div>
+                  <span className={`text-sm font-bold ${formData.role === 'CAREGIVER' ? 'text-primary' : 'text-text-secondary'}`}>
                     Cuidador
                   </span>
                   <span className="text-xs text-text-muted">Ofrezco servicios</span>
@@ -205,11 +217,11 @@ const RegisterForm = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-2">
+              <label htmlFor="email" className="block text-sm font-semibold text-text-primary mb-2">
                 Correo electrónico
               </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+              <div className="relative group">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors duration-300" />
                 <input
                   id="email"
                   name="email"
@@ -217,7 +229,7 @@ const RegisterForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`input pl-10 rounded-xl ${
+                  className={`input pl-10 rounded-xl border-border transition-all duration-300 hover:border-primary/30 focus:border-primary focus:shadow-lg focus:shadow-primary/10 ${
                     getFieldStatus('email') === 'error' 
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
                       : getFieldStatus('email') === 'success'
@@ -239,18 +251,18 @@ const RegisterForm = () => {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-text-primary mb-2">
+              <label htmlFor="phone" className="block text-sm font-semibold text-text-primary mb-2">
                 Teléfono <span className="text-text-muted font-normal">(opcional)</span>
               </label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+              <div className="relative group">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors duration-300" />
                 <input
                   id="phone"
                   name="phone"
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="input pl-10 rounded-xl"
+                  className="input pl-10 rounded-xl border-border transition-all duration-300 hover:border-primary/30 focus:border-primary focus:shadow-lg focus:shadow-primary/10"
                   placeholder="+54 9 11 2345 6789"
                 />
               </div>
@@ -258,11 +270,11 @@ const RegisterForm = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-text-primary mb-2">
+                <label htmlFor="password" className="block text-sm font-semibold text-text-primary mb-2">
                   Contraseña
                 </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                <div className="relative group">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors duration-300" />
                   <input
                     id="password"
                     name="password"
@@ -270,7 +282,7 @@ const RegisterForm = () => {
                     value={formData.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={`input pl-10 pr-10 rounded-xl ${
+                    className={`input pl-10 pr-10 rounded-xl border-border transition-all duration-300 hover:border-primary/30 focus:border-primary focus:shadow-lg focus:shadow-primary/10 ${
                       getFieldStatus('password') === 'error' 
                         ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
                         : getFieldStatus('password') === 'success'
@@ -282,7 +294,7 @@ const RegisterForm = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors duration-300"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -292,11 +304,11 @@ const RegisterForm = () => {
                 )}
               </div>
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-text-primary mb-2">
+                <label htmlFor="confirmPassword" className="block text-sm font-semibold text-text-primary mb-2">
                   Confirmar
                 </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                <div className="relative group">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors duration-300" />
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -304,7 +316,7 @@ const RegisterForm = () => {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={`input pl-10 pr-10 rounded-xl ${
+                    className={`input pl-10 pr-10 rounded-xl border-border transition-all duration-300 hover:border-primary/30 focus:border-primary focus:shadow-lg focus:shadow-primary/10 ${
                       getFieldStatus('confirmPassword') === 'error' 
                         ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
                         : getFieldStatus('confirmPassword') === 'success'
@@ -316,7 +328,7 @@ const RegisterForm = () => {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors duration-300"
                   >
                     {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -330,8 +342,8 @@ const RegisterForm = () => {
             {formData.password && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-text-secondary">Fuerza de la contraseña</span>
-                  <span className={`text-sm font-medium ${
+                  <span className="text-sm font-semibold text-text-secondary">Fuerza de la contraseña</span>
+                  <span className={`text-sm font-bold ${
                     strengthPercentage === 100 ? 'text-success' : 
                     strengthPercentage >= 60 ? 'text-yellow-500' : 'text-red-500'
                   }`}>
@@ -341,9 +353,9 @@ const RegisterForm = () => {
                 </div>
                 <div className="h-2 bg-bg-main rounded-full overflow-hidden">
                   <div 
-                    className={`h-full transition-all duration-300 ${
-                      strengthPercentage === 100 ? 'bg-success' : 
-                      strengthPercentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                    className={`h-full transition-all duration-500 ${
+                      strengthPercentage === 100 ? 'bg-gradient-to-r from-success to-success/70' : 
+                      strengthPercentage >= 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 'bg-gradient-to-r from-red-500 to-red-400'
                     }`}
                     style={{ width: `${strengthPercentage}%` }}
                   />
@@ -355,9 +367,11 @@ const RegisterForm = () => {
                     return (
                       <div key={index} className="flex items-center gap-2 text-sm">
                         {isMet ? (
-                          <Check className="w-4 h-4 text-success shrink-0" />
+                          <div className="w-4 h-4 rounded-full bg-success/20 flex items-center justify-center">
+                            <Check className="w-3 h-3 text-success shrink-0" />
+                          </div>
                         ) : (
-                          <div className="w-4 h-4 rounded-full border-2 border-text-muted shrink-0" />
+                          <div className="w-4 h-4 rounded-full border-2 border-text-muted/30 shrink-0" />
                         )}
                         <span className={isMet ? 'text-text-secondary' : 'text-text-muted'}>
                           {req.label}
@@ -372,7 +386,7 @@ const RegisterForm = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="btn btn-primary w-full py-3 rounded-xl mt-2"
+              className="btn btn-primary w-full py-3 rounded-xl mt-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -390,13 +404,13 @@ const RegisterForm = () => {
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-surface text-text-secondary">¿Ya tienes cuenta?</span>
+              <span className="px-4 bg-surface text-text-secondary font-medium">¿Ya tienes cuenta?</span>
             </div>
           </div>
 
           <Link
             to="/login"
-            className="btn btn-secondary w-full rounded-xl"
+            className="btn btn-secondary w-full rounded-xl border-2 border-border hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 hover:-translate-y-0.5"
           >
             Iniciar sesión
           </Link>
