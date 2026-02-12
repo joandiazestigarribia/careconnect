@@ -3,71 +3,87 @@ import { Shield, UserCheck, MessageSquare, FileCheck, Lock } from 'lucide-react'
 const safetyFeatures = [
   {
     icon: UserCheck,
+    emoji: '🆔',
     title: 'Verificación de identidad',
-    description: 'Todos los miembros deben verificar su identidad con documentación válida antes de poder contactar a otros usuarios.',
+    description: 'Todos los miembros verifican su identidad con documentación válida antes de poder contactar.',
   },
   {
     icon: MessageSquare,
-    title: 'Monitoreo de comunicaciones',
-    description: 'Revisamos perfiles y mensajes para detectar comportamientos sospechosos y mantener la comunidad segura.',
+    emoji: '💬',
+    title: 'Chat seguro',
+    description: 'Comunicación monitoreada dentro de la plataforma. Sin compartir datos personales.',
   },
   {
     icon: FileCheck,
-    title: 'Reseñas verificadas',
-    description: 'Solo las familias que han contratado a un cuidador pueden dejar reseñas, garantizando opiniones reales.',
+    emoji: '📋',
+    title: 'Antecedentes chequeados',
+    description: 'Verificamos los antecedentes penales de todos los cuidadores activos.',
   },
   {
     icon: Lock,
+    emoji: '🔒',
     title: 'Datos protegidos',
-    description: 'Tu información personal está encriptada y nunca compartimos tus datos con terceros sin tu consentimiento.',
+    description: 'Tu información está encriptada y nunca la vendemos a terceros.',
   },
 ];
 
 const SafetySection = () => {
   return (
-    <section id="seguridad" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="seguridad" className="py-24 bg-gradient-to-br from-bg-main via-white to-bg-main relative overflow-hidden">
+      {/* Decorative shields */}
+      <div className="absolute top-20 right-10 text-8xl opacity-10">🛡️</div>
+      <div className="absolute bottom-20 left-10 text-8xl opacity-10">🔒</div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left - Content */}
           <div>
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-success/20 text-success-dark text-sm font-medium rounded-full mb-6">
-              <Shield className="w-4 h-4" />
-              Seguridad primero
-            </span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-success/10 to-success/20 rounded-full mb-6">
+              <Shield className="w-5 h-5 text-success-dark" />
+              <span className="text-sm font-bold text-success-dark">
+                Tu seguridad primero
+              </span>
+            </div>
             
-            <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-6">
-              Con los chicos, la seguridad siempre es lo primero
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-primary mb-6">
+              Con los chicos,{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-success to-primary">
+                la seguridad
+              </span>{' '}
+              siempre es lo primero
             </h2>
             
             <p className="text-lg text-text-secondary mb-8">
-              Por eso implementamos múltiples capas de seguridad para que tanto 
-              familias como cuidadores puedan confiar en nuestra plataforma.
+              Implementamos múltiples capas de seguridad para que tanto familias 
+              como cuidadores puedan confiar en nuestra plataforma.{' '}
+              <span className="font-bold text-primary">Tu tranquilidad es nuestra prioridad.</span>
             </p>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 gap-6">
-              <div className="p-4 bg-bg-main rounded-xl">
-                <p className="text-3xl font-bold text-primary mb-1">100%</p>
-                <p className="text-sm text-text-secondary">Perfiles verificados</p>
+            {/* Trust stats */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-5 bg-white rounded-2xl shadow-lg border-2 border-success/20">
+                <div className="text-3xl mb-2">100%</div>
+                <div className="text-sm font-bold text-text-secondary">Perfiles verificados</div>
               </div>
-              <div className="p-4 bg-bg-main rounded-xl">
-                <p className="text-3xl font-bold text-primary mb-1">0</p>
-                <p className="text-sm text-text-secondary">Incidentes reportados</p>
+              <div className="p-5 bg-white rounded-2xl shadow-lg border-2 border-primary/20">
+                <div className="text-3xl mb-2">0</div>
+                <div className="text-sm font-bold text-text-secondary">Incidentes reportados</div>
               </div>
             </div>
           </div>
 
           {/* Right - Features Grid */}
-          <div className="grid sm:grid-cols-2 gap-6">
-            {safetyFeatures.map((feature) => (
+          <div className="grid sm:grid-cols-2 gap-4">
+            {safetyFeatures.map((feature, index) => (
               <div
                 key={feature.title}
-                className="p-6 bg-bg-main rounded-2xl border border-border hover:border-primary/30 hover:shadow-md transition-all"
+                className="p-6 bg-white rounded-2xl shadow-lg border-2 border-transparent hover:border-success/30 transition-all group"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4">
-                  <feature.icon className="w-6 h-6 text-primary" />
+                <div className="w-14 h-14 bg-gradient-to-br from-success/10 to-success/20 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+                  {feature.emoji}
                 </div>
-                <h3 className="font-semibold text-text-primary mb-2">
+                <h3 className="font-bold text-text-primary mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-text-secondary leading-relaxed">
@@ -75,6 +91,25 @@ const SafetySection = () => {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Bottom trust badge */}
+        <div className="mt-16 text-center">
+          <div className="inline-flex items-center gap-4 px-8 py-4 bg-white rounded-full shadow-xl">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🛡️</span>
+              <div className="text-left">
+                <p className="font-bold text-text-primary">Verificado por familias</p>
+                <p className="text-sm text-text-secondary">+500 familias confían en nosotros</p>
+              </div>
+            </div>
+            <div className="h-10 w-px bg-border" />
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className="text-warning text-xl">⭐</span>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -5,40 +5,51 @@ const testimonials = [
     name: 'María G.',
     role: 'Mamá de 2 niños',
     location: 'Resistencia, Chaco',
-    content: 'Hermosa y segura manera de encontrar niñeras. CareConnect hizo más fácil el día a día de nuestra familia. ¡La recomiendo totalmente!',
+    content: 'El sistema de scoring es GENIAL. Encontré a Lucía que tiene un 96% de match con mi familia. ¡Mis hijos la adoran! 🥰',
     rating: 5,
-    avatar: 'M',
+    perfil: 'MG',
+    highlight: 'Match del 96%',
   },
   {
     name: 'Lucas R.',
     role: 'Cuidador',
     location: 'Resistencia, Chaco',
-    content: 'Es una aplicación fantástica y segura. He tenido muy buenas experiencias trabajando con familias y niños muy cariñosos.',
+    content: 'Como cuidador, me encanta cómo funciona el trust score. A más reseñas positivas, más familias me contactan. ¡Ya tengo trabajo estable!',
     rating: 5,
-    avatar: 'L',
+    perfil: 'LR',
+    highlight: 'Trust Score alto',
   },
   {
     name: 'Ana P.',
     role: 'Mamá primeriza',
     location: 'Barranqueras, Chaco',
-    content: 'La app es súper fácil de usar y confiable. Tiene muchos sistemas de seguridad que te hacen sentir tranquila al dejar a tu bebé.',
+    content: 'Como mamá primeriza estaba muy nerviosa. Poder ver el puntaje de match y las reseñas me dio mucha confianza. ¡100% recomendado!',
     rating: 5,
-    avatar: 'A',
+    perfil: 'AP',
+    highlight: 'Mamá primeriza',
   },
 ];
 
 const TestimonialsSection = () => {
   return (
-    <section id="testimonios" className="py-24 bg-bg-main">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="testimonios" className="py-24 bg-bg-main relative overflow-hidden">
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent-dark text-sm font-medium rounded-full mb-4">
-            Testimonios
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">
-            Lo que dicen nuestros usuarios
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md mb-6">
+            <span className="text-sm font-bold text-text-primary">
+              Lo que dicen nuestros usuarios
+            </span>
+          </div>
+          
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-primary mb-4">
+            Historias reales,{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">
+              familias felices
+            </span>
           </h2>
+          
           <p className="text-lg text-text-secondary">
             Miles de familias y cuidadores ya confían en CareConnect
           </p>
@@ -46,38 +57,42 @@ const TestimonialsSection = () => {
 
         {/* Testimonials Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
+          {testimonials.map((testimonial) => (
             <div
               key={testimonial.name}
-              className="relative bg-white rounded-2xl p-8 shadow-sm border border-border hover:shadow-lg transition-all"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="relative bg-white rounded-3xl p-8 shadow-lg border-2 border-transparent hover:border-accent/30 transition-all group"
             >
               {/* Quote icon */}
-              <div className="absolute -top-4 left-8 w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <Quote className="w-4 h-4 text-white" />
+              <div className="absolute -top-4 left-8 w-10 h-10 bg-gradient-to-br from-accent to-accent-dark rounded-xl flex items-center justify-center shadow-lg">
+                <Quote className="w-5 h-5 text-white" />
+              </div>
+
+              {/* Highlight badge */}
+              <div className="absolute top-6 right-6">
+                <span className="px-3 py-1 bg-accent/10 text-accent-dark text-xs font-bold rounded-full">
+                  {testimonial.highlight}
+                </span>
               </div>
 
               {/* Rating */}
-              <div className="flex items-center gap-1 mb-4">
+              <div className="flex items-center gap-1 mb-4 mt-2">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-accent fill-accent" />
+                  <Star key={i} className="w-5 h-5 text-warning fill-warning" />
                 ))}
               </div>
 
               {/* Content */}
-              <p className="text-text-secondary mb-6 leading-relaxed">
+              <p className="text-text-secondary mb-6 leading-relaxed text-lg">
                 "{testimonial.content}"
               </p>
 
               {/* Author */}
               <div className="flex items-center gap-3 pt-4 border-t border-border">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <span className="text-lg font-bold text-primary">
-                    {testimonial.avatar}
-                  </span>
+                <div className="w-14 h-14 bg-linear-to-br from-primary to-accent rounded-full flex items-center justify-center text-2xl shadow-md text-white">
+                  {testimonial.perfil}
                 </div>
                 <div>
-                  <p className="font-semibold text-text-primary">
+                  <p className="font-bold text-text-primary">
                     {testimonial.name}
                   </p>
                   <p className="text-sm text-text-secondary">
@@ -91,25 +106,13 @@ const TestimonialsSection = () => {
 
         {/* Trust indicator */}
         <div className="mt-16 text-center">
-          <div className="inline-flex items-center gap-6 px-8 py-4 bg-white rounded-2xl shadow-sm border border-border">
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-3">
-                {['M', 'L', 'A', 'J'].map((letter, i) => (
-                  <div
-                    key={i}
-                    className="w-10 h-10 bg-primary/20 rounded-full border-2 border-white flex items-center justify-center text-sm font-bold text-primary"
-                  >
-                    {letter}
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 px-8 py-6 bg-white rounded-3xl shadow-xl">
             <div className="text-left">
-              <p className="font-semibold text-text-primary">
+              <p className="font-bold text-text-primary text-lg">
                 +500 usuarios satisfechos
               </p>
-              <p className="text-sm text-text-secondary">
-                Únete a nuestra comunidad
+              <p className="text-text-secondary">
+                Sumate a nuestra comunidad!
               </p>
             </div>
           </div>

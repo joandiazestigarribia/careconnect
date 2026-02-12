@@ -1,8 +1,8 @@
 import LandingNavbar from '../components/landing/LandingNavbar';
 import HeroSection from '../components/landing/HeroSection';
 import HowItWorksSection from '../components/landing/HowItWorksSection';
+import ScoringSection from '../components/landing/ScoringSection';
 import ForWhomSection from '../components/landing/ForWhomSection';
-import SafetySection from '../components/landing/SafetySection';
 import TestimonialsSection from '../components/landing/TestimonialsSection';
 import CTASection from '../components/landing/CTASection';
 import Footer from '../components/landing/Footer';
@@ -13,9 +13,9 @@ const LandingPage = () => {
       <LandingNavbar />
       <main>
         <HeroSection />
+        <ScoringSection />
         <HowItWorksSection />
         <ForWhomSection />
-        <SafetySection />
         <TestimonialsSection />
         <CTASection />
       </main>
