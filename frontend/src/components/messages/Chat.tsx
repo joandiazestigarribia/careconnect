@@ -92,13 +92,21 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages.length]);
 
+  const [error, setError] = useState<string | null>(null);
+
   const createConversation = async (cId: string) => {
     try {
+      setError(null);
       const conv = await messagesApi.createConversation({ caregiver_id: cId });
       setConversation(conv);
       onConversationCreated?.(conv.id);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error creating conversation:', err);
+      if (err.response?.status === 401) {
+        setError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+      } else {
+        setError('No se pudo iniciar la conversación. Intenta nuevamente.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -109,10 +117,14 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
     loadingConvRef.current = true;
 
     try {
+      setError(null);
       const conv = await messagesApi.getConversation(id);
       setConversation(conv);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error loading conversation:', err);
+      if (err.response?.status === 401) {
+        setError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+      }
     } finally {
       setIsLoading(false);
       loadingConvRef.current = false;
@@ -258,9 +270,16 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
         </div>
       </div>
 
+      {/* Error Message */}
+      {error && (
+        <div className="mx-4 mt-4 p-3 bg-red-50 border border-red-200 rounded-xl">
+          <p className="text-sm text-red-600 text-center">{error}</p>
+        </div>
+      )}
+
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.length === 0 ? (
+        {messages.length === 0 && !error ? (
           <div className="flex flex-col items-center justify-center h-full text-text-secondary">
             <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-primary-light/10 rounded-2xl flex items-center justify-center mb-3 shadow-lg">
               <span className="text-2xl">💬</span>
@@ -316,11 +335,11 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
             }}
             placeholder="Escribe un mensaje..."
             className="flex-1 px-4 py-3 bg-surface border-2 border-border rounded-2xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 shadow-sm"
-            disabled={isSending || !conversation}
+            disabled={isSending || !conversation || !!error}
           />
           <button
             type="submit"
-            disabled={isSending || !newMessage.trim() || !conversation}
+            disabled={isSending || !newMessage.trim() || !conversation || !!error}
             className="px-5 py-3 bg-gradient-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md shadow-primary/20 hover:scale-105"
           >
             {isSending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}

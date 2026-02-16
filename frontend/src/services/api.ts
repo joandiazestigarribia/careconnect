@@ -21,18 +21,40 @@ api.interceptors.request.use(
 );
 
 let isLoggingIn = false;
+let isRedirecting = false;
 
 export const setLoggingIn = (value: boolean) => {
   isLoggingIn = value;
 };
 
+declare global {
+  interface WindowEventMap {
+    'auth:logout': CustomEvent<{ reason: string }>;
+  }
+}
+
+export const triggerLogout = (reason: string = 'session_expired') => {
+  if (isRedirecting) return;
+  isRedirecting = true;
+
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('user');
+
+  window.dispatchEvent(new CustomEvent('auth:logout', { detail: { reason } }));
+
+  setTimeout(() => {
+    isRedirecting = false;
+  }, 1000);
+};
+
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401 && !isLoggingIn) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('user');
-      window.location.replace('/login');
+    const isAuthEndpoint = error.config?.url?.includes('/auth/login') ||
+      error.config?.url?.includes('/auth/register');
+
+    if (error.response?.status === 401 && !isLoggingIn && !isAuthEndpoint && !isRedirecting) {
+      triggerLogout('session_expired');
     }
     return Promise.reject(error);
   }

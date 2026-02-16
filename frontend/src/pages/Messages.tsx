@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { messagesApi, type Conversation } from '../services/messagesApi';
+import { type Conversation } from '../services/messagesApi';
 import ConversationList from '../components/messages/ConversationList';
 import Chat from '../components/messages/Chat';
 import { ArrowLeft, MessageSquare, Loader2 } from 'lucide-react';
@@ -10,7 +10,6 @@ const Messages = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!user) {

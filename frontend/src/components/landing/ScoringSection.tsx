@@ -1,4 +1,4 @@
-import { Target, Heart, Shield, Zap, Star, CheckCircle2, Sparkles } from 'lucide-react';
+import { Heart, Shield, Star } from 'lucide-react';
 
 const scoringFactors = [
   {

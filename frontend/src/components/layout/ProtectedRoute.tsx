@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, logoutReason } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
@@ -22,7 +22,16 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return (
+      <Navigate 
+        to="/login" 
+        state={{ 
+          from: location, 
+          sessionExpired: logoutReason === 'session_expired' 
+        }} 
+        replace 
+      />
+    );
   }
 
   return <>{children}</>;

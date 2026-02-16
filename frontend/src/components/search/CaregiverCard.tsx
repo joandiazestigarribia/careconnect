@@ -11,6 +11,8 @@ const CaregiverCard: FC<Props> = ({ result }) => {
   const navigate = useNavigate();
   const { caregiver, score, distance_km } = result;
 
+  const avatarUrl = `https://i.pravatar.cc/150?u=${caregiver.user_id}`;
+
   const getScoreColor = (score: number) => {
     if (score >= 90) return 'text-white';
     if (score >= 70) return 'text-white';
@@ -28,9 +30,22 @@ const CaregiverCard: FC<Props> = ({ result }) => {
       <div className="p-5">
         <div className="flex justify-between items-start gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center text-surface text-xl font-bold shadow-lg shadow-primary/20">
-              {caregiver.first_name[0]}{caregiver.last_name[0]}
-            </div>
+            <img 
+              src={avatarUrl}
+              alt={`${caregiver.first_name} ${caregiver.last_name}`}
+              className="w-14 h-14 rounded-full object-cover shadow-lg"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  const fallback = document.createElement('div');
+                  fallback.className = 'w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center text-surface text-xl font-bold shadow-lg shadow-primary/20';
+                  fallback.textContent = `${caregiver.first_name[0]}${caregiver.last_name[0]}`;
+                  parent.prepend(fallback);
+                }
+              }}
+            />
             <div>
               <h3 className="text-lg font-bold text-text-primary group-hover:text-primary transition-colors duration-300">
                 {caregiver.first_name} {caregiver.last_name}

@@ -177,7 +177,7 @@ const Home = () => {
               </div>
             )}
 
-            <div className="h-[400px] rounded-3xl overflow-hidden shadow-xl shadow-primary/10 border border-border">
+            <div className="h-[570px] rounded-3xl overflow-hidden shadow-xl shadow-primary/10 border border-border">
               <SearchMap
                 results={results}
                 centerLat={searchCenter.lat}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, DollarSign, Globe, Search, X, ChevronDown } from 'lucide-react';
+import { MapPin, DollarSign, Globe, Search, ChevronDown } from 'lucide-react';
 
 interface Props {
   onSearch: (filters: {

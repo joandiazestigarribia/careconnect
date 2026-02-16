@@ -1,6 +1,6 @@
-import { AlertCircle, ArrowRight, Check, Heart, Lock, Mail, X } from 'lucide-react';
+import { AlertCircle, ArrowRight, Check, Heart, Lock, Mail, X, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 interface ValidationErrors {
@@ -10,13 +10,16 @@ interface ValidationErrors {
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { login, error: authError, clearError, isLoading, isAuthenticated } = useAuth();
+  const location = useLocation();
+  const { login, error: authError, clearError, isLoading, isAuthenticated, logoutReason } = useAuth();
+  
+  const sessionExpired = (location.state as any)?.sessionExpired || logoutReason === 'session_expired';
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard', { replace: true });
+      navigate('/', { replace: true });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -30,6 +33,7 @@ const LoginForm = () => {
   
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [showSessionExpired, setShowSessionExpired] = useState(sessionExpired);
 
   useEffect(() => {
     if (authError) {
@@ -39,6 +43,10 @@ const LoginForm = () => {
 
   useEffect(() => {
     clearError();
+    if (sessionExpired) {
+      setShowSessionExpired(true);
+      window.history.replaceState({}, document.title);
+    }
   }, []);
 
   const validateField = (name: string, value: string): string | undefined => {
@@ -76,6 +84,10 @@ const LoginForm = () => {
     setLoginError(null);
     clearError();
   };
+  
+  const dismissSessionExpired = () => {
+    setShowSessionExpired(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,13 +119,12 @@ const LoginForm = () => {
   };
 
   const shouldShowError = loginError || authError;
-  const errorMessage = loginError || authError;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-bg-main via-bg-main to-primary/5 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-bg-main via-bg-main to-primary/5 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-3xl mb-4 shadow-xl shadow-primary/30 transition-transform duration-300 hover:scale-105">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-primary to-primary-light rounded-3xl mb-4 shadow-xl shadow-primary/30 transition-transform duration-300 hover:scale-105">
             <Heart className="w-8 h-8 text-surface" />
           </div>
           <h1 className="text-3xl font-bold text-text-primary mb-2">
@@ -126,6 +137,25 @@ const LoginForm = () => {
 
         <div className="bg-surface rounded-3xl shadow-2xl shadow-primary/10 border border-border p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/15">
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {showSessionExpired && (
+              <div className="relative flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-2xl">
+                <Info className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <div className="flex-1 text-sm text-amber-700 pr-6">
+                  <p className="font-semibold text-amber-800">Sesión expirada</p>
+                  <p className="text-amber-600 text-xs py-1.5 rounded">
+                    Tu sesión ha expirado por inactividad. Por favor, inicia sesión nuevamente.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={dismissSessionExpired}
+                  className="absolute top-2 right-2 p-1.5 text-amber-400 hover:text-amber-600 hover:bg-amber-100 rounded-xl transition-all duration-300"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
             {shouldShowError && (
               <div className="relative flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-2xl">
                 <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
@@ -244,15 +274,15 @@ const LoginForm = () => {
 
         <div className="mt-8 text-center">
           <p className="text-xs text-text-secondary mb-3 font-semibold uppercase tracking-wider">Cuentas de prueba</p>
-          <div className="inline-flex flex-col gap-2 text-xs bg-gradient-to-br from-surface to-bg-main px-5 py-4 rounded-2xl border border-border shadow-lg shadow-primary/5 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-300">
+          <div className="inline-flex flex-col gap-2 text-xs bg-linear-to-br from-surface to-bg-main px-5 py-4 rounded-2xl border border-border shadow-lg shadow-primary/5 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-300">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary to-primary-light"></div>
+              <div className="w-2 h-2 rounded-full bg-linear-to-br from-primary to-primary-light"></div>
               <span className="text-text-muted font-medium">familia1@test.com</span>
               <span className="text-text-secondary">/</span>
               <span className="text-primary font-semibold">Password123!</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-gradient-to-br from-accent to-primary"></div>
+              <div className="w-2 h-2 rounded-full bg-linear-to-br from-accent to-primary"></div>
               <span className="text-text-muted font-medium">cuidador1@test.com</span>
               <span className="text-text-secondary">/</span>
               <span className="text-primary font-semibold">Password123!</span>

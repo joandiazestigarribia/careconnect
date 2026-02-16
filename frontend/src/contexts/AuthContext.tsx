@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback, type ReactNode } from 'react';
 import { authApi, setLoggingIn, type User, type LoginCredentials, type RegisterData } from '../services/api';
 
 interface AuthContextType {
@@ -7,10 +7,11 @@ interface AuthContextType {
   isLoading: boolean;
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
-  logout: () => void;
+  logout: (reason?: string) => void;
   refreshUser: () => Promise<void>;
   error: string | null;
   clearError: () => void;
+  logoutReason?: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,9 +20,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [logoutReason, setLogoutReason] = useState<string | null>(null);
+  const logoutReasonRef = useRef<string | null>(null);
 
   const authInitializedRef = useRef(false);
   
+  const handleGlobalLogout = useCallback((event: Event) => {
+    const customEvent = event as CustomEvent<{ reason: string }>;
+    const reason = customEvent.detail?.reason || 'session_expired';
+    
+    setUser(null);
+    setLogoutReason(reason);
+    logoutReasonRef.current = reason;
+    
+  }, []);
+
   useEffect(() => {
     if (authInitializedRef.current) return;
     authInitializedRef.current = true;
@@ -43,7 +56,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     initAuth();
-  }, []);
+    
+    window.addEventListener('auth:logout', handleGlobalLogout);
+    
+    return () => {
+      window.removeEventListener('auth:logout', handleGlobalLogout);
+    };
+  }, [handleGlobalLogout]);
 
   const login = async (credentials: LoginCredentials) => {
     try {
@@ -85,10 +104,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const logout = () => {
+  const logout = (reason?: string) => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
     setUser(null);
+    if (reason) {
+      setLogoutReason(reason);
+    }
   };
 
   const clearError = () => setError(null);
@@ -114,6 +136,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         refreshUser,
         error,
         clearError,
+        logoutReason,
       }}
     >
       {children}
