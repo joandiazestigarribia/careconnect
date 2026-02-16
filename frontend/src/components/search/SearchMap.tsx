@@ -140,7 +140,7 @@ const CaregiverPopupContent: React.FC<{
     <div className="min-w-[300px] font-sans">
       {/* Header con Score - Estilo HeroSection */}
       <div className="flex items-center gap-4 mb-5 pb-5 border-b-2 border-dashed border-border">
-        <div className={`w-16 h-16 bg-gradient-to-br ${matchInfo.color} rounded-2xl flex items-center justify-center shadow-lg shadow-success/30`}>
+        <div className={`w-16 h-16 bg-linear-to-br ${matchInfo.color} rounded-2xl flex items-center justify-center shadow-lg shadow-success/30`}>
           <span className="text-3xl font-black text-white">{score}</span>
         </div>
         <div>
@@ -163,7 +163,7 @@ const CaregiverPopupContent: React.FC<{
             const parent = target.parentElement;
             if (parent) {
               const fallback = document.createElement('div');
-              fallback.className = 'w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg';
+              fallback.className = 'w-14 h-14 bg-linear-to-br from-accent to-primary rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg';
               fallback.textContent = `${caregiver.first_name[0]}${caregiver.last_name[0]}`;
               parent.prepend(fallback);
             }
@@ -196,7 +196,7 @@ const CaregiverPopupContent: React.FC<{
       {/* Contact Button - Estilo HeroSection */}
       <button
         onClick={handleContactClick}
-        className="w-full py-3.5 bg-gradient-to-r from-primary to-primary-light text-white font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 text-base"
+        className="w-full py-3.5 bg-linear-to-r from-primary to-primary-light text-white font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 text-base"
       >
         ¡Contactar ahora!
       </button>

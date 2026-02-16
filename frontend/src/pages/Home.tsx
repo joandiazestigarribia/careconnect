@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { searchApi, type SearchResult } from '../services/searchApi';
 import api from '../services/api';
-import SearchFilters from '../components/search/SearchFilters';
+import SearchFilters, { getSavedFilters, type SearchFiltersState } from '../components/search/SearchFilters';
 import CaregiverCard from '../components/search/CaregiverCard';
 import SearchMap from '../components/search/SearchMap';
 import { Heart, Search, MapPin, AlertCircle, Loader2, Sparkles, ChevronDown, ChevronUp, MessageSquare } from 'lucide-react';
@@ -24,7 +24,22 @@ const Home = () => {
   const [showAvailability, setShowAvailability] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
-  
+  const [initialFilters, setInitialFilters] = useState<SearchFiltersState | null>(null);
+  const [isLoadingSavedSearch, setIsLoadingSavedSearch] = useState(false);
+  const hasPerformedInitialSearch = useRef(false);
+
+  useEffect(() => {
+    if (hasPerformedInitialSearch.current) return;
+    
+    const savedFilters = getSavedFilters();
+    if (savedFilters) {
+      hasPerformedInitialSearch.current = true;
+      setInitialFilters(savedFilters);
+      setIsLoadingSavedSearch(true);
+      performSearch(savedFilters);
+    }
+  }, []);
+
   useEffect(() => {
     if (!user?.profile_completed) {
       navigate('/complete-profile');
@@ -34,43 +49,6 @@ const Home = () => {
   if (!user) {
     return null;
   }
-
-  const handleSearch = async (filters: {
-    address: string;
-    radius_km: number;
-    max_hourly_rate?: number;
-    preferred_languages: string[];
-  }) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const coords = await geocodeAddress(filters.address);
-      
-      if (typeof coords.lat !== 'number' || typeof coords.lng !== 'number' ||
-          isNaN(coords.lat) || isNaN(coords.lng)) {
-        throw new Error('No se pudieron obtener coordenadas válidas para la dirección');
-      }
-      
-      setSearchCenter(coords);
-      setSearchRadius(filters.radius_km);
-
-      const searchResults = await searchApi.searchCaregivers({
-        latitude: coords.lat,
-        longitude: coords.lng,
-        radius_km: filters.radius_km,
-        max_hourly_rate: filters.max_hourly_rate,
-        preferred_languages: filters.preferred_languages,
-      });
-
-      setResults(searchResults);
-      setHasSearched(true);
-    } catch (err: any) {
-      setError(err.response?.data?.error?.message || err.message || 'Error en la búsqueda');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const ADDRESS_COORDINATES: Record<string, { lat: number; lng: number }> = {
     'Av. 9 de Julio 1155, Resistencia, Chaco, Argentina': { lat: -27.460111, lng: -58.976170 },
@@ -112,6 +90,53 @@ const Home = () => {
     }
   };
 
+  const performSearch = useCallback(async (filters: {
+    address: string;
+    radius_km: number;
+    max_hourly_rate?: number;
+    preferred_languages: string[];
+  }) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const coords = await geocodeAddress(filters.address);
+      
+      if (typeof coords.lat !== 'number' || typeof coords.lng !== 'number' ||
+          isNaN(coords.lat) || isNaN(coords.lng)) {
+        throw new Error('No se pudieron obtener coordenadas válidas para la dirección');
+      }
+      
+      setSearchCenter(coords);
+      setSearchRadius(filters.radius_km);
+
+      const searchResults = await searchApi.searchCaregivers({
+        latitude: coords.lat,
+        longitude: coords.lng,
+        radius_km: filters.radius_km,
+        max_hourly_rate: filters.max_hourly_rate,
+        preferred_languages: filters.preferred_languages,
+      });
+
+      setResults(searchResults);
+      setHasSearched(true);
+    } catch (err: any) {
+      setError(err.response?.data?.error?.message || err.message || 'Error en la búsqueda');
+    } finally {
+      setIsLoading(false);
+      setIsLoadingSavedSearch(false);
+    }
+  }, []);
+
+  const handleSearch = async (filters: {
+    address: string;
+    radius_km: number;
+    max_hourly_rate?: number;
+    preferred_languages: string[];
+  }) => {
+    await performSearch(filters);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header mejorado con iconos en gradientes */}
@@ -140,14 +165,18 @@ const Home = () => {
       {user.role === 'FAMILY' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <SearchFilters onSearch={handleSearch} isLoading={isLoading} />
+            <SearchFilters 
+              onSearch={handleSearch} 
+              isLoading={isLoading} 
+              initialFilters={initialFilters}
+            />
           </div>
 
           <div className="lg:col-span-2 space-y-6">
             {error && (
               <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-100 rounded-2xl shadow-sm">
                 <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                <p className="text-sm text-red-700">{error}</p>
+                <p className="text-sm text-red-700">Ha ocurrido un error</p>
               </div>
             )}
 
@@ -166,14 +195,6 @@ const Home = () => {
                     </p>
                   </div>
                 </div>
-                {results.length > 0 && (
-                  <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-success/15 rounded-full shadow-sm">
-                    <MapPin className="w-4 h-4 text-success-dark" />
-                    <span className="text-sm font-medium text-success-dark">
-                      {searchCenter.lat.toFixed(4)}, {searchCenter.lng.toFixed(4)}
-                    </span>
-                  </div>
-                )}
               </div>
             )}
 
@@ -214,7 +235,7 @@ const Home = () => {
               </div>
             )}
 
-            {!hasSearched && !isLoading && (
+            {!hasSearched && !isLoading && !isLoadingSavedSearch && (
               <div className="text-center py-16 bg-gradient-to-br from-primary/5 to-accent/5 rounded-3xl border border-primary/10 shadow-lg shadow-primary/5">
                 <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/20">
                   <MapPin className="w-12 h-12 text-primary" />
@@ -228,7 +249,7 @@ const Home = () => {
               </div>
             )}
 
-            {isLoading && (
+            {(isLoading || isLoadingSavedSearch) && (
               <div className="text-center py-16 bg-gradient-to-br from-surface to-bg-main rounded-3xl border border-border shadow-lg">
                 <div className="w-24 h-24 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Loader2 className="w-12 h-12 text-primary animate-spin" />

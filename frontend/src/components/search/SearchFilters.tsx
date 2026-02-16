@@ -1,5 +1,13 @@
-import { useState } from 'react';
-import { MapPin, DollarSign, Globe, Search, ChevronDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { MapPin, DollarSign, Globe, Search, ChevronDown, X } from 'lucide-react';
+
+export interface SearchFiltersState {
+  address: string;
+  radius_km: number;
+  max_hourly_rate?: number;
+  preferred_languages: string[];
+  use_custom_address: boolean;
+}
 
 interface Props {
   onSearch: (filters: {
@@ -9,6 +17,7 @@ interface Props {
     preferred_languages: string[];
   }) => void;
   isLoading: boolean;
+  initialFilters?: SearchFiltersState | null;
 }
 
 const COMMON_ADDRESSES = [
@@ -24,21 +33,92 @@ const AVAILABLE_LANGUAGES = [
   { value: 'Inglés', label: 'Inglés' },
 ];
 
-const SearchFilters = ({ onSearch, isLoading }: Props) => {
-  const [address, setAddress] = useState(COMMON_ADDRESSES[0].value);
-  const [radius, setRadius] = useState(5);
-  const [maxRate, setMaxRate] = useState<number | ''>('');
-  const [languages, setLanguages] = useState<string[]>(['Español']);
-  const [useCustomAddress, setUseCustomAddress] = useState(false);
+const DEFAULT_FILTERS: SearchFiltersState = {
+  address: COMMON_ADDRESSES[0].value,
+  radius_km: 5,
+  max_hourly_rate: undefined,
+  preferred_languages: ['Español'],
+  use_custom_address: false,
+};
+
+const STORAGE_KEY = 'careconnect_search_filters';
+
+export const getSavedFilters = (): SearchFiltersState | null => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch {
+  }
+  return null;
+};
+
+export const saveFilters = (filters: SearchFiltersState) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
+  } catch {
+  }
+};
+
+export const clearSavedFilters = () => {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+  }
+};
+
+const SearchFilters = ({ onSearch, isLoading, initialFilters }: Props) => {
+  const [address, setAddress] = useState(DEFAULT_FILTERS.address);
+  const [radius, setRadius] = useState(DEFAULT_FILTERS.radius_km);
+  const [maxRate, setMaxRate] = useState<number | ''>(DEFAULT_FILTERS.max_hourly_rate ?? '');
+  const [languages, setLanguages] = useState<string[]>(DEFAULT_FILTERS.preferred_languages);
+  const [useCustomAddress, setUseCustomAddress] = useState(DEFAULT_FILTERS.use_custom_address);
   const [isExpanded, setIsExpanded] = useState(true);
+
+
+  useEffect(() => {
+    const filtersToLoad = initialFilters || getSavedFilters();
+    if (filtersToLoad) {
+      setAddress(filtersToLoad.address);
+      setRadius(filtersToLoad.radius_km);
+      setMaxRate(filtersToLoad.max_hourly_rate ?? '');
+      setLanguages(filtersToLoad.preferred_languages);
+      setUseCustomAddress(filtersToLoad.use_custom_address);
+
+    }
+  }, [initialFilters]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const filters: SearchFiltersState = {
+      address,
+      radius_km: radius,
+      max_hourly_rate: maxRate || undefined,
+      preferred_languages: languages,
+      use_custom_address: useCustomAddress,
+    };
+    saveFilters(filters);
     onSearch({
       address,
       radius_km: radius,
       max_hourly_rate: maxRate || undefined,
       preferred_languages: languages,
+    });
+  };
+
+  const handleClearFilters = () => {
+    setAddress(DEFAULT_FILTERS.address);
+    setRadius(DEFAULT_FILTERS.radius_km);
+    setMaxRate(DEFAULT_FILTERS.max_hourly_rate ?? '');
+    setLanguages(DEFAULT_FILTERS.preferred_languages);
+    setUseCustomAddress(DEFAULT_FILTERS.use_custom_address);
+    clearSavedFilters();
+    onSearch({
+      address: DEFAULT_FILTERS.address,
+      radius_km: DEFAULT_FILTERS.radius_km,
+      max_hourly_rate: DEFAULT_FILTERS.max_hourly_rate,
+      preferred_languages: DEFAULT_FILTERS.preferred_languages,
     });
   };
 
@@ -52,6 +132,14 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
     });
   };
 
+  const isDefaultState = 
+    address === DEFAULT_FILTERS.address &&
+    radius === DEFAULT_FILTERS.radius_km &&
+    maxRate === (DEFAULT_FILTERS.max_hourly_rate ?? '') &&
+    languages.length === DEFAULT_FILTERS.preferred_languages.length &&
+    languages.every(l => DEFAULT_FILTERS.preferred_languages.includes(l)) &&
+    useCustomAddress === DEFAULT_FILTERS.use_custom_address;
+
   return (
     <div className="bg-surface rounded-3xl shadow-xl shadow-primary/10 border-2 border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-300">
       <div 
@@ -59,7 +147,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+          <div className="w-12 h-12 bg-linear-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
             <Search className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -76,7 +164,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
         <form onSubmit={handleSubmit} className="px-5 pb-5 space-y-5">
           <div>
             <label className="flex items-center gap-2 text-sm font-bold text-text-primary mb-2">
-              <div className="w-5 h-5 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+              <div className="w-5 h-5 bg-linear-to-br from-primary to-accent rounded-full flex items-center justify-center">
                 <MapPin className="w-3 h-3 text-white" />
               </div>
               Tu Ubicación
@@ -118,7 +206,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
 
           <div>
             <label className="flex items-center gap-2 text-sm font-bold text-text-primary mb-3">
-              <div className="w-5 h-5 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+              <div className="w-5 h-5 bg-linear-to-br from-primary to-accent rounded-full flex items-center justify-center">
                 <MapPin className="w-3 h-3 text-white" />
               </div>
               Radio de búsqueda
@@ -134,7 +222,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
                 max="20"
                 value={radius}
                 onChange={(e) => setRadius(parseInt(e.target.value))}
-                className="w-full h-2 bg-gradient-to-r from-border to-border rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-2 bg-linear-to-r from-border to-border rounded-lg appearance-none cursor-pointer accent-primary"
               />
               <div className="flex justify-between text-xs text-text-muted mt-2">
                 <span>1 km</span>
@@ -146,7 +234,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
 
           <div>
             <label className="flex items-center gap-2 text-sm font-bold text-text-primary mb-2">
-              <div className="w-5 h-5 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center">
+              <div className="w-5 h-5 bg-linear-to-br from-accent to-primary rounded-full flex items-center justify-center">
                 <DollarSign className="w-3 h-3 text-white" />
               </div>
               Tarifa máxima por hora
@@ -165,7 +253,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
 
           <div>
             <label className="flex items-center gap-2 text-sm font-bold text-text-primary mb-3">
-              <div className="w-5 h-5 bg-gradient-to-br from-success to-primary rounded-full flex items-center justify-center">
+              <div className="w-5 h-5 bg-linear-to-br from-success to-primary rounded-full flex items-center justify-center">
                 <Globe className="w-3 h-3 text-white" />
               </div>
               Idiomas preferidos
@@ -178,7 +266,7 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
                   onClick={() => toggleLanguage(lang.value)}
                   className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 ${
                     languages.includes(lang.value)
-                      ? 'bg-gradient-to-r from-primary to-primary-light text-surface shadow-lg shadow-primary/20'
+                      ? 'bg-linear-to-r from-primary to-primary-light text-surface shadow-lg shadow-primary/20'
                       : 'bg-bg-main text-text-secondary border-2 border-border hover:border-primary/30'
                   }`}
                 >
@@ -194,23 +282,37 @@ const SearchFilters = ({ onSearch, isLoading }: Props) => {
             </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-gradient-to-r from-primary to-primary-light text-surface font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg shadow-primary/20"
-          >
-            {isLoading ? (
-              <>
-                <div className="w-5 h-5 border-2 border-surface/30 border-t-surface rounded-full animate-spin" />
-                Buscando...
-              </>
-            ) : (
-              <>
-                <Search className="w-5 h-5" />
-                Buscar Cuidadores
-              </>
+          <div className="flex gap-3">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="flex-1 flex items-center justify-center gap-2 py-4 px-4 bg-linear-to-r from-primary to-primary-light text-surface font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg shadow-primary/20"
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-surface/30 border-t-surface rounded-full animate-spin" />
+                  Buscando...
+                </>
+              ) : (
+                <>
+                  <Search className="w-5 h-5" />
+                  Buscar Cuidadores
+                </>
+              )}
+            </button>
+            
+            {!isDefaultState && (
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                disabled={isLoading}
+                className="flex items-center justify-center gap-2 py-4 px-4 bg-bg-main text-text-secondary font-bold rounded-2xl hover:bg-red-50 hover:text-red-600 hover:border-red-200 border-2 border-border focus:outline-none focus:ring-2 focus:ring-red-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                title="Limpiar filtros"
+              >
+                <X className="w-5 h-5" />
+              </button>
             )}
-          </button>
+          </div>
         </form>
       )}
     </div>

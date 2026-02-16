@@ -20,8 +20,8 @@ const CaregiverCard: FC<Props> = ({ result }) => {
   };
 
   const getScoreGradient = (score: number) => {
-    if (score >= 90) return 'bg-gradient-to-br from-success to-success-light';
-    if (score >= 70) return 'bg-gradient-to-br from-primary to-primary-light';
+    if (score >= 90) return 'bg-linear-to-br from-success to-success-light';
+    if (score >= 70) return 'bg-linear-to-br from-primary to-primary-light';
     return 'bg-bg-main border-2 border-border';
   };
 
@@ -40,7 +40,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
                 const parent = target.parentElement;
                 if (parent) {
                   const fallback = document.createElement('div');
-                  fallback.className = 'w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center text-surface text-xl font-bold shadow-lg shadow-primary/20';
+                  fallback.className = 'w-14 h-14 bg-linear-to-br from-accent to-primary rounded-2xl flex items-center justify-center text-surface text-xl font-bold shadow-lg shadow-primary/20';
                   fallback.textContent = `${caregiver.first_name[0]}${caregiver.last_name[0]}`;
                   parent.prepend(fallback);
                 }
@@ -51,7 +51,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
                 {caregiver.first_name} {caregiver.last_name}
               </h3>
               <div className="flex items-center gap-2 mt-0.5">
-                <div className="w-5 h-5 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center">
+                <div className="w-5 h-5 bg-linear-to-br from-primary to-primary-light rounded-full flex items-center justify-center">
                   <MapPin className="w-3 h-3 text-white" />
                 </div>
                 <span className="text-sm text-text-secondary">{distance_km} km de distancia</span>
@@ -73,7 +73,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
 
         <div className="grid grid-cols-3 gap-3 mt-4">
           <div className="flex items-center gap-2 p-2.5 bg-bg-main rounded-2xl border border-border group-hover:border-primary/20 transition-all duration-300">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-md shadow-primary/20">
+            <div className="w-8 h-8 bg-linear-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-md shadow-primary/20">
               <DollarSign className="w-4 h-4 text-white" />
             </div>
             <div>
@@ -82,7 +82,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
             </div>
           </div>
           <div className="flex items-center gap-2 p-2.5 bg-bg-main rounded-2xl border border-border group-hover:border-accent/20 transition-all duration-300">
-            <div className="w-8 h-8 bg-gradient-to-br from-accent to-accent/70 rounded-xl flex items-center justify-center shadow-md shadow-accent/20">
+            <div className="w-8 h-8 bg-linear-to-br from-accent to-accent/70 rounded-xl flex items-center justify-center shadow-md shadow-accent/20">
               <Award className="w-4 h-4 text-white" />
             </div>
             <div>
@@ -91,7 +91,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
             </div>
           </div>
           <div className="flex items-center gap-2 p-2.5 bg-bg-main rounded-2xl border border-border group-hover:border-success/20 transition-all duration-300">
-            <div className="w-8 h-8 bg-gradient-to-br from-success to-success-light rounded-xl flex items-center justify-center shadow-md shadow-success/20">
+            <div className="w-8 h-8 bg-linear-to-br from-success to-success-light rounded-xl flex items-center justify-center shadow-md shadow-success/20">
               <Users className="w-4 h-4 text-white" />
             </div>
             <div>
@@ -103,7 +103,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
 
         <div className="mt-4">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-5 h-5 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+            <div className="w-5 h-5 bg-linear-to-br from-primary to-accent rounded-full flex items-center justify-center">
               <Languages className="w-3 h-3 text-white" />
             </div>
             <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Idiomas</span>
@@ -123,7 +123,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
         {caregiver.skills.length > 0 && (
           <div className="mt-4">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-5 h-5 bg-gradient-to-br from-success to-accent rounded-full flex items-center justify-center">
+              <div className="w-5 h-5 bg-linear-to-br from-success to-accent rounded-full flex items-center justify-center">
                 <Sparkles className="w-3 h-3 text-white" />
               </div>
               <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Habilidades</span>
@@ -132,7 +132,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
               {caregiver.skills.slice(0, 4).map((skill) => (
                 <span 
                   key={skill} 
-                  className="px-3 py-1.5 bg-gradient-to-r from-primary/10 to-primary/5 text-primary text-xs font-bold rounded-xl border border-primary/20 hover:shadow-md hover:shadow-primary/10 transition-all duration-300"
+                  className="px-3 py-1.5 bg-linear-to-r from-primary/10 to-primary/5 text-primary text-xs font-bold rounded-xl border border-primary/20 hover:shadow-md hover:shadow-primary/10 transition-all duration-300"
                 >
                   {skill}
                 </span>
@@ -150,7 +150,7 @@ const CaregiverCard: FC<Props> = ({ result }) => {
       <div className="px-5 pb-5">
         <button 
           onClick={() => navigate(`/caregiver/${caregiver.user_id}`)}
-          className="w-full py-3.5 bg-gradient-to-r from-primary to-primary-light text-surface font-bold rounded-2xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 flex items-center justify-center gap-2 group/btn"
+          className="w-full py-3.5 bg-linear-to-r from-primary to-primary-light text-surface font-bold rounded-2xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 flex items-center justify-center gap-2 group/btn"
         >
           <span>Ver Perfil Completo</span>
           <svg 

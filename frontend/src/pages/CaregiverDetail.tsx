@@ -180,7 +180,7 @@ const CaregiverDetail = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       {/* Header */}
       <button
-        onClick={() => navigate('/dashboard')}
+        onClick={() => navigate('/dashboard', { state: { preserveFilters: true } })}
         className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
