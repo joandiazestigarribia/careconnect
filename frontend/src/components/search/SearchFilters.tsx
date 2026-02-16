@@ -42,6 +42,15 @@ const DEFAULT_FILTERS: SearchFiltersState = {
 };
 
 const STORAGE_KEY = 'careconnect_search_filters';
+const FAMILY_STORAGE_KEY = 'careconnect_family_search_filters';
+
+export interface FamilySearchFiltersState {
+  address: string;
+  radius_km: number;
+  max_children_count?: number;
+  preferred_languages: string[];
+  use_custom_address: boolean;
+}
 
 export const getSavedFilters = (): SearchFiltersState | null => {
   try {
@@ -64,6 +73,31 @@ export const saveFilters = (filters: SearchFiltersState) => {
 export const clearSavedFilters = () => {
   try {
     localStorage.removeItem(STORAGE_KEY);
+  } catch {
+  }
+};
+
+export const getSavedFamilyFilters = (): FamilySearchFiltersState | null => {
+  try {
+    const saved = localStorage.getItem(FAMILY_STORAGE_KEY);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch {
+  }
+  return null;
+};
+
+export const saveFamilyFilters = (filters: FamilySearchFiltersState) => {
+  try {
+    localStorage.setItem(FAMILY_STORAGE_KEY, JSON.stringify(filters));
+  } catch {
+  }
+};
+
+export const clearSavedFamilyFilters = () => {
+  try {
+    localStorage.removeItem(FAMILY_STORAGE_KEY);
   } catch {
   }
 };

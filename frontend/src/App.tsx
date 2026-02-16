@@ -12,6 +12,8 @@ import Home from './pages/Home';
 import CompleteProfile from './pages/CompleteProfile';
 import Profile from './pages/Profile';
 import CaregiverDetail from './pages/CaregiverDetail';
+import FamilyDetail from './pages/FamilyDetail';
+import CaregiverDashboard from './pages/CaregiverDashboard';
 import Messages from './pages/Messages';
 
 function App() {
@@ -63,6 +65,28 @@ function App() {
             <ProtectedRoute>
               <MainLayout>
                 <CaregiverDetail />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/family/:id"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <FamilyDetail />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/caregiver-dashboard"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <CaregiverDashboard />
               </MainLayout>
             </ProtectedRoute>
           }

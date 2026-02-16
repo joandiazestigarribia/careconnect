@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  ForbiddenException,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { FamilyProfilesService } from './family-profiles.service';
@@ -15,7 +14,8 @@ import { CreateFamilyProfileDto } from './dto/create-family-profile.dto';
 import { UpdateFamilyProfileDto } from './dto/update-family-profile.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { User, UserRole } from '../users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
+import { Public } from '../common/decorators/public.decorator';
 
 @ApiTags('Family Profiles')
 @Controller('family-profiles')
@@ -44,12 +44,13 @@ export class FamilyProfilesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string, @CurrentUser() user: User) {
-    const profile = await this.familyProfilesService.findOne(id);
-    
-    if (profile.user_id !== user.id && user.role !== UserRole.ADMIN) {
-      throw new ForbiddenException('Access denied');
-    }
-    return profile;
+    return this.familyProfilesService.findOne(id);
+  }
+
+  @Public()
+  @Get('public/:id')
+  async findOnePublic(@Param('id') id: string) {
+    return this.familyProfilesService.findOne(id);
   }
 
   @Patch('me')
