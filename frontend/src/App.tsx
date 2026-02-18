@@ -13,7 +13,7 @@ import CompleteProfile from './pages/CompleteProfile';
 import Profile from './pages/Profile';
 import CaregiverDetail from './pages/CaregiverDetail';
 import FamilyDetail from './pages/FamilyDetail';
-import CaregiverDashboard from './pages/CaregiverDashboard';
+import SearchPage from './pages/SearchPage';
 import Messages from './pages/Messages';
 
 function App() {
@@ -82,11 +82,11 @@ function App() {
         />
         
         <Route
-          path="/caregiver-dashboard"
+          path="/search"
           element={
             <ProtectedRoute>
               <MainLayout>
-                <CaregiverDashboard />
+                <SearchPage />
               </MainLayout>
             </ProtectedRoute>
           }

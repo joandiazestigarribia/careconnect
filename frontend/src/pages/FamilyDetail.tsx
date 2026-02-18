@@ -84,7 +84,7 @@ const FamilyDetail = () => {
         <div className="text-center py-16 bg-red-50 rounded-3xl border border-red-100">
           <p className="text-red-600 mb-4">{error || 'Perfil no encontrado'}</p>
           <button
-            onClick={() => navigate('/caregiver-dashboard')}
+            onClick={() => navigate('/search')}
             className="text-primary hover:underline"
           >
             Volver al inicio
@@ -98,7 +98,7 @@ const FamilyDetail = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       {/* Header */}
       <button
-        onClick={() => navigate('/caregiver-dashboard')}
+        onClick={() => navigate('/search')}
         className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors mb-6"
       >
         <ArrowLeft className="w-4 h-4" />

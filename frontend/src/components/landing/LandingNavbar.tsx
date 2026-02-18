@@ -45,7 +45,7 @@ const LandingNavbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to={"/"} className="flex items-center gap-2 group">
-            <div className="w-9 h-9 bg-gradient-to-br from-primary to-primary-light rounded-xl flex items-center justify-center group-hover:shadow-lg group-hover:shadow-primary/30 transition-all">
+            <div className="w-9 h-9 bg-linear-to-br from-primary to-primary-light rounded-xl flex items-center justify-center group-hover:shadow-lg group-hover:shadow-primary/30 transition-all">
               <Heart className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-text-primary">
@@ -84,26 +84,26 @@ const LandingNavbar = () => {
                 {/* Mensajes */}
                 <Link
                   to="/messages"
-                  className="relative p-2.5 text-text-secondary hover:text-primary hover:bg-gradient-to-br hover:from-primary/10 hover:to-primary-light/10 rounded-xl transition-all duration-300"
+                  className="relative p-2.5 text-text-secondary hover:text-primary hover:bg-linear-to-br hover:from-primary/10 hover:to-primary-light/10 rounded-xl transition-all duration-300"
                   title="Mensajes"
                 >
                   <MessageSquare className="w-5 h-5" />
                   {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-red-500/30">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-red-500/30">
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                   )}
                 </Link>
 
                 {/* User Info */}
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-primary/5 to-primary-light/5 rounded-xl border border-primary/10">
-                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-light rounded-lg flex items-center justify-center shadow-md shadow-primary/20">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-linear-to-r from-primary/5 to-primary-light/5 rounded-xl border border-primary/10">
+                  <div className="w-8 h-8 bg-linear-to-br from-primary to-primary-light rounded-lg flex items-center justify-center shadow-md shadow-primary/20">
                     <User className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-sm font-semibold text-text-primary max-w-[120px] truncate">
                     {user?.email}
                   </span>
-                  <span className="text-xs px-2 py-0.5 bg-gradient-to-r from-success/20 to-success/30 text-success font-bold rounded-full">
+                  <span className="text-xs px-2 py-0.5 bg-linear-to-r from-success/20 to-success/30 text-success font-bold rounded-full">
                     {user?.role === 'FAMILY' ? 'Familia' : 'Cuidador'}
                   </span>
                 </div>
@@ -111,10 +111,10 @@ const LandingNavbar = () => {
                 {/* Dashboard Button */}
                 <Link
                   to="/dashboard"
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-primary-light text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
+                  className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-primary to-primary-light text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <LayoutDashboard className="w-4 h-4" />
-                  Dashboard
+                  Panel
                 </Link>
 
                 {/* Logout */}
@@ -202,8 +202,8 @@ const LandingNavbar = () => {
             ) : (
               <>
                 {/* User Info Card */}
-                <div className="p-4 bg-gradient-to-br from-primary/5 to-primary-light/5 rounded-xl flex items-center gap-3 border border-primary/10">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                <div className="p-4 bg-linear-to-br from-primary/5 to-primary-light/5 rounded-xl flex items-center gap-3 border border-primary/10">
+                  <div className="w-12 h-12 bg-linear-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -215,7 +215,7 @@ const LandingNavbar = () => {
                   {unreadCount > 0 && (
                     <Link to="/messages" className="relative p-2 text-primary hover:bg-primary/10 rounded-lg">
                       <MessageSquare className="w-5 h-5" />
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-500/30">
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-500/30">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     </Link>
@@ -225,11 +225,11 @@ const LandingNavbar = () => {
                 {/* Dashboard Button */}
                 <Link
                   to="/dashboard"
-                  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r from-primary to-primary-light text-white font-bold rounded-xl shadow-lg shadow-primary/25"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-linear-to-r from-primary to-primary-light text-white font-bold rounded-xl shadow-lg shadow-primary/25"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <LayoutDashboard className="w-5 h-5" />
-                  Ir al Dashboard
+                  Ir al panel
                 </Link>
 
                 {/* Logout */}
