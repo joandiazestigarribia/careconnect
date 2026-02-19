@@ -72,7 +72,7 @@ const HowItWorksSection = () => {
 
               <div className="relative bg-white rounded-3xl p-8 shadow-lg border-2 border-transparent hover:border-primary/20 transition-all duration-300 h-full group-hover:shadow-xl group-hover:-translate-y-1">
                 {/* Step badge */}
-                <div className="absolute -top-4 -right-4 w-14 h-14 bg-gradient-to-br from-warning to-warning-dark rounded-2xl shadow-lg flex items-center justify-center text-2xl font-black text-white transform rotate-12 group-hover:rotate-0 transition-transform">
+                <div className="absolute -top-4 -right-4 w-14 h-14 bg-linear-to-br from-warning to-warning-dark rounded-2xl shadow-lg flex items-center justify-center text-2xl font-black text-white transform rotate-12 group-hover:rotate-0 transition-transform">
                   {step.number}
                 </div>
 

@@ -21,7 +21,7 @@ const HeroSection = () => {
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-text-primary leading-tight">
                 Encontrá el cuidador{' '}
                 <span className="relative inline-block">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-primary to-accent">
                     perfecto
                   </span>
                   <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" fill="none">
@@ -87,7 +87,7 @@ const HeroSection = () => {
               <div className="bg-white rounded-3xl shadow-2xl shadow-primary/20 p-6 border-2 border-primary/10 transform rotate-1 hover:rotate-0 transition-transform duration-300">
                 {/* Score card preview */}
                 <div className="flex items-center gap-4 mb-6 pb-6 border-b-2 border-dashed border-border">
-                  <div className="w-16 h-16 bg-gradient-to-br from-success to-success-dark rounded-2xl flex items-center justify-center shadow-lg animate-pulse-soft">
+                  <div className="w-16 h-16 bg-linear-to-br from-success to-success-dark rounded-2xl flex items-center justify-center shadow-lg animate-pulse-soft">
                     <span className="text-3xl font-black text-white">94</span>
                   </div>
                   <div>
@@ -129,7 +129,7 @@ const HeroSection = () => {
                   ))}
                 </div>
 
-                <button className="w-full py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl transition-all">
+                <button className="w-full py-3 bg-linear-to-r from-primary to-primary-dark text-white font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-xl transition-all">
                   ¡Contactar ahora!
                 </button>
               </div>

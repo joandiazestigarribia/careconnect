@@ -51,7 +51,7 @@ const ScoringSection = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-4xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-warning/10 to-accent/10 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-warning/10 to-accent/10 rounded-full mb-6">
             <span className="text-sm font-bold text-text-primary">
               Nuestro diferenciador
             </span>
@@ -60,7 +60,7 @@ const ScoringSection = () => {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-primary mb-6">
             Sistema de{' '}
             <span className="relative inline-block">
-              <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-warning">
+              <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-primary via-accent to-warning">
                 Scoring Inteligente
               </span>
               <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none">
@@ -92,7 +92,7 @@ const ScoringSection = () => {
                 <div className="flex-1">
                   <h4 className="font-bold text-text-primary mb-1 flex items-center gap-2">
                     {factor.title}
-                    <span className="text-xs px-2 py-0.5 bg-gradient-to-r from-primary to-accent text-white rounded-full">
+                    <span className="text-xs px-2 py-0.5 bg-linear-to-r from-primary to-accent text-white rounded-full">
                       +{20 - index * 5} pts
                     </span>
                   </h4>
@@ -106,7 +106,7 @@ const ScoringSection = () => {
 
           {/* Right - Score examples */}
           <div className="relative">
-            <div className="bg-gradient-to-br from-bg-main to-white rounded-3xl p-8 border-2 border-border">
+            <div className="bg-linear-to-br from-bg-main to-white rounded-3xl p-8 border-2 border-border">
               <h3 className="text-xl font-bold text-text-primary mb-6 text-center">
                 Ejemplos de Match
               </h3>
@@ -139,7 +139,7 @@ const ScoringSection = () => {
               </div>
 
               {/* Fun fact */}
-              <div className="mt-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl border border-primary/20">
+              <div className="mt-6 p-4 bg-linear-to-r from-primary/10 to-accent/10 rounded-xl border border-primary/20">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">💡</span>
                   <div>

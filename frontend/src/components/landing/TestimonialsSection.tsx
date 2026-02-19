@@ -45,7 +45,7 @@ const TestimonialsSection = () => {
           
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-primary mb-4">
             Historias reales,{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-primary">
               familias felices
             </span>
           </h2>
@@ -63,7 +63,7 @@ const TestimonialsSection = () => {
               className="relative bg-white rounded-3xl p-8 shadow-lg border-2 border-transparent hover:border-accent/30 transition-all group"
             >
               {/* Quote icon */}
-              <div className="absolute -top-4 left-8 w-10 h-10 bg-gradient-to-br from-accent to-accent-dark rounded-xl flex items-center justify-center shadow-lg">
+              <div className="absolute -top-4 left-8 w-10 h-10 bg-linear-to-br from-accent to-accent-dark rounded-xl flex items-center justify-center shadow-lg">
                 <Quote className="w-5 h-5 text-white" />
               </div>
 

@@ -29,7 +29,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Link to={"/"} className="flex items-center gap-2 group">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/30 group-hover:shadow-primary/50 group-hover:scale-105 transition-all duration-300">
+                <div className="w-10 h-10 bg-linear-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/30 group-hover:shadow-primary/50 group-hover:scale-105 transition-all duration-300">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-xl font-bold text-text-primary">
@@ -45,25 +45,25 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     {/* Messages Button */}
                     <Link
                       to="/messages"
-                      className="relative p-2.5 text-text-secondary hover:text-primary hover:bg-gradient-to-br hover:from-primary/10 hover:to-primary-light/10 rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
+                      className="relative p-2.5 text-text-secondary hover:text-primary hover:bg-linear-to-br hover:from-primary/10 hover:to-primary-light/10 rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
                       title="Mensajes"
                     >
                       <MessageSquare className="w-5 h-5" />
                       {unreadCount > 0 && (
-                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-red-500/30">
+                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-red-500/30">
                           {unreadCount > 9 ? '9+' : unreadCount}
                         </span>
                       )}
                     </Link>
                     
-                    <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/5 to-primary-light/5 rounded-2xl border border-primary/10">
-                      <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-md shadow-primary/20">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-primary/5 to-primary-light/5 rounded-2xl border border-primary/10">
+                      <div className="w-8 h-8 bg-linear-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-md shadow-primary/20">
                         <User className="w-4 h-4 text-white" />
                       </div>
                       <span className="text-sm font-semibold text-text-primary">
                         {user?.email}
                       </span>
-                      <span className="text-xs px-2.5 py-1 bg-gradient-to-r from-success/20 to-success/30 text-success font-bold rounded-full">
+                      <span className="text-xs px-2.5 py-1 bg-linear-to-r from-success/20 to-success/30 text-success font-bold rounded-full">
                         {user?.role === 'FAMILY' ? 'Familia' : 'Cuidador'}
                       </span>
                     </div>
@@ -90,7 +90,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   </Link>
                   <Link
                     to="/register"
-                    className="px-5 py-2.5 bg-gradient-to-r from-primary to-primary-light text-white font-bold rounded-2xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
+                    className="px-5 py-2.5 bg-linear-to-r from-primary to-primary-light text-white font-bold rounded-2xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
                   >
                     Registrarse
                   </Link>
@@ -99,7 +99,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </nav>
 
             <button
-              className="md:hidden p-2.5 text-text-secondary hover:text-primary hover:bg-gradient-to-br hover:from-primary/10 hover:to-primary-light/10 rounded-2xl transition-all duration-300"
+              className="md:hidden p-2.5 text-text-secondary hover:text-primary hover:bg-linear-to-br hover:from-primary/10 hover:to-primary-light/10 rounded-2xl transition-all duration-300"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
@@ -121,8 +121,8 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <div className="p-4 space-y-3">
               {isAuthenticated ? (
                 <>
-                  <div className="p-4 bg-gradient-to-br from-primary/5 to-primary-light/5 rounded-2xl flex items-center gap-3 border border-primary/10">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+                  <div className="p-4 bg-linear-to-br from-primary/5 to-primary-light/5 rounded-2xl flex items-center gap-3 border border-primary/10">
+                    <div className="w-12 h-12 bg-linear-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
                       <User className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -134,7 +134,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     {unreadCount > 0 && (
                       <Link to="/messages" className="relative p-2.5 text-primary hover:bg-primary/10 rounded-xl transition-all duration-300">
                         <MessageSquare className="w-5 h-5" />
-                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-500/30">
+                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg shadow-red-500/30">
                           {unreadCount > 9 ? '9+' : unreadCount}
                         </span>
                       </Link>
@@ -159,7 +159,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   </Link>
                   <Link
                     to="/register"
-                    className="block w-full px-4 py-3.5 text-center bg-gradient-to-r from-primary to-primary-light text-white font-bold rounded-2xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
+                    className="block w-full px-4 py-3.5 text-center bg-linear-to-r from-primary to-primary-light text-white font-bold rounded-2xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-300"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Registrarse

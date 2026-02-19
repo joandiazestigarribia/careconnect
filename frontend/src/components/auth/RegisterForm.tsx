@@ -140,10 +140,10 @@ const RegisterForm = () => {
   const strengthPercentage = (passwordStrength.met / passwordStrength.total) * 100;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-bg-main via-bg-main to-primary/5 px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-bg-main via-bg-main to-primary/5 px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-3xl mb-4 shadow-xl shadow-primary/30 transition-transform duration-300 hover:scale-105">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-primary to-primary-light rounded-3xl mb-4 shadow-xl shadow-primary/30 transition-transform duration-300 hover:scale-105">
             <Heart className="w-8 h-8 text-surface" />
           </div>
           <h1 className="text-3xl font-bold text-text-primary mb-2">
@@ -176,13 +176,13 @@ const RegisterForm = () => {
                   onClick={() => setFormData(prev => ({ ...prev, role: 'FAMILY' }))}
                   className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1 ${
                     formData.role === 'FAMILY'
-                      ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 shadow-lg shadow-primary/20'
+                      ? 'border-primary bg-linear-to-br from-primary/10 to-primary/5 shadow-lg shadow-primary/20'
                       : 'border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 bg-bg-main'
                   }`}
                 >
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                     formData.role === 'FAMILY' 
-                      ? 'bg-gradient-to-br from-primary to-primary-light' 
+                      ? 'bg-linear-to-br from-primary to-primary-light' 
                       : 'bg-bg-main border border-border'
                   }`}>
                     <Users className={`w-5 h-5 ${formData.role === 'FAMILY' ? 'text-surface' : 'text-text-muted'}`} />
@@ -197,13 +197,13 @@ const RegisterForm = () => {
                   onClick={() => setFormData(prev => ({ ...prev, role: 'CAREGIVER' }))}
                   className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1 ${
                     formData.role === 'CAREGIVER'
-                      ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 shadow-lg shadow-primary/20'
+                      ? 'border-primary bg-linear-to-br from-primary/10 to-primary/5 shadow-lg shadow-primary/20'
                       : 'border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 bg-bg-main'
                   }`}
                 >
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                     formData.role === 'CAREGIVER' 
-                      ? 'bg-gradient-to-br from-primary to-primary-light' 
+                      ? 'bg-linear-to-br from-primary to-primary-light' 
                       : 'bg-bg-main border border-border'
                   }`}>
                     <Stethoscope className={`w-5 h-5 ${formData.role === 'CAREGIVER' ? 'text-surface' : 'text-text-muted'}`} />
@@ -354,8 +354,8 @@ const RegisterForm = () => {
                 <div className="h-2 bg-bg-main rounded-full overflow-hidden">
                   <div 
                     className={`h-full transition-all duration-500 ${
-                      strengthPercentage === 100 ? 'bg-gradient-to-r from-success to-success/70' : 
-                      strengthPercentage >= 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 'bg-gradient-to-r from-red-500 to-red-400'
+                      strengthPercentage === 100 ? 'bg-linear-to-r from-success to-success/70' : 
+                      strengthPercentage >= 60 ? 'bg-linear-to-r from-yellow-500 to-yellow-400' : 'bg-linear-to-r from-red-500 to-red-400'
                     }`}
                     style={{ width: `${strengthPercentage}%` }}
                   />

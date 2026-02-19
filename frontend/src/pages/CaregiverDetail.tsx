@@ -201,7 +201,7 @@ const CaregiverDetail = () => {
                 const parent = target.parentElement;
                 if (parent) {
                   const fallback = document.createElement('div');
-                  fallback.className = 'w-36 h-36 bg-gradient-to-br from-primary via-primary to-accent rounded-full flex items-center justify-center text-surface text-4xl font-bold shadow-2xl shadow-primary/40 ring-4 ring-white';
+                  fallback.className = 'w-36 h-36 bg-linear-to-br from-primary via-primary to-accent rounded-full flex items-center justify-center text-surface text-4xl font-bold shadow-2xl shadow-primary/40 ring-4 ring-white';
                   fallback.textContent = `${profile.first_name[0]}${profile.last_name[0]}`;
                   parent.prepend(fallback);
                 }

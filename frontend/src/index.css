@@ -37,6 +37,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a,
+button,
+[role="button"],
+[type="button"],
+[type="submit"],
+[type="reset"],
+label,
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="file"],
+input[type="range"],
+.cursor-pointer {
+  cursor: pointer;
+}
+
+[onclick] {
+  cursor: pointer;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

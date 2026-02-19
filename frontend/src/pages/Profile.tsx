@@ -360,7 +360,7 @@ const Profile = () => {
             </div>
             <div className="text-right">
               <p className="text-sm text-text-secondary font-medium mb-1">Estado</p>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-success to-success-light text-white rounded-full text-sm font-bold shadow-lg shadow-success/30">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-success to-success-light text-white rounded-full text-sm font-bold shadow-lg shadow-success/30">
                 <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                 Activo
               </span>
@@ -555,7 +555,7 @@ const Profile = () => {
                     onClick={() => toggleLanguage(lang.value, true)}
                     className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shadow-sm ${
                       caregiverFormData.languages_spoken.includes(lang.value)
-                        ? 'bg-gradient-to-r from-primary to-primary-light text-white shadow-lg shadow-primary/30'
+                        ? 'bg-linear-to-r from-primary to-primary-light text-white shadow-lg shadow-primary/30'
                         : 'bg-bg-main text-text-secondary border border-border hover:border-primary/30 hover:shadow-md'
                     }`}
                   >
@@ -593,7 +593,7 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={addSkill}
-                  className="px-5 py-3 bg-gradient-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-bold shadow-md"
+                  className="px-5 py-3 bg-linear-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-bold shadow-md"
                 >
                   <Plus className="w-5 h-5" />
                 </button>
@@ -602,7 +602,7 @@ const Profile = () => {
                 {caregiverFormData.skills.map((skill, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-success/15 to-success/10 text-success-dark rounded-full text-sm font-bold border border-success/20"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-success/15 to-success/10 text-success-dark rounded-full text-sm font-bold border border-success/20"
                   >
                     {skill}
                     <button
@@ -715,7 +715,7 @@ const Profile = () => {
                     type="button"
                     onClick={addChildAge}
                     disabled={familyFormData.children_ages.length >= familyFormData.children_count}
-                    className="px-5 py-3 bg-gradient-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-bold shadow-md disabled:opacity-50"
+                    className="px-5 py-3 bg-linear-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-bold shadow-md disabled:opacity-50"
                   >
                     <Plus className="w-5 h-5" />
                   </button>
@@ -727,7 +727,7 @@ const Profile = () => {
                   {familyFormData.children_ages.map((age, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/15 to-primary/10 text-primary-dark rounded-full text-sm font-bold border border-primary/20"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-primary/15 to-primary/10 text-primary-dark rounded-full text-sm font-bold border border-primary/20"
                     >
                       {age} años
                       <button
@@ -764,7 +764,7 @@ const Profile = () => {
                     onClick={() => toggleLanguage(lang.value, false)}
                     className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shadow-sm ${
                       familyFormData.languages_preferred.includes(lang.value)
-                        ? 'bg-gradient-to-r from-accent to-accent-light text-white shadow-lg shadow-accent/30'
+                        ? 'bg-linear-to-r from-accent to-accent-light text-white shadow-lg shadow-accent/30'
                         : 'bg-bg-main text-text-secondary border border-border hover:border-accent/30 hover:shadow-md'
                     }`}
                   >
@@ -802,7 +802,7 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={addSpecialNeed}
-                  className="px-5 py-3 bg-gradient-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-bold shadow-md"
+                  className="px-5 py-3 bg-linear-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 font-bold shadow-md"
                 >
                   <Plus className="w-5 h-5" />
                 </button>
@@ -811,7 +811,7 @@ const Profile = () => {
                 {familyFormData.special_needs.map((need, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-warning/15 to-warning/10 text-warning-dark rounded-full text-sm font-bold border border-warning/20"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-warning/15 to-warning/10 text-warning-dark rounded-full text-sm font-bold border border-warning/20"
                   >
                     {need}
                     <button
@@ -840,7 +840,7 @@ const Profile = () => {
           <button
             type="submit"
             disabled={isSaving}
-            className="flex-1 flex items-center justify-center gap-2 py-4 px-6 bg-gradient-to-r from-primary to-primary-light text-white font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg"
+            className="flex-1 flex items-center justify-center gap-2 py-4 px-6 bg-linear-to-r from-primary to-primary-light text-white font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg"
           >
             {isSaving ? (
               <>

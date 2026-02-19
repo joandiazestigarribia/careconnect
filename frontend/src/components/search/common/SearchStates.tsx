@@ -9,8 +9,8 @@ export const LoadingState = ({
   message = 'Buscando...', 
   subMessage = 'Estamos analizando las mejores opciones para ti.' 
 }: LoadingStateProps) => (
-  <div className="text-center py-16 bg-gradient-to-br from-surface to-bg-main rounded-3xl border border-border shadow-lg">
-    <div className="w-24 h-24 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+  <div className="text-center py-16 bg-linear-to-br from-surface to-bg-main rounded-3xl border border-border shadow-lg">
+    <div className="w-24 h-24 bg-linear-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
       <Loader2 className="w-12 h-12 text-primary animate-spin" />
     </div>
     <h3 className="text-xl font-bold text-text-primary mb-2">
@@ -35,8 +35,8 @@ export const EmptyState = ({
 }: EmptyStateProps) => {
   const Icon = icon === 'users' ? Users : Search;
   return (
-    <div className="text-center py-16 bg-gradient-to-br from-surface to-bg-main rounded-3xl border border-border shadow-lg">
-      <div className="w-24 h-24 bg-gradient-to-br from-text-muted/20 to-text-muted/5 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+    <div className="text-center py-16 bg-linear-to-br from-surface to-bg-main rounded-3xl border border-border shadow-lg">
+      <div className="w-24 h-24 bg-linear-to-br from-text-muted/20 to-text-muted/5 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
         <Icon className="w-12 h-12 text-text-muted" />
       </div>
       <h3 className="text-xl font-bold text-text-primary mb-2">
@@ -58,8 +58,8 @@ export const InitialState = ({
   title = '¿Listo para comenzar?', 
   message = 'Configura tu ubicación y preferencias para encontrar las mejores opciones.'
 }: InitialStateProps) => (
-  <div className="text-center py-16 bg-gradient-to-br from-primary/5 to-accent/5 rounded-3xl border border-primary/10 shadow-lg shadow-primary/5">
-    <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/20">
+  <div className="text-center py-16 bg-linear-to-br from-primary/5 to-accent/5 rounded-3xl border border-primary/10 shadow-lg shadow-primary/5">
+    <div className="w-24 h-24 bg-linear-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/20">
       <MapPin className="w-12 h-12 text-primary" />
     </div>
     <h3 className="text-xl font-bold text-text-primary mb-2">
@@ -93,9 +93,9 @@ export const ResultsHeader = ({ count, radius, type = 'caregivers' }: ResultsHea
   const label = type === 'families' ? 'familias' : 'cuidadores';
   
   return (
-    <div className="flex items-center justify-between bg-gradient-to-r from-surface to-bg-main p-5 rounded-2xl border border-border shadow-lg shadow-primary/5">
+    <div className="flex items-center justify-between bg-linear-to-r from-surface to-bg-main p-5 rounded-2xl border border-border shadow-lg shadow-primary/5">
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+        <div className="w-12 h-12 bg-linear-to-br from-primary to-primary-light rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
           <Icon className="w-6 h-6 text-white" />
         </div>
         <div>

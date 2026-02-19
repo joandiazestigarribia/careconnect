@@ -7,16 +7,16 @@ const CompleteProfile = () => {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-bg-main via-bg-main to-primary/5">
+    <div className="min-h-screen bg-linear-to-br from-bg-main via-bg-main to-primary/5">
       <header className="bg-surface/80 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+            <div className="w-10 h-10 bg-linear-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
               <Heart className="w-5 h-5 text-surface" />
             </div>
             <span className="text-xl font-bold">
               <span className="text-text-primary">Care</span>
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Connect</span>
+              <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">Connect</span>
             </span>
           </div>
         </div>
@@ -25,7 +25,7 @@ const CompleteProfile = () => {
       <div className="bg-surface/80 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+            <div className="w-14 h-14 bg-linear-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
               {user?.role === 'FAMILY' ? (
                 <User className="w-7 h-7 text-surface" />
               ) : (
@@ -44,14 +44,14 @@ const CompleteProfile = () => {
           
           <div className="flex items-center justify-center gap-2 mt-8">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-success to-success-dark text-surface rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-success/20">
+              <div className="w-10 h-10 bg-linear-to-br from-success to-success-dark text-surface rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-success/20">
                 <Check className="w-5 h-5" />
               </div>
               <span className="text-sm font-bold text-success-dark">Registro</span>
             </div>
-            <div className="w-12 h-1 bg-gradient-to-r from-success to-primary rounded-full"></div>
+            <div className="w-12 h-1 bg-linear-to-r from-success to-primary rounded-full"></div>
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent text-surface rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-primary/20">
+              <div className="w-10 h-10 bg-linear-to-br from-primary to-accent text-surface rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-primary/20">
                 2
               </div>
               <span className="text-sm font-bold text-primary">Perfil</span>

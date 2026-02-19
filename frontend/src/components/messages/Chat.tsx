@@ -236,7 +236,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-primary-light/10 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-16 h-16 bg-linear-to-br from-primary/10 to-primary-light/10 rounded-2xl flex items-center justify-center shadow-lg">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
       </div>
@@ -246,7 +246,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
   return (
     <div className="flex flex-col h-[500px] bg-surface rounded-3xl border-2 border-border overflow-hidden shadow-xl shadow-primary/5">
       {/* Header */}
-      <div className="flex items-center gap-3 p-4 border-b border-border bg-gradient-to-r from-bg-main to-surface">
+      <div className="flex items-center gap-3 p-4 border-b border-border bg-linear-to-r from-bg-main to-surface">
         {onBack && (
           <button
             onClick={onBack}
@@ -255,7 +255,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
             <ArrowLeft className="w-5 h-5" />
           </button>
         )}
-        <div className="w-11 h-11 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center shadow-md shadow-primary/20">
+        <div className="w-11 h-11 bg-linear-to-br from-primary to-primary-light rounded-full flex items-center justify-center shadow-md shadow-primary/20">
           <span className="text-white font-bold text-lg">
             {getOtherParticipantName()[0]}
           </span>
@@ -281,7 +281,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && !error ? (
           <div className="flex flex-col items-center justify-center h-full text-text-secondary">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-primary-light/10 rounded-2xl flex items-center justify-center mb-3 shadow-lg">
+            <div className="w-16 h-16 bg-linear-to-br from-primary/10 to-primary-light/10 rounded-2xl flex items-center justify-center mb-3 shadow-lg">
               <span className="text-2xl">💬</span>
             </div>
             <p className="font-medium">No hay mensajes aún</p>
@@ -303,7 +303,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
                 )}
                 <div className={`flex ${isMyMessage(message) ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[70%] px-4 py-2.5 rounded-2xl shadow-sm ${isMyMessage(message)
-                      ? 'bg-gradient-to-br from-primary to-primary-light text-white rounded-br-md shadow-primary/20'
+                      ? 'bg-linear-to-br from-primary to-primary-light text-white rounded-br-md shadow-primary/20'
                       : 'bg-bg-main text-text-primary rounded-bl-md border border-border'
                     }`}>
                     <p className="text-sm">{message.content}</p>
@@ -324,7 +324,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSendMessage} className="p-4 border-t border-border bg-gradient-to-r from-bg-main to-surface">
+      <form onSubmit={handleSendMessage} className="p-4 border-t border-border bg-linear-to-r from-bg-main to-surface">
         <div className="flex gap-2">
           <input
             type="text"
@@ -340,7 +340,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
           <button
             type="submit"
             disabled={isSending || !newMessage.trim() || !conversation || !!error}
-            className="px-5 py-3 bg-gradient-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md shadow-primary/20 hover:scale-105"
+            className="px-5 py-3 bg-linear-to-r from-primary to-primary-light text-white rounded-2xl hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md shadow-primary/20 hover:scale-105"
           >
             {isSending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
           </button>

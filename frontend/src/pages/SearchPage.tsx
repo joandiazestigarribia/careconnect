@@ -264,7 +264,7 @@ const SearchPage = () => {
         
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-xl shadow-primary/20">
+            <div className="w-14 h-14 bg-linear-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-xl shadow-primary/20">
               <Users className="w-7 h-7 text-white" />
             </div>
             <div>

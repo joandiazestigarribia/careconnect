@@ -108,7 +108,7 @@ const CaregiverProfileForm = () => {
       <form onSubmit={handleSubmit} className="bg-surface rounded-3xl shadow-xl shadow-primary/10 border-2 border-border p-6 sm:p-8 space-y-6 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-300">
         <div>
           <h2 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+            <div className="w-10 h-10 bg-linear-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
               <User className="w-5 h-5 text-white" />
             </div>
             Información Personal
@@ -143,7 +143,7 @@ const CaregiverProfileForm = () => {
 
         <div>
           <label className="block text-sm font-bold text-text-primary mb-2 flex items-center gap-2">
-            <div className="w-5 h-5 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center">
+            <div className="w-5 h-5 bg-linear-to-br from-accent to-primary rounded-full flex items-center justify-center">
               <FileText className="w-3 h-3 text-white" />
             </div>
             Biografía
@@ -160,7 +160,7 @@ const CaregiverProfileForm = () => {
 
         <div>
           <label className="block text-sm font-bold text-text-primary mb-2 flex items-center gap-2">
-            <div className="w-5 h-5 bg-gradient-to-br from-success to-primary rounded-full flex items-center justify-center">
+            <div className="w-5 h-5 bg-linear-to-br from-success to-primary rounded-full flex items-center justify-center">
               <DollarSign className="w-3 h-3 text-white" />
             </div>
             Tarifa por Hora ($)
@@ -182,7 +182,7 @@ const CaregiverProfileForm = () => {
 
         <div>
           <h2 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-success to-success-light rounded-2xl flex items-center justify-center shadow-lg shadow-success/20">
+            <div className="w-10 h-10 bg-linear-to-br from-success to-success-light rounded-2xl flex items-center justify-center shadow-lg shadow-success/20">
               <Users className="w-5 h-5 text-white" />
             </div>
             Rango de Edades que Atiendes
@@ -217,7 +217,7 @@ const CaregiverProfileForm = () => {
 
         <div>
           <h2 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+            <div className="w-10 h-10 bg-linear-to-br from-accent to-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
               <MapPin className="w-5 h-5 text-white" />
             </div>
             Ubicación y Disponibilidad
@@ -256,7 +256,7 @@ const CaregiverProfileForm = () => {
               max="100"
               value={formData.availability_radius_km}
               onChange={handleChange}
-              className="w-full h-2 bg-gradient-to-r from-border to-border rounded-lg appearance-none cursor-pointer accent-primary"
+              className="w-full h-2 bg-linear-to-r from-border to-border rounded-lg appearance-none cursor-pointer accent-primary"
             />
             <div className="flex justify-between text-xs text-text-muted mt-2">
               <span>1 km</span>
@@ -268,7 +268,7 @@ const CaregiverProfileForm = () => {
 
         <div>
           <label className="block text-sm font-bold text-text-primary mb-3 flex items-center gap-2">
-            <div className="w-5 h-5 bg-gradient-to-br from-success to-primary rounded-full flex items-center justify-center">
+            <div className="w-5 h-5 bg-linear-to-br from-success to-primary rounded-full flex items-center justify-center">
               <Globe className="w-3 h-3 text-white" />
             </div>
             Idiomas que Hablas <span className="text-text-muted font-normal">(Selecciona al menos uno)</span>
@@ -281,7 +281,7 @@ const CaregiverProfileForm = () => {
                 onClick={() => toggleLanguage(lang.value)}
                 className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 ${
                   formData.languages_spoken.includes(lang.value)
-                    ? 'bg-gradient-to-r from-primary to-primary-light text-surface shadow-lg shadow-primary/20'
+                    ? 'bg-linear-to-r from-primary to-primary-light text-surface shadow-lg shadow-primary/20'
                     : 'bg-bg-main text-text-secondary border-2 border-border hover:border-primary/30'
                 }`}
               >
@@ -301,7 +301,7 @@ const CaregiverProfileForm = () => {
 
         <div>
           <label className="block text-sm font-bold text-text-primary mb-2 flex items-center gap-2">
-            <div className="w-5 h-5 bg-gradient-to-br from-success to-accent rounded-full flex items-center justify-center">
+            <div className="w-5 h-5 bg-linear-to-br from-success to-accent rounded-full flex items-center justify-center">
               <Sparkles className="w-3 h-3 text-white" />
             </div>
             Habilidades
@@ -318,7 +318,7 @@ const CaregiverProfileForm = () => {
             <button
               type="button"
               onClick={addSkill}
-              className="px-4 py-3 bg-gradient-to-r from-bg-main to-bg-main border-2 border-border text-primary rounded-2xl hover:bg-gradient-to-r hover:from-primary hover:to-primary-light hover:text-surface hover:border-primary transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-primary/20"
+              className="px-4 py-3 bg-linear-to-r from-bg-main to-bg-main border-2 border-border text-primary rounded-2xl hover:bg-linear-to-r hover:from-primary hover:to-primary-light hover:text-surface hover:border-primary transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-primary/20"
             >
               <Plus className="w-5 h-5" />
             </button>
@@ -327,7 +327,7 @@ const CaregiverProfileForm = () => {
             {formData.skills.map((skill, index) => (
               <span
                 key={index}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-success/20 to-success/10 text-success-dark rounded-full text-sm font-bold border border-success/20 hover:shadow-md hover:shadow-success/10 transition-all duration-300"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-linear-to-r from-success/20 to-success/10 text-success-dark rounded-full text-sm font-bold border border-success/20 hover:shadow-md hover:shadow-success/10 transition-all duration-300"
               >
                 {skill}
                 <button
@@ -345,7 +345,7 @@ const CaregiverProfileForm = () => {
         <button
           type="submit"
           disabled={isLoading || formData.languages_spoken.length === 0}
-          className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-gradient-to-r from-primary to-primary-light text-surface font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg shadow-primary/20"
+          className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-linear-to-r from-primary to-primary-light text-surface font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg shadow-primary/20"
         >
           {isLoading ? (
             <>

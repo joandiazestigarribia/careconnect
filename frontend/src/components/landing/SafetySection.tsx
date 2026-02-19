@@ -29,7 +29,7 @@ const safetyFeatures = [
 
 const SafetySection = () => {
   return (
-    <section id="seguridad" className="py-24 bg-gradient-to-br from-bg-main via-white to-bg-main relative overflow-hidden">
+    <section id="seguridad" className="py-24 bg-linear-to-br from-bg-main via-white to-bg-main relative overflow-hidden">
       {/* Decorative shields */}
       <div className="absolute top-20 right-10 text-8xl opacity-10">🛡️</div>
       <div className="absolute bottom-20 left-10 text-8xl opacity-10">🔒</div>
@@ -38,7 +38,7 @@ const SafetySection = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left - Content */}
           <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-success/10 to-success/20 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-success/10 to-success/20 rounded-full mb-6">
               <Shield className="w-5 h-5 text-success-dark" />
               <span className="text-sm font-bold text-success-dark">
                 Tu seguridad primero
@@ -47,7 +47,7 @@ const SafetySection = () => {
             
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-primary mb-6">
               Con los chicos,{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-success to-primary">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-success to-primary">
                 la seguridad
               </span>{' '}
               siempre es lo primero
@@ -80,7 +80,7 @@ const SafetySection = () => {
                 className="p-6 bg-white rounded-2xl shadow-lg border-2 border-transparent hover:border-success/30 transition-all group"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="w-14 h-14 bg-gradient-to-br from-success/10 to-success/20 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 bg-linear-to-br from-success/10 to-success/20 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
                   {feature.emoji}
                 </div>
                 <h3 className="font-bold text-text-primary mb-2">

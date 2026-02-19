@@ -21,7 +21,7 @@ const Messages = () => {
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
-        <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-16 h-16 bg-linear-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center shadow-lg">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
       </div>
@@ -43,7 +43,7 @@ const Messages = () => {
         </button>
         
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center shadow-xl shadow-accent/20">
+          <div className="w-14 h-14 bg-linear-to-br from-accent to-primary rounded-2xl flex items-center justify-center shadow-xl shadow-accent/20">
             <MessageSquare className="w-7 h-7 text-white" />
           </div>
           <div>
@@ -61,9 +61,9 @@ const Messages = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Conversations List */}
         <div className={`lg:col-span-1 ${selectedConversation ? 'hidden lg:block' : ''}`}>
-          <div className="bg-gradient-to-br from-surface to-bg-main rounded-3xl border border-border shadow-xl shadow-primary/5 p-5 hover:shadow-2xl hover:shadow-primary/10 transition-shadow duration-300">
+          <div className="bg-linear-to-br from-surface to-bg-main rounded-3xl border border-border shadow-xl shadow-primary/5 p-5 hover:shadow-2xl hover:shadow-primary/10 transition-shadow duration-300">
             <h2 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-linear-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
                 <MessageSquare className="w-4 h-4 text-primary" />
               </div>
               Conversaciones
@@ -78,7 +78,7 @@ const Messages = () => {
         {/* Chat Area */}
         <div className={`lg:col-span-2 ${!selectedConversation ? 'hidden lg:block' : ''}`}>
           {selectedConversation ? (
-            <div className="bg-gradient-to-br from-surface to-bg-main rounded-3xl border border-border shadow-xl shadow-primary/5 p-5 hover:shadow-2xl hover:shadow-primary/10 transition-shadow duration-300">
+            <div className="bg-linear-to-br from-surface to-bg-main rounded-3xl border border-border shadow-xl shadow-primary/5 p-5 hover:shadow-2xl hover:shadow-primary/10 transition-shadow duration-300">
               <div className="flex items-center gap-3 mb-4 lg:hidden">
                 <button
                   onClick={() => setSelectedConversation(null)}
@@ -94,8 +94,8 @@ const Messages = () => {
               />
             </div>
           ) : (
-            <div className="bg-gradient-to-br from-surface to-bg-main rounded-3xl border border-border shadow-xl shadow-primary/5 p-8 flex flex-col items-center justify-center min-h-[500px]">
-              <div className="w-24 h-24 bg-gradient-to-br from-accent/20 to-primary/10 rounded-full flex items-center justify-center mb-6 shadow-xl shadow-accent/10">
+            <div className="bg-linear-to-br from-surface to-bg-main rounded-3xl border border-border shadow-xl shadow-primary/5 p-8 flex flex-col items-center justify-center min-h-[500px]">
+              <div className="w-24 h-24 bg-linear-to-br from-accent/20 to-primary/10 rounded-full flex items-center justify-center mb-6 shadow-xl shadow-accent/10">
                 <MessageSquare className="w-12 h-12 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-text-primary mb-2">
