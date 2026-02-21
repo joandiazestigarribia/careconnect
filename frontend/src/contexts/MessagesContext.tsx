@@ -8,6 +8,8 @@ interface MessagesContextType {
   unreadCount: number;
   isLoadingConversations: boolean;
   isLoadingUnread: boolean;
+  activeConversationId: string | null;
+  setActiveConversationId: (id: string | null) => void;
   loadConversations: () => Promise<void>;
   loadUnreadCount: () => Promise<void>;
   markConversationAsRead: (conversationId: string) => void;
@@ -23,16 +25,19 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoadingConversations, setIsLoadingConversations] = useState(false);
   const [isLoadingUnread, setIsLoadingUnread] = useState(false);
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
   
   const initializedRef = useRef(false);
   const loadingConversationsRef = useRef(false);
   const loadingUnreadRef = useRef(false);
   const processedMessageIds = useRef<Set<string>>(new Set());
+
   useEffect(() => {
     if (!isAuthenticated || !user?.id) {
       initializedRef.current = false;
       setUnreadCount(0);
       setConversations([]);
+      setActiveConversationId(null);
       processedMessageIds.current.clear();
       return;
     }
@@ -61,10 +66,12 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return;
     }
     processedMessageIds.current.add(message.id);
+  
+    if (message.sender_id === user?.id) {
+      return;
+    }
     
-    if (message.sender_id !== user?.id) {
-      setUnreadCount((prev) => prev + 1);
-      
+    if (message.conversation_id === activeConversationId) {
       setConversations((prev) => {
         const convIndex = prev.findIndex((c) => c.id === message.conversation_id);
         if (convIndex === -1) return prev;
@@ -75,19 +82,38 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         conv.last_message = message;
         conv.last_message_id = message.id;
         
-        if (user?.role === 'FAMILY') {
-          conv.unread_family_count += 1;
-        } else {
-          conv.unread_caregiver_count += 1;
-        }
-        
         updated.splice(convIndex, 1);
         updated.unshift(conv);
         
         return updated;
       });
+      return;
     }
-  }, [user?.id, user?.role]);
+    
+    setUnreadCount((prev) => prev + 1);
+    
+    setConversations((prev) => {
+      const convIndex = prev.findIndex((c) => c.id === message.conversation_id);
+      if (convIndex === -1) return prev;
+
+      const updated = [...prev];
+      const conv = { ...updated[convIndex] };
+      
+      conv.last_message = message;
+      conv.last_message_id = message.id;
+      
+      if (user?.role === 'FAMILY') {
+        conv.unread_family_count += 1;
+      } else {
+        conv.unread_caregiver_count += 1;
+      }
+      
+      updated.splice(convIndex, 1);
+      updated.unshift(conv);
+      
+      return updated;
+    });
+  }, [user?.id, user?.role, activeConversationId]);
 
   const loadConversations = useCallback(async () => {
     if (loadingConversationsRef.current) return;
@@ -147,6 +173,8 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         unreadCount,
         isLoadingConversations,
         isLoadingUnread,
+        activeConversationId,
+        setActiveConversationId,
         loadConversations,
         loadUnreadCount,
         markConversationAsRead,

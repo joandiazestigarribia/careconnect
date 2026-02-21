@@ -5,14 +5,24 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import { Logger } from '@nestjs/common';
+import { Logger, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
+import * as xss from 'xss';
 import { MessagesService } from './messages.service';
 import { JwtService } from '@nestjs/jwt';
 
 interface AuthenticatedSocket extends Socket {
   userId?: string;
   userRole?: string;
+  messageCount?: number;
+  lastMessageTime?: number;
+  joinCount?: number;
+  lastJoinTime?: number;
+}
+
+interface RateLimitConfig {
+  maxRequests: number;
+  windowMs: number;
 }
 
 const parseCookies = (cookieHeader: string | undefined): Record<string, string> => {
@@ -28,15 +38,62 @@ const parseCookies = (cookieHeader: string | undefined): Record<string, string> 
   return cookies;
 };
 
+const sanitizeInput = (input: string): string => {
+  return xss.filterXSS(input, {
+    whiteList: {},
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ['script'],
+  });
+};
+
+const checkRateLimit = (
+  client: AuthenticatedSocket,
+  config: RateLimitConfig,
+  countKey: 'messageCount' | 'joinCount',
+  timeKey: 'lastMessageTime' | 'lastJoinTime',
+): boolean => {
+  const now = Date.now();
+  const lastTime = client[timeKey] || 0;
+  const count = client[countKey] || 0;
+
+  if (now - lastTime > config.windowMs) {
+    client[countKey] = 1;
+    client[timeKey] = now;
+    return true;
+  }
+
+  if (count >= config.maxRequests) {
+    return false;
+  }
+
+  client[countKey] = count + 1;
+  return true;
+};
+
 @WebSocketGateway({
   cors: {
     origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:5173'],
     credentials: true,
   },
 })
+@UsePipes(new ValidationPipe({
+  whitelist: true,
+  forbidNonWhitelisted: true,
+  transform: true,
+}))
 export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(MessagesGateway.name);
   
+  private readonly messageRateLimit: RateLimitConfig = {
+    maxRequests: 30, 
+    windowMs: 60000, 
+  };
+
+  private readonly joinRateLimit: RateLimitConfig = {
+    maxRequests: 10, 
+    windowMs: 60000, 
+  };
+
   @WebSocketServer()
   server: Server;
 
@@ -54,6 +111,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
       
       if (!token) {
         this.logger.warn(`Client ${client.id} disconnected: No token provided`);
+        client.emit('error', 'Authentication required');
         client.disconnect();
         return;
       }
@@ -65,8 +123,10 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
       this.logger.log(`Client connected: ${client.id}, User: ${client.userId}`);
       
       client.join(`user:${client.userId}`);
+      client.emit('connected', { userId: client.userId });
     } catch (error) {
       this.logger.error(`Client ${client.id} connection failed:`, error.message);
+      client.emit('error', 'Invalid authentication');
       client.disconnect();
     }
   }
@@ -79,6 +139,20 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
   async handleJoinConversation(client: AuthenticatedSocket, conversationId: string) {
     if (!client.userId) {
       this.logger.warn(`Client ${client.id} tried to join conversation without auth`);
+      client.emit('error', 'Not authenticated');
+      return;
+    }
+
+    if (!checkRateLimit(client, this.joinRateLimit, 'joinCount', 'lastJoinTime')) {
+      this.logger.warn(`User ${client.userId} rate limited on join_conversation`);
+      client.emit('error', 'Too many join attempts. Please slow down.');
+      return;
+    }
+
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(conversationId)) {
+      this.logger.warn(`Client ${client.id} tried to join with invalid conversation ID`);
+      client.emit('error', 'Invalid conversation ID');
       return;
     }
 
@@ -98,6 +172,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
   handleLeaveConversation(client: AuthenticatedSocket, conversationId: string) {
     this.logger.debug(`User ${client.userId} leaving conversation ${conversationId}`);
     client.leave(`conversation:${conversationId}`);
+    client.emit('left', conversationId);
   }
 
   @SubscribeMessage('send_message')
@@ -113,10 +188,44 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
       return;
     }
 
+    if (!checkRateLimit(client, this.messageRateLimit, 'messageCount', 'lastMessageTime')) {
+      this.logger.warn(`User ${client.userId} rate limited on send_message`);
+      client.emit('message_error', 'Too many messages. Please slow down.');
+      return;
+    }
+
+    if (!payload || typeof payload !== 'object') {
+      client.emit('message_error', 'Invalid message format');
+      return;
+    }
+
+    if (!payload.conversationId || !payload.content) {
+      client.emit('message_error', 'Missing conversationId or content');
+      return;
+    }
+
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(payload.conversationId)) {
+      client.emit('message_error', 'Invalid conversation ID');
+      return;
+    }
+
+    const content = payload.content.trim();
+    if (content.length === 0) {
+      client.emit('message_error', 'Message cannot be empty');
+      return;
+    }
+    if (content.length > 2000) {
+      client.emit('message_error', 'Message too long (max 2000 characters)');
+      return;
+    }
+
     try {
+      const sanitizedContent = sanitizeInput(content);
+
       const message = await this.messagesService.sendMessage(client.userId, {
         conversation_id: payload.conversationId,
-        content: payload.content,
+        content: sanitizedContent,
       });
 
       this.logger.log(`Message saved: ${message.id} in conversation ${payload.conversationId}`);
@@ -150,6 +259,11 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
 
   @SubscribeMessage('typing')
   handleTyping(client: AuthenticatedSocket, data: { conversationId: string; isTyping: boolean }) {
+    if (!client.userId) return;
+    
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!data?.conversationId || !uuidRegex.test(data.conversationId)) return;
+
     client
       .to(`conversation:${data.conversationId}`)
       .emit('typing', { userId: client.userId, isTyping: data.isTyping });

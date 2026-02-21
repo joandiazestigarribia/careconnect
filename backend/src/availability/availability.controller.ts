@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AvailabilityService } from './availability.service';
@@ -61,7 +62,7 @@ export class AvailabilityController {
     const availabilities = await this.availabilityService.findAllByCaregiver(userId);
     const availability = availabilities.find(a => a.id === id);
     if (!availability) {
-      throw new Error('Availability not found');
+      throw new NotFoundException('Availability not found');
     }
     return availability;
   }

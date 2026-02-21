@@ -1,4 +1,4 @@
-import { AlertCircle, ArrowRight, Check, Heart, Lock, Mail, X, Info } from 'lucide-react';
+import { AlertCircle, ArrowRight, Check, Heart, Lock, Mail, X, Info, Eye, EyeOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
@@ -34,6 +34,7 @@ const LoginForm = () => {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [loginError, setLoginError] = useState<string | null>(null);
   const [showSessionExpired, setShowSessionExpired] = useState(sessionExpired);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (authError) {
@@ -216,12 +217,12 @@ const LoginForm = () => {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   disabled={isLoading}
-                  className={`input pl-10 rounded-xl disabled:opacity-50 border-border transition-all duration-300 hover:border-primary/30 focus:border-primary focus:shadow-lg focus:shadow-primary/10 ${
+                  className={`input pl-10 pr-10 rounded-xl disabled:opacity-50 border-border transition-all duration-300 hover:border-primary/30 focus:border-primary focus:shadow-lg focus:shadow-primary/10 ${
                     getFieldStatus('password') === 'error' 
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
                       : getFieldStatus('password') === 'success'
@@ -230,9 +231,18 @@ const LoginForm = () => {
                   }`}
                   placeholder="••••••••"
                 />
-                {getFieldStatus('password') === 'success' && (
-                  <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-success" />
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-muted hover:text-primary transition-colors duration-200 focus:outline-none"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
               {validationErrors.password && touched.password && (
                 <p className="mt-1.5 text-sm text-red-600">{validationErrors.password}</p>

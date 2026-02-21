@@ -16,7 +16,7 @@ interface Props {
 const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversationCreated }: Props) => {
   const { user } = useAuth();
   const { isConnected, joinConversation, leaveConversation, sendMessage, setTyping } = useSocketContext();
-  const { markConversationAsRead } = useMessages();
+  const { markConversationAsRead, setActiveConversationId } = useMessages();
 
   const [conversation, setConversation] = useState<any>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -37,6 +37,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
     const init = async () => {
       if (conversationId) {
         currentConvIdRef.current = conversationId;
+        setActiveConversationId(conversationId);
         await loadConversation(conversationId);
       } else if (caregiverId) {
         await createConversation(caregiverId);
@@ -44,6 +45,10 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
     };
 
     init();
+    
+    return () => {
+      setActiveConversationId(null);
+    };
   }, [conversationId, caregiverId]);
 
   useEffect(() => {
@@ -99,6 +104,7 @@ const Chat = ({ conversationId, caregiverId, caregiverName, onBack, onConversati
       setError(null);
       const conv = await messagesApi.createConversation({ caregiver_id: cId });
       setConversation(conv);
+      setActiveConversationId(conv.id);
       onConversationCreated?.(conv.id);
     } catch (err: any) {
       console.error('Error creating conversation:', err);

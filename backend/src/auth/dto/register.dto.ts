@@ -1,9 +1,11 @@
 import { IsEmail, IsString, MinLength, MaxLength, IsEnum, IsOptional, Matches } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '../../users/entities/user.entity';
 
 export class RegisterDto {
   @ApiProperty({ example: 'user@example.com' })
+  @Transform(({ value }) => value?.toLowerCase().trim())
   @IsEmail()
   email: string;
 

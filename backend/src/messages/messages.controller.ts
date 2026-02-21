@@ -7,6 +7,7 @@ import {
   Query,
   UseGuards,
   ParseIntPipe,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { MessagesService } from './messages.service';
@@ -31,7 +32,7 @@ export class MessagesController {
     @Body() dto: CreateConversationDto,
   ) {
     if (userRole !== 'FAMILY') {
-      throw new Error('Only families can initiate conversations');
+      throw new ForbiddenException('Only families can initiate conversations');
     }
     return this.messagesService.createConversation(userId, dto);
   }
