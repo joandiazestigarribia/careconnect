@@ -31,11 +31,8 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       return;
     }
 
-    const token = localStorage.getItem('access_token');
-    if (!token) return;
-
     const socket = io(SOCKET_URL, {
-      auth: { token },
+      withCredentials: true, 
       transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionAttempts: 5,
@@ -48,8 +45,20 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setIsConnected(true);
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (reason) => {
       setIsConnected(false);
+    });
+
+    socket.on('connect_error', (error) => {
+      console.error('[Socket] Connection error:', error.message);
+    });
+
+    socket.on('error', (error) => {
+      console.error('[Socket] Error:', error);
+    });
+
+    socket.on('message_error', (error) => {
+      console.error('[Socket] Message error:', error);
     });
 
     return () => {

@@ -228,12 +228,10 @@ export class SearchService {
   ): number {
     let score = 0;
 
-    // Distance score (0-40 points)
     const radiusKm = dto.radius_km || 5;
     const distanceScore = 40 * (1 - distanceKm / radiusKm);
     score += Math.max(0, distanceScore);
 
-    // Languages match score (0-30 points)
     if (dto.preferred_languages?.length && family.languages_preferred?.length) {
       const matchingLangs = family.languages_preferred.filter((lang) =>
         dto.preferred_languages!.includes(lang),
@@ -243,8 +241,6 @@ export class SearchService {
       score += 30;
     }
 
-    // Children count preference (0-20 points)
-    // Smaller families might be preferred by some caregivers
     if (family.children_count <= 2) {
       score += 20;
     } else if (family.children_count <= 3) {
@@ -253,7 +249,6 @@ export class SearchService {
       score += 5;
     }
 
-    // Special needs bonus (0-10 points) - caregivers might prefer families with specific needs
     if (family.special_needs?.length) {
       score += 10;
     }

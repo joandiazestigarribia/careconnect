@@ -40,19 +40,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     authInitializedRef.current = true;
     
     const initAuth = async () => {
-      const token = localStorage.getItem('access_token');
-      
-      if (token) {
-        try {
-          const userData = await authApi.getMe();
-          setUser(userData);
-        } catch (err) {
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('user');
-        }
+      try {
+        const userData = await authApi.getMe();
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+      } catch (err) {
+        localStorage.removeItem('user');
+      } finally {
+        setIsLoading(false);
       }
-      
-      setIsLoading(false);
     };
 
     initAuth();
@@ -72,7 +68,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       const response = await authApi.login(credentials);
       
-      localStorage.setItem('access_token', response.access_token);
       localStorage.setItem('user', JSON.stringify(response.user));
       
       setUser(response.user);
@@ -92,7 +87,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       const response = await authApi.register(data);
       
-      localStorage.setItem('access_token', response.access_token);
       localStorage.setItem('user', JSON.stringify(response.user));
       
       setUser(response.user);
@@ -104,8 +98,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const logout = (reason?: string) => {
-    localStorage.removeItem('access_token');
+  const logout = async (reason?: string) => {
+    try {
+      await authApi.logout(); 
+    } catch (err) {
+    }
+    
     localStorage.removeItem('user');
     setUser(null);
     if (reason) {
@@ -121,6 +119,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
     } catch (err) {
+      setUser(null);
+      localStorage.removeItem('user');
     }
   };
 

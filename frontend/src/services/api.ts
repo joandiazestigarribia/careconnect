@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance, type AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import axios, { type AxiosInstance, type AxiosError } from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -7,18 +7,8 @@ export const api: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, 
 });
-
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('access_token');
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
 
 let isLoggingIn = false;
 let isRedirecting = false;
@@ -37,7 +27,6 @@ export const triggerLogout = (reason: string = 'session_expired') => {
   if (isRedirecting) return;
   isRedirecting = true;
 
-  localStorage.removeItem('access_token');
   localStorage.removeItem('user');
 
   window.dispatchEvent(new CustomEvent('auth:logout', { detail: { reason } }));
@@ -80,7 +69,6 @@ export interface User {
 }
 
 export interface AuthResponse {
-  access_token: string;
   user: User;
 }
 
@@ -93,6 +81,10 @@ export const authApi = {
   register: async (data: RegisterData): Promise<AuthResponse> => {
     const response = await api.post('/auth/register', data);
     return response.data.data;
+  },
+
+  logout: async (): Promise<void> => {
+    await api.post('/auth/logout');
   },
 
   getMe: async (): Promise<User> => {

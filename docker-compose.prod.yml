@@ -66,6 +66,7 @@ services:
       - REDIS_URL=redis://redis:6379
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
+      - COOKIE_SECRET=${COOKIE_SECRET}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
       - LOG_LEVEL=${LOG_LEVEL:-info}
     networks:

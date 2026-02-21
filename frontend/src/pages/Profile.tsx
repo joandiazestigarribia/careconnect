@@ -38,7 +38,6 @@ const Profile = () => {
     skills: [] as string[],
   });
   
-  // familyProfile se carga pero no se usa directamente (los datos van a familyFormData)
   const [familyFormData, setFamilyFormData] = useState({
     family_name: '',
     address: '',

@@ -7,7 +7,7 @@ import { LoginDto } from './dto/login.dto';
 import { User } from '../users/entities/user.entity';
 
 export interface AuthResponse {
-  access_token: string;
+  token: string;
   user: {
     id: string;
     email: string;
@@ -35,7 +35,7 @@ export class AuthService {
       this.logger.log({ userId: user.id, email: user.email }, 'User registered successfully');
 
       return {
-        access_token: token,
+        token,
         user: this.sanitizeUser(user),
       };
     } catch (error) {
@@ -69,7 +69,7 @@ export class AuthService {
     this.logger.log({ userId: user.id, email: user.email }, 'User logged in successfully');
 
     return {
-      access_token: token,
+      token,
       user: this.sanitizeUser(user),
     };
   }
