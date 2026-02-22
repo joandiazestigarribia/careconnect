@@ -2,7 +2,9 @@ import React, { createContext, useContext, useEffect, useRef, useState, useCallb
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
 
-const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// Remove /api suffix for WebSocket connection
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const SOCKET_URL = API_URL.replace('/api', '');
 
 interface SocketContextType {
   socket: Socket | null;
