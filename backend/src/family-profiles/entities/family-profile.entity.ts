@@ -30,14 +30,11 @@ export class FamilyProfile {
   @Column()
   address: string;
 
-  @Index({ spatial: true })
-  @Column({
-    type: 'geography',
-    spatialFeatureType: 'Point',
-    srid: 4326,
-    nullable: true,
-  })
-  location: any;
+  @Column({ type: 'decimal', precision: 10, scale: 8, nullable: true })
+  latitude: number;
+
+  @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true })
+  longitude: number;
 
   @Column('int', { default: 1 })
   children_count: number;
