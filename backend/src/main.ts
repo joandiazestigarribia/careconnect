@@ -50,13 +50,18 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(o => o.trim()) || [];
+  
+  logger.log('Configured allowed origins:', allowedOrigins);
   
   app.enableCors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      logger.log('CORS check - origin:', origin, 'allowed:', allowedOrigins);
+      
+      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
         callback(null, true);
       } else {
+        logger.warn('CORS rejected for origin:', origin);
         callback(new Error('Not allowed by CORS'));
       }
     },
