@@ -28,23 +28,15 @@ export class SearchService {
   ) {}
 
   async searchCaregivers(dto: SearchCaregiversDto): Promise<SearchResult[]> {
-    const radiusMeters = (dto.radius_km || 5) * 1000;
+    const radiusKm = dto.radius_km || 5;
+
+    console.log('[Search] DTO received:', dto);
+    console.log('[Search] Radius:', radiusKm);
 
     const query = this.caregiverRepo
       .createQueryBuilder('caregiver')
-      .where(
-        `ST_DWithin(
-          caregiver.location,
-          ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography,
-          :radius
-        )`,
-        {
-          latitude: dto.latitude,
-          longitude: dto.longitude,
-          radius: radiusMeters,
-        },
-      )
-      .andWhere('caregiver.location IS NOT NULL');
+      .where('caregiver.latitude IS NOT NULL')
+      .andWhere('caregiver.longitude IS NOT NULL');
 
     if (dto.max_hourly_rate) {
       query.andWhere('caregiver.hourly_rate <= :max_rate', {
@@ -53,8 +45,22 @@ export class SearchService {
     }
 
     const caregivers = await query.getMany();
+    console.log('[Search] Total caregivers found:', caregivers.length);
+    console.log('[Search] First caregiver sample:', caregivers[0]);
 
-    const results = caregivers.map((caregiver) => {
+    const caregiversInRadius = caregivers.filter((caregiver) => {
+      const distanceKm = this.calculateDistance(
+        dto.latitude,
+        dto.longitude,
+        caregiver.latitude,
+        caregiver.longitude,
+      );
+      console.log(`[Search] Caregiver ${caregiver.first_name} lat=${caregiver.latitude} lng=${caregiver.longitude} distance=${distanceKm}km`);
+      return distanceKm <= radiusKm;
+    });
+    console.log('[Search] Caregivers in radius:', caregiversInRadius.length);
+
+    const results = caregiversInRadius.map((caregiver) => {
       const distanceKm = this.calculateDistance(
         dto.latitude,
         dto.longitude,
@@ -175,23 +181,12 @@ export class SearchService {
   }
 
   async searchFamilies(dto: SearchFamiliesDto): Promise<FamilySearchResult[]> {
-    const radiusMeters = (dto.radius_km || 5) * 1000;
+    const radiusKm = dto.radius_km || 5;
 
     const query = this.familyRepo
       .createQueryBuilder('family')
-      .where(
-        `ST_DWithin(
-          family.location,
-          ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography,
-          :radius
-        )`,
-        {
-          latitude: dto.latitude,
-          longitude: dto.longitude,
-          radius: radiusMeters,
-        },
-      )
-      .andWhere('family.location IS NOT NULL');
+      .where('family.latitude IS NOT NULL')
+      .andWhere('family.longitude IS NOT NULL');
 
     if (dto.max_children_count) {
       query.andWhere('family.children_count <= :max_children', {
@@ -201,7 +196,17 @@ export class SearchService {
 
     const families = await query.getMany();
 
-    const results = families.map((family) => {
+    const familiesInRadius = families.filter((family) => {
+      const distanceKm = this.calculateDistance(
+        dto.latitude,
+        dto.longitude,
+        family.latitude,
+        family.longitude,
+      );
+      return distanceKm <= radiusKm;
+    });
+
+    const results = familiesInRadius.map((family) => {
       const distanceKm = this.calculateDistance(
         dto.latitude,
         dto.longitude,

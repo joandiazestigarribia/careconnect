@@ -30,10 +30,16 @@ export class FamilyProfile {
   @Column()
   address: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 8, nullable: true })
+  @Column({ type: 'decimal', precision: 10, scale: 8, nullable: true, transformer: {
+    from: (v: string | number | null) => v === null ? null : Number(v),
+    to: (v: string | number | null) => v === null ? null : Number(v),
+  }})
   latitude: number;
 
-  @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true })
+  @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true, transformer: {
+    from: (v: string | number | null) => v === null ? null : Number(v),
+    to: (v: string | number | null) => v === null ? null : Number(v),
+  }})
   longitude: number;
 
   @Column('int', { default: 1 })
