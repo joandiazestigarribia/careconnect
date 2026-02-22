@@ -8,7 +8,7 @@ export default registerAs('database', () => {
       type: 'postgres',
       url: process.env.DATABASE_URL,
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      synchronize: true, // TODO: Cambiar a false después de crear las tablas
+      synchronize: false,
       logging: process.env.NODE_ENV === 'development',
       migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
       migrationsRun: false,
@@ -42,7 +42,7 @@ export default registerAs('database', () => {
     password,
     database,
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-    synchronize: true, // TODO: Cambiar a false después de crear las tablas
+    synchronize: false,
     logging: process.env.NODE_ENV === 'development',
     migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
     migrationsRun: process.env.NODE_ENV !== 'production',
