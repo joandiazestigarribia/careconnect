@@ -31,6 +31,7 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const loadingConversationsRef = useRef(false);
   const loadingUnreadRef = useRef(false);
   const processedMessageIds = useRef<Set<string>>(new Set());
+  const loadConversationsRef = useRef<(() => Promise<void>) | undefined>(undefined);
 
   useEffect(() => {
     if (!isAuthenticated || !user?.id) {
@@ -74,7 +75,10 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (message.conversation_id === activeConversationId) {
       setConversations((prev) => {
         const convIndex = prev.findIndex((c) => c.id === message.conversation_id);
-        if (convIndex === -1) return prev;
+        if (convIndex === -1) {
+          loadConversationsRef.current?.();
+          return prev;
+        }
 
         const updated = [...prev];
         const conv = { ...updated[convIndex] };
@@ -94,7 +98,10 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     
     setConversations((prev) => {
       const convIndex = prev.findIndex((c) => c.id === message.conversation_id);
-      if (convIndex === -1) return prev;
+      if (convIndex === -1) {
+        loadConversationsRef.current?.();
+        return prev;
+      }
 
       const updated = [...prev];
       const conv = { ...updated[convIndex] };
@@ -130,6 +137,8 @@ export const MessagesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       loadingConversationsRef.current = false;
     }
   }, []);
+  
+  loadConversationsRef.current = loadConversations;
 
   const loadUnreadCount = useCallback(async () => {
     if (loadingUnreadRef.current) return;
