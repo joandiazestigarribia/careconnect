@@ -13,9 +13,9 @@ El proyecto demuestra una arquitectura moderna con funcionalidades avanzadas de 
 ## Características Principales
 
 ### Para Familias
-- **Búsqueda por ubicación** — Encuentra cuidadores cerca de ti usando el mapa interactivo
+- **Búsqueda por ubicación** — Encuentra cuidadores cerca de vos usando el mapa interactivo
 - **Filtros avanzados** — Filtra por tipo de cuidado, disponibilidad, tarifa y valoraciones
-- **Chat en tiempo real** — Comunícate directamente con los cuidadores antes de contratar
+- **Chat en tiempo real** — Comunicate directamente con los cuidadores antes de contratar
 
 ### Para Cuidadores
 - **Perfil profesional** — Muestra tu experiencia, certificaciones y disponibilidad
