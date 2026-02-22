@@ -24,13 +24,14 @@ export class FamilyProfilesService {
 
     const user = await this.usersService.findOne(userId);
 
-    let location: any = null;
-    if (dto.latitude && dto.longitude) {
-      location = this.geocodingService.createPoint(dto.longitude, dto.latitude);
-    } else {
+    let latitude = dto.latitude;
+    let longitude = dto.longitude;
+    
+    if (!latitude && !longitude) {
       const geocoded = await this.geocodingService.geocode(dto.address);
       if (geocoded) {
-        location = this.geocodingService.createPoint(geocoded.longitude, geocoded.latitude);
+        latitude = geocoded.latitude;
+        longitude = geocoded.longitude;
       }
     }
 
@@ -38,7 +39,8 @@ export class FamilyProfilesService {
       user_id: userId,
       family_name: dto.family_name,
       address: dto.address,
-      location,
+      latitude,
+      longitude,
       children_count: dto.children_count,
       children_ages: dto.children_ages || [],
       special_needs: dto.special_needs || [],

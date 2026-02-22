@@ -58,8 +58,8 @@ export class SearchService {
       const distanceKm = this.calculateDistance(
         dto.latitude,
         dto.longitude,
-        this.extractLatFromPoint(caregiver.location),
-        this.extractLngFromPoint(caregiver.location),
+        caregiver.latitude,
+        caregiver.longitude,
       );
 
       const score = this.calculateScore(caregiver, distanceKm, dto);
@@ -205,8 +205,8 @@ export class SearchService {
       const distanceKm = this.calculateDistance(
         dto.latitude,
         dto.longitude,
-        this.extractLatFromPoint(family.location),
-        this.extractLngFromPoint(family.location),
+        family.latitude,
+        family.longitude,
       );
 
       const score = this.calculateFamilyScore(family, distanceKm, dto);

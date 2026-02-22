@@ -24,13 +24,14 @@ export class CaregiverProfilesService {
 
     const user = await this.usersService.findOne(userId);
 
-    let location: any = null;
-    if (dto.latitude && dto.longitude) {
-      location = this.geocodingService.createPoint(dto.longitude, dto.latitude);
-    } else if (dto.address) {
+    let latitude = dto.latitude;
+    let longitude = dto.longitude;
+    
+    if (!latitude && !longitude && dto.address) {
       const geocoded = await this.geocodingService.geocode(dto.address);
       if (geocoded) {
-        location = this.geocodingService.createPoint(geocoded.longitude, geocoded.latitude);
+        latitude = geocoded.latitude;
+        longitude = geocoded.longitude;
       }
     }
 
@@ -40,7 +41,8 @@ export class CaregiverProfilesService {
       last_name: dto.last_name,
       bio: dto.bio,
       address: dto.address,
-      location,
+      latitude,
+      longitude,
       hourly_rate: dto.hourly_rate,
       languages_spoken: dto.languages_spoken,
       min_children_age: dto.min_children_age,
@@ -84,11 +86,13 @@ export class CaregiverProfilesService {
     const profile = await this.findOne(userId);
 
     if (dto.latitude && dto.longitude) {
-      profile.location = this.geocodingService.createPoint(dto.longitude, dto.latitude);
+      profile.latitude = dto.latitude;
+      profile.longitude = dto.longitude;
     } else if (dto.address && dto.address !== profile.address) {
       const geocoded = await this.geocodingService.geocode(dto.address);
       if (geocoded) {
-        profile.location = this.geocodingService.createPoint(geocoded.longitude, geocoded.latitude);
+        profile.latitude = geocoded.latitude;
+        profile.longitude = geocoded.longitude;
       }
     }
 

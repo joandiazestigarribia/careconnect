@@ -6,7 +6,6 @@ import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
-import { DataSource } from 'typeorm';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -79,15 +78,6 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document);
 
   app.setGlobalPrefix('api');
-
-  try {
-    const dataSource = app.get(DataSource);
-    logger.log('Synchronizing database...');
-    await dataSource.synchronize(true);
-    logger.log('✅ Database synchronized successfully');
-  } catch (syncError) {
-    logger.error('❌ Failed to synchronize database:', syncError);
-  }
 
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
