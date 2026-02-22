@@ -83,11 +83,13 @@ export class FamilyProfilesService {
 
     if (dto.address && dto.address !== profile.address) {
       if (dto.latitude && dto.longitude) {
-        profile.location = this.geocodingService.createPoint(dto.longitude, dto.latitude);
+        profile.latitude = dto.latitude;
+        profile.longitude = dto.longitude;
       } else {
         const geocoded = await this.geocodingService.geocode(dto.address);
         if (geocoded) {
-          profile.location = this.geocodingService.createPoint(geocoded.longitude, geocoded.latitude);
+          profile.latitude = geocoded.latitude;
+          profile.longitude = geocoded.longitude;
         }
       }
     }
