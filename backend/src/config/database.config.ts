@@ -8,10 +8,10 @@ export default registerAs('database', () => {
       type: 'postgres',
       url: process.env.DATABASE_URL,
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      synchronize: !isProduction,
+      synchronize: true, // TODO: Cambiar a false después de crear las tablas
       logging: process.env.NODE_ENV === 'development',
       migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
-      migrationsRun: process.env.NODE_ENV !== 'production',
+      migrationsRun: false,
       ...(isProduction && {
         ssl: {
           rejectUnauthorized: false,
