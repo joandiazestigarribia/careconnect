@@ -11,7 +11,7 @@ export default registerAs('database', () => {
       synchronize: !isProduction,
       logging: process.env.NODE_ENV === 'development',
       migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
-      migrationsRun: true,
+      migrationsRun: process.env.NODE_ENV !== 'production',
       ...(isProduction && {
         ssl: {
           rejectUnauthorized: false,
