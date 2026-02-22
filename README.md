@@ -8,12 +8,12 @@ El proyecto demuestra una arquitectura moderna con funcionalidades avanzadas de 
 
 ## Arquitectura
 - **frontend/** — Interfaz de usuario (React + Vite)
-- **backend/** — Servidor de aplicaciones (NestJS + PostgreSQL)
+- **backend/** — (NestJS + PostgreSQL)
 
 ## Características Principales
 
 ### Para Familias
-- **Búsqueda por ubicación** — Encuentra cuidadores cerca de vos usando el mapa interactivo
+- **Búsqueda por ubicación** — Encuentra cuidadores cerca tuyo usando el mapa interactivo
 - **Filtros avanzados** — Filtra por tipo de cuidado, disponibilidad, tarifa y valoraciones
 - **Chat en tiempo real** — Comunicate directamente con los cuidadores antes de contratar
 
