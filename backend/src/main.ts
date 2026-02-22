@@ -8,11 +8,16 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    bufferLogs: true,
-  });
-
   const logger = new Logger('Bootstrap');
+  
+  logger.log('🚀 Starting CareConnect Backend...');
+  logger.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+  logger.log(`PORT: ${process.env.PORT || 3000}`);
+  
+  try {
+    const app = await NestFactory.create(AppModule, {
+      bufferLogs: true,
+    });
 
   app.use(helmet({
     contentSecurityPolicy: {
@@ -68,10 +73,17 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document);
 
   const port = process.env.PORT || 3000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   
-  logger.log(`🚀 Application is running on: http://localhost:${port}`);
-  logger.log(`📚 Swagger docs available at: http://localhost:${port}/api/docs`);
+  logger.log(`🚀 Application is running on: http://0.0.0.0:${port}`);
+    logger.log(`📚 Swagger docs available at: http://0.0.0.0:${port}/api/docs`);
+  } catch (error) {
+    logger.error('❌ Failed to start application:', error);
+    process.exit(1);
+  }
 }
 
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('❌ Unhandled error during bootstrap:', error);
+  process.exit(1);
+});
