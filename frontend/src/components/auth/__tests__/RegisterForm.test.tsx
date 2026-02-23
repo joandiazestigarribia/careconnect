@@ -22,6 +22,15 @@ describe('RegisterForm', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    const mockSessionStorage = {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    };
+    Object.defineProperty(window, 'sessionStorage', {
+      value: mockSessionStorage,
+      writable: true,
+    });
   });
 
   const renderRegisterForm = (authState = {}) => {

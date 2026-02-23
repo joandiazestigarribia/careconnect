@@ -21,8 +21,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [logoutReason, setLogoutReason] = useState<string | null>(null);
-  const logoutReasonRef = useRef<string | null>(null);
+  const [logoutReason, setLogoutReason] = useState<string | null>(() => {
+    return sessionStorage.getItem('logoutReason');
+  });
 
   const authInitializedRef = useRef(false);
   
@@ -31,9 +32,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const reason = customEvent.detail?.reason || 'session_expired';
     
     setUser(null);
+    sessionStorage.setItem('logoutReason', reason);
     setLogoutReason(reason);
-    logoutReasonRef.current = reason;
-    
   }, []);
 
   useEffect(() => {
@@ -108,14 +108,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem('user');
     setUser(null);
     if (reason) {
+      sessionStorage.setItem('logoutReason', reason);
       setLogoutReason(reason);
-      logoutReasonRef.current = reason;
     }
   };
 
   const clearLogoutReason = () => {
+    sessionStorage.removeItem('logoutReason');
     setLogoutReason(null);
-    logoutReasonRef.current = null;
   };
 
   const clearError = () => setError(null);
@@ -159,5 +159,3 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
-
-export default AuthContext;

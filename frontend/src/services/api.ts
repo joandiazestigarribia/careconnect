@@ -28,6 +28,7 @@ export const triggerLogout = (reason: string = 'session_expired') => {
   isRedirecting = true;
 
   localStorage.removeItem('user');
+  sessionStorage.setItem('logoutReason', reason);
 
   window.dispatchEvent(new CustomEvent('auth:logout', { detail: { reason } }));
 
@@ -40,7 +41,8 @@ api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     const isAuthEndpoint = error.config?.url?.includes('/auth/login') ||
-      error.config?.url?.includes('/auth/register');
+      error.config?.url?.includes('/auth/register') ||
+      error.config?.url?.includes('/auth/me');
 
     if (error.response?.status === 401 && !isLoggingIn && !isAuthEndpoint && !isRedirecting) {
       triggerLogout('session_expired');
