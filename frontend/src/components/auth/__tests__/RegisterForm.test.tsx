@@ -29,12 +29,14 @@ describe('RegisterForm', () => {
       register: mockRegister,
       clearError: mockClearError,
       refreshUser: mockRefreshUser,
+      clearLogoutReason: vi.fn(),
       error: null,
       isLoading: false,
       isAuthenticated: false,
       user: null,
       login: vi.fn(),
       logout: vi.fn(),
+      logoutReason: null,
       ...authState,
     });
 

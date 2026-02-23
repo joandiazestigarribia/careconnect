@@ -29,12 +29,14 @@ describe('LoginForm', () => {
       login: mockLogin,
       clearError: mockClearError,
       refreshUser: mockRefreshUser,
+      clearLogoutReason: vi.fn(),
       error: null,
       isLoading: false,
       isAuthenticated: false,
       user: null,
       register: vi.fn(),
       logout: vi.fn(),
+      logoutReason: null,
       ...authState,
     });
 
