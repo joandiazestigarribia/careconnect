@@ -7,11 +7,12 @@ interface AuthContextType {
   isLoading: boolean;
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
-  logout: (reason?: string) => void;
+  logout: (reason?: string) => Promise<void>;
   refreshUser: () => Promise<void>;
   error: string | null;
   clearError: () => void;
   logoutReason?: string | null;
+  clearLogoutReason: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -108,7 +109,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setUser(null);
     if (reason) {
       setLogoutReason(reason);
+      logoutReasonRef.current = reason;
     }
+  };
+
+  const clearLogoutReason = () => {
+    setLogoutReason(null);
+    logoutReasonRef.current = null;
   };
 
   const clearError = () => setError(null);
@@ -137,6 +144,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         error,
         clearError,
         logoutReason,
+        clearLogoutReason,
       }}
     >
       {children}

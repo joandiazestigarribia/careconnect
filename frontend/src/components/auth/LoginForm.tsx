@@ -11,7 +11,7 @@ interface ValidationErrors {
 const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, error: authError, clearError, isLoading, isAuthenticated, logoutReason } = useAuth();
+  const { login, error: authError, clearError, isLoading, isAuthenticated, logoutReason, clearLogoutReason } = useAuth();
   
   const sessionExpired = (location.state as any)?.sessionExpired || logoutReason === 'session_expired';
 
@@ -47,6 +47,7 @@ const LoginForm = () => {
     if (sessionExpired) {
       setShowSessionExpired(true);
       window.history.replaceState({}, document.title);
+      clearLogoutReason();
     }
   }, []);
 
@@ -88,6 +89,7 @@ const LoginForm = () => {
   
   const dismissSessionExpired = () => {
     setShowSessionExpired(false);
+    clearLogoutReason();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
